@@ -1,0 +1,418 @@
+# Link map of FarchStart
+  1] FconfigInterruptVector (func,global) found in vector.c 
+   2] FarchStart (func,global) found in sys.lib arch.o         
+    3] FarchInitializeRAM (func,local) found in sys.lib arch.o         
+     4] FmemMemset (notype,global) found in sys.lib memset.o       
+     4] FmemCopyPtoX (notype,global) found in sys.lib memcopyptox.o  
+     4] FmemMemsetP (notype,global) found in sys.lib memsetp.o      
+     4] FmemCopyPtoP (notype,global) found in sys.lib memcopyptop.o  
+    3] FconfigInitialize (func,global) found in config.c 
+     4] FplldrvInitialize (func,global) found in bsp.lib plldrv.o       
+     4] FmemInitialize (func,global) found in sys.lib mem.o          
+      5] FInitialState (object,global) found in sys.lib mem.o          
+      5] FmemMemcpy (notype,global) found in sys.lib memcpy.o       
+     4] FIODeviceTable$8 (object,local) found in config.c 
+     4] FioInitialize (func,global) found in sys.lib io.o           
+      5] FpDeviceTable (object,local) found in sys.lib io.o           
+      5] FDeviceTableLen (object,local) found in sys.lib io.o           
+     4] FFlashInitialize$9 (object,local) found in config.c 
+     4] FflashDevCreate (func,global) found in bsp.lib flashdrv.o     
+      5] FFlashDevice (object,local) found in bsp.lib flashdrv.o     
+       6] FFlashDriver (object,global) found in bsp.lib flashdrv.o     
+        7] FmemCmpPtoP (func,global) found in bsp.lib flashdrv.o     
+         8] FmemReadP16 (notype,global) found in sys.lib memreadp16.o   
+        7] FmemCmpPtoX (func,global) found in bsp.lib flashdrv.o     
+        7] FmemCopyXtoP (notype,global) found in sys.lib memcopyxtop.o  
+        7] FmemCmpXtoP (func,global) found in bsp.lib flashdrv.o     
+        7] FmemCmpXtoX (func,global) found in bsp.lib flashdrv.o     
+         8] Fmemcmp (func,global) found in MSL C 56800.Lib mem.o          
+      5] FflashHWDisableISR (func,local) found in bsp.lib flashdrv.o     
+      5] FflashHWClearConfig (func,local) found in bsp.lib flashdrv.o     
+      5] FflashOpen (func,global) found in bsp.lib flashdrv.o     
+       6] FDriver (object,local) found in bsp.lib flashdrv.o     
+        7] FInterfaceVT (object,local) found in bsp.lib flashdrv.o     
+         8] FflashIoctl (func,global) found in bsp.lib flashdrv.o     
+          9] FflashSetAddressMode (func,local) found in bsp.lib flashdrv.o     
+           10] FarchSetOperatingMode (func,global) found in bsp.lib flashdrv.o     
+          9] FflashHWErase (func,local) found in bsp.lib flashdrv.o     
+          9] FflashRestoreAddressMode (func,local) found in bsp.lib flashdrv.o     
+         8] FflashWrite (func,global) found in bsp.lib flashdrv.o     
+          9] FflashGetCorrectSize (func,local) found in bsp.lib flashdrv.o     
+          9] FflashHWErasePage (func,local) found in bsp.lib flashdrv.o     
+          9] FflashHWProgramWord (func,local) found in bsp.lib flashdrv.o     
+          9] FflashRead (func,global) found in bsp.lib flashdrv.o     
+         8] FflashClose (func,global) found in bsp.lib flashdrv.o     
+      5] FioDrvInstall (func,global) found in sys.lib io.o           
+       6] FDeviceIndex (object,local) found in sys.lib io.o           
+     4] FUserPreMain (func,global) found in appconfig.c 
+    3] Fmain (func,global) found in testflash.c 
+     4] FTestAllFlash (func,global) found in testflash.c 
+      5] FLen (object,global) found in testflash.c 
+      5] FFiuParameter (object,global) found in testflash.c 
+      5] FTestOneFlash (func,global) found in testflash.c 
+       6] F@138 (object,local) found in testflash.c 
+       6] Fmessage (object,global) found in testflash.c 
+       6] Fsprintf (func,global) found in MSL C 56800.Lib printf.o       
+        7] Fvsnprintf (func,global) found in MSL C 56800.Lib printf.o       
+         8] F__StringWrite (func,global) found in MSL C 56800.Lib printf.o       
+          9] Fmemcpy (func,global) found in MSL C 56800.Lib mem.o          
+         8] F__pformatter (func,local) found in MSL C 56800.Lib printf.o       
+          9] Fstrchr (func,global) found in MSL C 56800.Lib string.o       
+          9] Fstrlen (func,global) found in MSL C 56800.Lib string.o       
+          9] Fparse_format (func,local) found in MSL C 56800.Lib printf.o       
+           10] F__ctype_map (object,global) found in MSL C 56800.Lib ctype.o        
+          9] Flong2str (func,local) found in MSL C 56800.Lib printf.o       
+           10] ARTREMU32Z (notype,global) found in MSL C 56800.Lib artremu32z.o   
+            11] ARTDIVU32UZ (notype,global) found in MSL C 56800.Lib artdivu32uz.o  
+          9] Ffloat2str (func,local) found in MSL C 56800.Lib printf.o       
+           10] F__num2dec (func,global) found in MSL C 56800.Lib ansi_fp.o      
+            11] ARTCMPF32 (notype,global) found in FP56800.lib Fp568d.s       
+             12] fp_state.data (section,local) found in FP56800.lib Fp568d.s       
+            11] FIsInf (func,global) found in MSL C 56800.Lib float.o        
+            11] FIsNan (func,global) found in MSL C 56800.Lib float.o        
+            11] Ffrexp (notype,global) found in MSL C 56800.Lib ffrexp.o       
+            11] ARTMPYS32U (notype,global) found in MSL C 56800.Lib rtmpy32.o      
+            11] ARTDIVS32UZ (notype,global) found in MSL C 56800.Lib artdivs32uz.o  
+            11] Fbit_values (object,local) found in MSL C 56800.Lib ansi_fp.o      
+            11] Fdigit_values (object,local) found in MSL C 56800.Lib ansi_fp.o      
+            11] ARTREMS32Z (notype,global) found in MSL C 56800.Lib artrems32z.o   
+           10] F@383 (object,local) found in MSL C 56800.Lib printf.o       
+           10] Fstrcpy (func,global) found in MSL C 56800.Lib string.o       
+           10] F@384 (object,local) found in MSL C 56800.Lib printf.o       
+           10] F@385 (object,local) found in MSL C 56800.Lib printf.o       
+           10] F@386 (object,local) found in MSL C 56800.Lib printf.o       
+           10] F@387 (object,local) found in MSL C 56800.Lib printf.o       
+           10] Fround_decimal (func,local) found in MSL C 56800.Lib printf.o       
+           10] ARTREMS16Z (notype,global) found in MSL C 56800.Lib artrems16z.o   
+          9] F@496 (object,local) found in MSL C 56800.Lib printf.o       
+          9] Fmemchr (func,global) found in MSL C 56800.Lib mem.o          
+       6] F@139 (object,local) found in testflash.c 
+       6] F@140 (object,local) found in testflash.c 
+       6] FtestStart (func,global) found in tools.lib test.o         
+        7] Fstrncpy (func,global) found in MSL C 56800.Lib string.o       
+        7] FtestPrintString (func,global) found in tools.lib test.o         
+         8] F__files (object,global) found in MSL C 56800.Lib ansi_files.o   
+         8] Ffwrite (func,global) found in MSL C 56800.Lib console.o      
+          9] F__put_char (func,global) found in MSL C 56800.Lib console.o      
+           10] FSTDOUTBuffer (object,global) found in MSL C 56800.Lib console.o      
+           10] FSTDOUTBufferCount (object,global) found in MSL C 56800.Lib console.o      
+           10] Fflush_buf (func,local) found in MSL C 56800.Lib console.o      
+            11] F__console_write (func,local) found in MSL C 56800.Lib console.o      
+             12] F__stdout_ready (object,global) found in MSL C 56800.Lib console.o      
+          9] ARTDIVU16UZ (notype,global) found in MSL C 56800.Lib artdivu16uz.o  
+        7] F@5 (object,local) found in tools.lib test.o         
+       6] F@141 (object,local) found in testflash.c 
+       6] FtestComment (func,global) found in tools.lib test.o         
+        7] F@16 (object,local) found in tools.lib test.o         
+        7] F@11 (object,local) found in tools.lib test.o         
+       6] Fopen (func,global) found in sys.lib io.o           
+       6] F@142 (object,local) found in testflash.c 
+       6] FtestFailed (func,global) found in tools.lib test.o         
+        7] F@10 (object,local) found in tools.lib test.o         
+       6] F@143 (object,local) found in testflash.c 
+       6] FTstDataBuf1 (object,local) found in testflash.c 
+       6] F@144 (object,local) found in testflash.c 
+       6] F@145 (object,local) found in testflash.c 
+       6] FTstDataBuf2 (object,local) found in testflash.c 
+       6] F@146 (object,local) found in testflash.c 
+       6] F@147 (object,local) found in testflash.c 
+       6] F@148 (object,local) found in testflash.c 
+       6] F@149 (object,local) found in testflash.c 
+       6] F@150 (object,local) found in testflash.c 
+       6] ARTREMU16Z (notype,global) found in MSL C 56800.Lib artremu16z.o   
+       6] F@151 (object,local) found in testflash.c 
+       6] F@152 (object,local) found in testflash.c 
+       6] F@153 (object,local) found in testflash.c 
+       6] F@154 (object,local) found in testflash.c 
+       6] F@155 (object,local) found in testflash.c 
+       6] F@156 (object,local) found in testflash.c 
+       6] F@157 (object,local) found in testflash.c 
+       6] F@158 (object,local) found in testflash.c 
+       6] FTstProgramBuf1 (object,global) found in testflash.c 
+       6] F@159 (object,local) found in testflash.c 
+       6] F@160 (object,local) found in testflash.c 
+       6] F@161 (object,local) found in testflash.c 
+       6] F@162 (object,local) found in testflash.c 
+       6] F@163 (object,local) found in testflash.c 
+       6] F@164 (object,local) found in testflash.c 
+       6] FtestEnd (func,global) found in tools.lib test.o         
+        7] F@23 (object,local) found in tools.lib test.o         
+        7] F@24 (object,local) found in tools.lib test.o         
+    3] FconfigFinalize (func,global) found in config.c 
+     4] FUserPostMain (func,global) found in appconfig.c 
+      5] Ffflush (func,global) found in MSL C 56800.Lib console.o      
+   2] FconfigUnhandledInterruptISR (func,global) found in config.c 
+   2] FInterrupt11 (notype,global) found in sys.lib interrupt11.o  
+    3] FarchISRType (object,global) found in config.c 
+    3] FastDispatcher (notype,global) found in sys.lib dispatcher.o   
+     4] FconfigNestedIPRmask (object,global) found in const.c 
+     4] FarchUserISRTable (object,global) found in pramdata.c 
+      5] FarchUnhandledInterrupt (func,global) found in sys.lib arch.o         
+   2] FInterrupt12 (notype,global) found in sys.lib interrupt12.o  
+   2] FInterrupt13 (notype,global) found in sys.lib interrupt13.o  
+  1] FarchStart (func,global) found in sys.lib arch.o         
+
+# Unreferenced symbols:
+	Foffset	(testflash.c )
+	(appconst.c )	[whole file]
+
+
+#>00000000          _EX_BIT (linker command file)
+#>00000001          _NUM_IM_PARTITIONS (linker command file)
+#>00000001          _NUM_EM_PARTITIONS (linker command file)
+
+# .main_application_vector
+  00000000 00000086 .text   FconfigInterruptVector	(vector.c)
+
+# .main_application_code
+  00008000 00000002 .text   FconfigUnhandledInterruptISR	(config.c)
+  00008002 00000080 .text   FconfigInitialize	(config.c)
+  00008082 00000003 .text   FconfigFinalize	(config.c)
+  00008085 00000001 .text   FUserPreMain	(appconfig.c)
+  00008086 00000004 .text   FUserPostMain	(appconfig.c)
+  0000808A 00000544 .text   FTestOneFlash	(testflash.c)
+  000085CE 00000028 .text   FTestAllFlash	(testflash.c)
+  000085F6 00000016 .text   Fmain	(testflash.c)
+  0000860C 00000020 .text   FtestStart	(tools.lib test.o         )
+  0000862C 0000001A .text   FtestFailed	(tools.lib test.o         )
+  00008646 00000017 .text   FtestComment	(tools.lib test.o         )
+  0000865D 00000020 .text   FtestEnd	(tools.lib test.o         )
+  0000867D 00000013 .text   FtestPrintString	(tools.lib test.o         )
+  00008690 0000000A .text   FmemInitialize	(sys.lib mem.o          )
+  0000869A 00000051 .text   Fopen	(sys.lib io.o           )
+  000086EB 00000010 .text   FioDrvInstall	(sys.lib io.o           )
+  000086FB 00000007 .text   FioInitialize	(sys.lib io.o           )
+  00008702 00000002 .text   FarchUnhandledInterrupt	(sys.lib arch.o         )
+  00008704 00000041 .text   FarchInitializeRAM	(sys.lib arch.o         )
+  00008745 0000001E .text   FarchStart	(sys.lib arch.o         )
+  00008763 00000023 .text   FflashOpen	(bsp.lib flashdrv.o     )
+  00008786 00000006 .text   FflashClose	(bsp.lib flashdrv.o     )
+  0000878C 00000098 .text   FflashRead	(bsp.lib flashdrv.o     )
+  00008824 0000012F .text   FflashWrite	(bsp.lib flashdrv.o     )
+  00008953 00000085 .text   FflashIoctl	(bsp.lib flashdrv.o     )
+  000089D8 00000083 .text   FflashDevCreate	(bsp.lib flashdrv.o     )
+  00008A5B 00000023 .text   FflashGetCorrectSize	(bsp.lib flashdrv.o     )
+  00008A7E 0000000F .text   FflashHWDisableISR	(bsp.lib flashdrv.o     )
+  00008A8D 00000015 .text   FflashHWClearConfig	(bsp.lib flashdrv.o     )
+  00008AA2 0000005E .text   FflashHWErase	(bsp.lib flashdrv.o     )
+  00008B00 0000005A .text   FflashHWErasePage	(bsp.lib flashdrv.o     )
+  00008B5A 0000005C .text   FflashHWProgramWord	(bsp.lib flashdrv.o     )
+  00008BB6 00000019 .text   FflashSetAddressMode	(bsp.lib flashdrv.o     )
+  00008BCF 00000014 .text   FflashRestoreAddressMode	(bsp.lib flashdrv.o     )
+  00008BE3 00000016 .text   FmemCmpXtoX	(bsp.lib flashdrv.o     )
+  00008BF9 00000032 .text   FmemCmpXtoP	(bsp.lib flashdrv.o     )
+  00008C2B 00000032 .text   FmemCmpPtoX	(bsp.lib flashdrv.o     )
+  00008C5D 00000034 .text   FmemCmpPtoP	(bsp.lib flashdrv.o     )
+  00008C91 0000000B .text   FarchSetOperatingMode	(bsp.lib flashdrv.o     )
+  00008C9C 0000002A .text   FplldrvInitialize	(bsp.lib plldrv.o       )
+  00008CC6 0000004D .text   Ffwrite	(MSL C 56800.Lib console.o      )
+  00008D13 0000000A .text   F__console_write	(MSL C 56800.Lib console.o      )
+  00008D1D 0000000A .text   Ffflush	(MSL C 56800.Lib console.o      )
+  00008D27 00000016 .text   F__put_char	(MSL C 56800.Lib console.o      )
+  00008D3D 00000006 .text   Fflush_buf	(MSL C 56800.Lib console.o      )
+  00008D43 00000011 .text   Fmemcpy	(MSL C 56800.Lib mem.o          )
+  00008D54 00000024 .text   Fmemchr	(MSL C 56800.Lib mem.o          )
+  00008D78 0000001D .text   Fmemcmp	(MSL C 56800.Lib mem.o          )
+  00008D95 000001DE .text   Fparse_format	(MSL C 56800.Lib printf.o       )
+  00008F73 00000171 .text   Flong2str	(MSL C 56800.Lib printf.o       )
+  000090E4 0000007F .text   Fround_decimal	(MSL C 56800.Lib printf.o       )
+  00009163 00000239 .text   Ffloat2str	(MSL C 56800.Lib printf.o       )
+  0000939C 000002FF .text   F__pformatter	(MSL C 56800.Lib printf.o       )
+  0000969B 0000003C .text   F__StringWrite	(MSL C 56800.Lib printf.o       )
+  000096D7 00000032 .text   Fvsnprintf	(MSL C 56800.Lib printf.o       )
+  00009709 0000000F .text   Fsprintf	(MSL C 56800.Lib printf.o       )
+  00009718 00000009 .text   Fstrlen	(MSL C 56800.Lib string.o       )
+  00009721 0000000C .text   Fstrcpy	(MSL C 56800.Lib string.o       )
+  0000972D 0000001D .text   Fstrncpy	(MSL C 56800.Lib string.o       )
+  0000974A 00000018 .text   Fstrchr	(MSL C 56800.Lib string.o       )
+  00009762 0000005A .text   FIsInf	(MSL C 56800.Lib float.o        )
+  000097BC 00000050 .text   FIsNan	(MSL C 56800.Lib float.o        )
+  0000980C 00000247 .text   F__num2dec	(MSL C 56800.Lib ansi_fp.o      )
+  00009A54 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyxtop.o  )
+  00009A54 00000000 rtlib.text FmemCopyXtoP	(sys.lib memcopyxtop.o  )
+  00009A54 0000000C rtlib.text rtlib.text	(sys.lib memcopyxtop.o  )
+  00009A60 0000000C rtlib.text F@DummyFn1	(sys.lib memcpy.o       )
+  00009A60 00000000 rtlib.text FmemMemcpy	(sys.lib memcpy.o       )
+  00009A60 0000000C rtlib.text rtlib.text	(sys.lib memcpy.o       )
+  00009A6C 00000002 rtlib.text F@DummyFn1	(sys.lib memreadp16.o   )
+  00009A6C 00000000 rtlib.text FmemReadP16	(sys.lib memreadp16.o   )
+  00009A6C 00000002 rtlib.text rtlib.text	(sys.lib memreadp16.o   )
+  00009A6E 0000000A rtlib.text F@DummyFn1	(sys.lib memset.o       )
+  00009A6E 00000000 rtlib.text FmemMemset	(sys.lib memset.o       )
+  00009A6E 0000000A rtlib.text rtlib.text	(sys.lib memset.o       )
+  00009A78 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptox.o  )
+  00009A78 00000000 rtlib.text FmemCopyPtoX	(sys.lib memcopyptox.o  )
+  00009A78 0000000C rtlib.text rtlib.text	(sys.lib memcopyptox.o  )
+  00009A84 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptop.o  )
+  00009A84 00000000 rtlib.text FmemCopyPtoP	(sys.lib memcopyptop.o  )
+  00009A84 0000000C rtlib.text rtlib.text	(sys.lib memcopyptop.o  )
+  00009A90 00000008 rtlib.text F@DummyFn1	(sys.lib interrupt11.o  )
+  00009A90 00000000 rtlib.text FInterrupt11	(sys.lib interrupt11.o  )
+  00009A90 00000008 rtlib.text rtlib.text	(sys.lib interrupt11.o  )
+  00009A98 00000008 rtlib.text F@DummyFn1	(sys.lib interrupt12.o  )
+  00009A98 00000000 rtlib.text FInterrupt12	(sys.lib interrupt12.o  )
+  00009A98 00000008 rtlib.text rtlib.text	(sys.lib interrupt12.o  )
+  00009AA0 00000008 rtlib.text F@DummyFn1	(sys.lib interrupt13.o  )
+  00009AA0 00000000 rtlib.text FInterrupt13	(sys.lib interrupt13.o  )
+  00009AA0 00000008 rtlib.text rtlib.text	(sys.lib interrupt13.o  )
+  00009AA8 000000AB rtlib.text rtlib.text	(sys.lib dispatcher.o   )
+  00009AA8 00000000 rtlib.text FastDispatcher	(sys.lib dispatcher.o   )
+  00009AA8 000000AB rtlib.text F@DummyFn1	(sys.lib dispatcher.o   )
+  00009B28 00000000 rtlib.text DispatchRestore	(sys.lib dispatcher.o   )
+  00009B54 0000000B rtlib.text F@DummyFn1	(sys.lib memsetp.o      )
+  00009B54 00000000 rtlib.text FmemMemsetP	(sys.lib memsetp.o      )
+  00009B54 0000000B rtlib.text rtlib.text	(sys.lib memsetp.o      )
+  00009B60 00000015 rtlib.text F@DummyFn1	(MSL C 56800.Lib rtmpy32.o      )
+  00009B60 00000000 rtlib.text ARTMPYU32U	(MSL C 56800.Lib rtmpy32.o      )
+  00009B60 00000000 rtlib.text ARTMPYS32U	(MSL C 56800.Lib rtmpy32.o      )
+  00009B60 00000015 rtlib.text rtlib.text	(MSL C 56800.Lib rtmpy32.o      )
+  00009B76 00000012 rtlib.text F@DummyFn1	(MSL C 56800.Lib artdivu16uz.o  )
+  00009B76 00000000 rtlib.text ARTDIVU16UZ	(MSL C 56800.Lib artdivu16uz.o  )
+  00009B76 00000012 rtlib.text rtlib.text	(MSL C 56800.Lib artdivu16uz.o  )
+  00009B88 00000012 rtlib.text F@DummyFn1	(MSL C 56800.Lib artdivs32uz.o  )
+  00009B88 00000000 rtlib.text ARTDIVS32UZ	(MSL C 56800.Lib artdivs32uz.o  )
+  00009B88 00000012 rtlib.text rtlib.text	(MSL C 56800.Lib artdivs32uz.o  )
+  00009B9A 00000020 rtlib.text F@DummyFn1	(MSL C 56800.Lib artdivu32uz.o  )
+  00009B9A 00000000 rtlib.text ARTDIVU32UZ	(MSL C 56800.Lib artdivu32uz.o  )
+  00009B9A 00000020 rtlib.text rtlib.text	(MSL C 56800.Lib artdivu32uz.o  )
+  00009BBA 00000012 rtlib.text F@DummyFn1	(MSL C 56800.Lib artremu16z.o   )
+  00009BBA 00000000 rtlib.text ARTREMU16Z	(MSL C 56800.Lib artremu16z.o   )
+  00009BBA 00000012 rtlib.text rtlib.text	(MSL C 56800.Lib artremu16z.o   )
+  00009BCC 00000015 rtlib.text F@DummyFn1	(MSL C 56800.Lib artrems16z.o   )
+  00009BCC 00000000 rtlib.text ARTREMS16Z	(MSL C 56800.Lib artrems16z.o   )
+  00009BCC 00000015 rtlib.text rtlib.text	(MSL C 56800.Lib artrems16z.o   )
+  00009BE2 00000012 rtlib.text F@DummyFn1	(MSL C 56800.Lib artrems32z.o   )
+  00009BE2 00000000 rtlib.text ARTREMS32Z	(MSL C 56800.Lib artrems32z.o   )
+  00009BE2 00000012 rtlib.text rtlib.text	(MSL C 56800.Lib artrems32z.o   )
+  00009BF4 0000000C rtlib.text F@DummyFn1	(MSL C 56800.Lib artremu32z.o   )
+  00009BF4 00000000 rtlib.text ARTREMU32Z	(MSL C 56800.Lib artremu32z.o   )
+  00009BF4 0000000C rtlib.text rtlib.text	(MSL C 56800.Lib artremu32z.o   )
+  00009C00 00000071 rtlib.text F@DummyFn1	(MSL C 56800.Lib ffrexp.o       )
+  00009C00 00000000 rtlib.text Ffrexp	(MSL C 56800.Lib ffrexp.o       )
+  00009C00 00000071 rtlib.text rtlib.text	(MSL C 56800.Lib ffrexp.o       )
+  00009C72 00000000 fp_engine.text ARTCMPEF32	(FP56800.lib Fp568d.s       )
+  00009C72 0000037E fp_engine.text fp_engine.text	(FP56800.lib Fp568d.s       )
+  00009C74 00000000 fp_engine.text ARTCMPF32	(FP56800.lib Fp568d.s       )
+  00009CE6 00000000 fp_engine.text ARTDIVF32UZ	(FP56800.lib Fp568d.s       )
+  00009D41 00000000 fp_engine.text ARTMPYF32U	(FP56800.lib Fp568d.s       )
+  00009DAC 00000000 fp_engine.text ARTSUBF32U	(FP56800.lib Fp568d.s       )
+  00009DC8 00000000 fp_engine.text ARTADDF32U	(FP56800.lib Fp568d.s       )
+  00009EDB 00000000 fp_engine.text FARTROUND	(FP56800.lib Fp568d.s       )
+  00009EE2 00000000 fp_engine.text FARTSETFPSCR	(FP56800.lib Fp568d.s       )
+  00009EE5 00000000 fp_engine.text FARTGETFPSCR	(FP56800.lib Fp568d.s       )
+  00009EE8 00000000 fp_engine.text ARTU16_TO_F32	(FP56800.lib Fp568d.s       )
+  00009EEB 00000000 fp_engine.text ARTU32_TO_F32	(FP56800.lib Fp568d.s       )
+  00009EEF 00000000 fp_engine.text ARTS16_TO_F32	(FP56800.lib Fp568d.s       )
+  00009EF2 00000000 fp_engine.text ARTS32_TO_F32	(FP56800.lib Fp568d.s       )
+  00009F06 00000000 fp_engine.text ARTF32_TO_S32U	(FP56800.lib Fp568d.s       )
+  00009F08 00000000 fp_engine.text ARTF32_TO_U32U	(FP56800.lib Fp568d.s       )
+  00009F0A 00000000 fp_engine.text ARTF32_TO_U16U	(FP56800.lib Fp568d.s       )
+  00009F0C 00000000 fp_engine.text ARTF32_TO_S16U	(FP56800.lib Fp568d.s       )
+#>00000000          F_Pdata_start_addr_in_ROM (linker command file)
+#>00009FF0          F_Pdata_start_addr_in_RAM (linker command file)
+  00009FF0 00000040 .data   FarchUserISRTable	(pramdata.c)
+#>00000000          F_Pdata_ROMtoRAM_length (linker command file)
+#>0000A030          F_Pbss_start_addr (linker command file)
+#>0000A030          _P_BSS_ADDR (linker command file)
+#>00000000          F_Pbss_length (linker command file)
+
+# .main_application_data
+#>00002000          F_Xdata_start_addr_in_ROM (linker command file)
+#>0000F000          F_StackAddr (linker command file)
+#>0000FF7F          F_StackEndAddr (linker command file)
+#>00002000          F_Xdata_start_addr_in_RAM (linker command file)
+#>00002000          FmemEXbit (linker command file)
+#>00002001          FmemNumIMpartitions (linker command file)
+#>00002002          FmemNumEMpartitions (linker command file)
+#>00002003          FmemIMpartitionList (linker command file)
+#>00002005          FmemEMpartitionList (linker command file)
+  00002007 00000004 .data   FarchISRType	(config.c)
+  0000200B 00000003 .data   FFlashInitialize$9	(config.c)
+  0000200E 00000001 .data   FTstProgramBuf1	(testflash.c)
+  0000200F 00000015 .data   FFiuParameter	(testflash.c)
+  00002024 00000010 .data   F@138	(testflash.c)
+  00002034 00000010 .data   F@139	(testflash.c)
+  00002044 00000010 .data   F@140	(testflash.c)
+  00002054 00000005 .data   F@141	(testflash.c)
+  00002059 00000008 .data   F@142	(testflash.c)
+  00002061 0000000F .data   F@143	(testflash.c)
+  00002070 00000010 .data   F@144	(testflash.c)
+  00002080 0000000E .data   F@145	(testflash.c)
+  0000208E 00000013 .data   F@146	(testflash.c)
+  000020A1 00000009 .data   F@147	(testflash.c)
+  000020AA 00000005 .data   F@148	(testflash.c)
+  000020AF 00000008 .data   F@149	(testflash.c)
+  000020B7 0000001E .data   F@150	(testflash.c)
+  000020D5 0000000A .data   F@151	(testflash.c)
+  000020DF 00000020 .data   F@152	(testflash.c)
+  000020FF 0000001F .data   F@153	(testflash.c)
+  0000211E 00000018 .data   F@154	(testflash.c)
+  00002136 00000013 .data   F@155	(testflash.c)
+  00002149 00000017 .data   F@156	(testflash.c)
+  00002160 0000000A .data   F@157	(testflash.c)
+  0000216A 0000001F .data   F@158	(testflash.c)
+  00002189 00000009 .data   F@159	(testflash.c)
+  00002192 00000016 .data   F@160	(testflash.c)
+  000021A8 0000000A .data   F@161	(testflash.c)
+  000021B2 00000006 .data   F@162	(testflash.c)
+  000021B8 00000013 .data   F@163	(testflash.c)
+  000021CB 0000001B .data   F@164	(testflash.c)
+  000021E6 00000001 .data   FconfigNestedIPRmask	(const.c)
+  000021E7 0000000C .data   F@5	(tools.lib test.o         )
+  000021F3 00000013 .data   F@10	(tools.lib test.o         )
+  00002206 00000002 .data   F@11	(tools.lib test.o         )
+  00002208 00000004 .data   F@16	(tools.lib test.o         )
+  0000220C 0000000B .data   F@23	(tools.lib test.o         )
+  00002217 0000000A .data   F@24	(tools.lib test.o         )
+  00002221 00000004 .data   FInterfaceVT	(bsp.lib flashdrv.o     )
+  00002225 0000010C .data   FFlashDriver	(bsp.lib flashdrv.o     )
+  00002331 00000018 .data   FFlashDevice	(bsp.lib flashdrv.o     )
+  00002349 00000006 .data   FDriver	(bsp.lib flashdrv.o     )
+  0000234F 0000005D .data   F__files	(MSL C 56800.Lib ansi_files.o   )
+  000023AC 00000100 .data   F__ctype_map	(MSL C 56800.Lib ctype.o        )
+  000024AC 00000005 .data   F@383	(MSL C 56800.Lib printf.o       )
+  000024B1 00000005 .data   F@384	(MSL C 56800.Lib printf.o       )
+  000024B6 00000004 .data   F@385	(MSL C 56800.Lib printf.o       )
+  000024BA 00000004 .data   F@386	(MSL C 56800.Lib printf.o       )
+  000024BE 00000004 .data   F@387	(MSL C 56800.Lib printf.o       )
+  000024C2 00000001 .data   F@496	(MSL C 56800.Lib printf.o       )
+  000024C4 00000012 .data   Fbit_values	(MSL C 56800.Lib ansi_fp.o      )
+  000024D6 00000010 .data   Fdigit_values	(MSL C 56800.Lib ansi_fp.o      )
+  000024E6 00000000 fp_state.data FPE_state	(FP56800.lib Fp568d.s       )
+  000024E6 00000001 fp_state.data fp_state.data	(FP56800.lib Fp568d.s       )
+#>00000000          F_Xdata_ROMtoRAM_length (linker command file)
+#>000024E7          F_Xbss_start_addr (linker command file)
+#>000024E7          _X_BSS_ADDR (linker command file)
+  000024E7 0000000C .bss    FIODeviceTable$8	(config.c)
+  000024F3 00000100 .bss    Fmessage	(testflash.c)
+  000025F3 00000004 .bss    FLen	(testflash.c)
+  000025F7 00002003 .bss    FTstDataBuf2	(testflash.c)
+  000045FA 00002003 .bss    FTstDataBuf1	(testflash.c)
+  000065FD 00000005 .bss    FInitialState	(sys.lib mem.o          )
+  00006602 00000001 .bss    FDeviceIndex	(sys.lib io.o           )
+  00006603 00000001 .bss    FDeviceTableLen	(sys.lib io.o           )
+  00006604 00000001 .bss    FpDeviceTable	(sys.lib io.o           )
+  00006605 00000001 .bss    FSTDOUTBufferCount	(MSL C 56800.Lib console.o      )
+  00006606 00000001 .bss    F__stdout_ready	(MSL C 56800.Lib console.o      )
+  00006607 00000050 .bss    FSTDOUTBuffer	(MSL C 56800.Lib console.o      )
+#>00004170          F_Xbss_length (linker command file)
+#>00001000          FArchIO (linker command file)
+#>0000FF80          FArchCore (linker command file)
+
+
+# Memory map:
+  00000000 0000010C .pvec
+  00008000 00004060 .pram
+  00000000 00000060 .avail
+  00000030 00000020 .cwregs
+  00000040 00001F80 .im
+  00001000 00000800 .regs
+  00001400 00000800 .hole
+  00001800 00001000 .xflash
+  00002000 00008CAE .xram
+  0000E000 00002000 .em
+  0000F000 00001F00 .stack
+  0000FF80 00000100 .onchip
+
+# Link start time: Wed Dec 20 17:36:55 2000
+# Link end time: Wed Dec 20 17:36:56 2000

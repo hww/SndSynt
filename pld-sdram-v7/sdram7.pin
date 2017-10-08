@@ -1,0 +1,131 @@
+-- Copyright (C) 1988-2000 Altera Corporation
+-- Any megafunction design, and related net list (encrypted or decrypted),
+-- support information, device programming or simulation file, and any other
+-- associated documentation or information provided by Altera or a partner
+-- under Altera's Megafunction Partnership Program may be used only to
+-- program PLD devices (but not masked PLD devices) from Altera.  Any other
+-- use of such megafunction design, net list, support information, device
+-- programming or simulation file, or any other related documentation or
+-- information is prohibited for any other purpose, including, but not
+-- limited to modification, reverse engineering, de-compiling, or use with
+-- any other silicon devices, unless such use is explicitly licensed under
+-- a separate agreement with Altera or a megafunction partner.  Title to
+-- the intellectual property, including patents, copyrights, trademarks,
+-- trade secrets, or maskworks, embodied in any such megafunction design,
+-- net list, support information, device programming or simulation file, or
+-- any other related documentation or information provided by Altera or a
+-- megafunction partner, remains with Altera, the megafunction partner, or
+-- their respective licensors.  No other licenses, including any licenses
+-- needed under any third party's intellectual property, are provided herein.
+
+
+
+N.C. = No Connect. This pin has no internal connection to the device.
+VCCINT = Dedicated power pin, which MUST be connected to VCC (3.3 volts).
+VCCIO = Dedicated power pin, which MUST be connected to VCC (3.3 volts).
+GND = Dedicated ground pin or unused dedicated input, which MUST be connected to GND.
+RESERVED = Unused I/O pin, which MUST be left unconnected.
+
+----------------------------------------------------------------------------
+
+CHIP "sdram7" ASSIGNED TO AN EPM3128ATC100-7
+/cs                              : 1
+/rdr                             : 2
+VCCIO                            : 3
+TDI                              : 4
+test                             : 5
+ma0                              : 6
+ma1                              : 7
+ma2                              : 8
+ma3                              : 9
+ma4                              : 10
+GND                              : 11
+ma5                              : 12
+ma6                              : 13
+ma7                              : 14
+TMS                              : 15
+ma8                              : 16
+ma9                              : 17
+VCCIO                            : 18
+ma10                             : 19
+ma11                             : 20
+ma12                             : 21
+ma13                             : 22
+mclk                             : 23
+cke                              : 24
+cs                               : 25
+GND                              : 26
+ras                              : 27
+cas                              : 28
+we                               : 29
+md0                              : 30
+md1                              : 31
+md2                              : 32
+GND                              : 33
+VCCIO                            : 34
+md3                              : 35
+md4                              : 36
+md5                              : 37
+GND                              : 38
+VCCINT                           : 39
+md6                              : 40
+md7                              : 41
+md8                              : 42
+GND                              : 43
+md9                              : 44
+md10                             : 45
+md11                             : 46
+md12                             : 47
+md13                             : 48
+md14                             : 49
+md15                             : 50
+VCCIO                            : 51
+dqm                              : 52
+GND                              : 53
+a15                              : 54
+a14                              : 55
+a13                              : 56
+a12                              : 57
+a11                              : 58
+GND                              : 59
+a10                              : 60
+a9                               : 61
+TCK                              : 62
+a8                               : 63
+a7                               : 64
+GND                              : 65
+VCCIO                            : 66
+a6                               : 67
+a5                               : 68
+a4                               : 69
+a3                               : 70
+a2                               : 71
+a1                               : 72
+TDO                              : 73
+GND                              : 74
+a0                               : 75
+d15                              : 76
+d14                              : 77
+GND                              : 78
+d13                              : 79
+d12                              : 80
+d11                              : 81
+VCCIO                            : 82
+d10                              : 83
+d9                               : 84
+d8                               : 85
+GND                              : 86
+clki                             : 87
+/rd                              : 88
+/reset                           : 89
+/wr                              : 90
+VCCINT                           : 91
+d7                               : 92
+d6                               : 93
+d5                               : 94
+GND                              : 95
+d4                               : 96
+d3                               : 97
+d2                               : 98
+d1                               : 99
+d0                               : 100

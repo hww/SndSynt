@@ -1,0 +1,82 @@
+# Link map of FarchStart
+
+
+#>00000000          _EX_BIT (linker command file)
+#>00000001          _NUM_IM_PARTITIONS (linker command file)
+#>00000001          _NUM_EM_PARTITIONS (linker command file)
+
+# .ApplicationInterruptVector
+  00000000 00000086 .text   FconfigInterruptVector	(vector.c)
+
+# .ApplicationCode
+  00000086 00000004 .text   Fmain	(main.c)
+  0000008A 00000001 .text   FUserPreMain	(appconfig.c)
+  0000008B 00000004 .text   FUserPostMain	(appconfig.c)
+  0000008F 00000002 .text   FconfigUnhandledInterruptISR	(config.c)
+  00000091 00000059 .text   FconfigInitialize	(config.c)
+  000000EA 00000003 .text   FconfigFinalize	(config.c)
+  000000ED 00000041 .text   FarchInitializeRAM	(sys.lib arch.o         )
+  0000012E 0000001C .text   FarchStart	(sys.lib arch.o         )
+  0000014A 0000002A .text   FplldrvInitialize	(bsp.lib plldrv.o       )
+  00000174 0000000A .text   F__console_write	(MSL C 56800.Lib console.o      )
+  0000017E 0000000A .text   Ffflush	(MSL C 56800.Lib console.o      )
+  00000188 00000006 .text   Fflush_buf	(MSL C 56800.Lib console.o      )
+  0000018E 00000005 rtlib.text F@DummyFn1	(sampleASM.asm)
+  0000018E 00000000 rtlib.text FsampleASM	(sampleASM.asm)
+  0000018E 00000005 rtlib.text rtlib.text	(sampleASM.asm)
+  00000194 0000000A rtlib.text F@DummyFn1	(sys.lib memset.o       )
+  00000194 00000000 rtlib.text FmemMemset	(sys.lib memset.o       )
+  00000194 0000000A rtlib.text rtlib.text	(sys.lib memset.o       )
+  0000019E 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptox.o  )
+  0000019E 00000000 rtlib.text FmemCopyPtoX	(sys.lib memcopyptox.o  )
+  0000019E 0000000C rtlib.text rtlib.text	(sys.lib memcopyptox.o  )
+  000001AA 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptop.o  )
+  000001AA 00000000 rtlib.text FmemCopyPtoP	(sys.lib memcopyptop.o  )
+  000001AA 0000000C rtlib.text rtlib.text	(sys.lib memcopyptop.o  )
+  000001B6 0000000B rtlib.text F@DummyFn1	(sys.lib memsetp.o      )
+  000001B6 00000000 rtlib.text FmemMemsetP	(sys.lib memsetp.o      )
+  000001B6 0000000B rtlib.text rtlib.text	(sys.lib memsetp.o      )
+#>00000000          F_Pdata_start_addr_in_ROM (linker command file)
+#>000001C1          F_Pdata_start_addr_in_RAM (linker command file)
+#>00000000          F_Pdata_ROMtoRAM_length (linker command file)
+#>000001C1          F_Pbss_start_addr (linker command file)
+#>000001C1          _P_BSS_ADDR (linker command file)
+#>00000000          F_Pbss_length (linker command file)
+
+# .ApplicationData
+#>00002000          F_Xdata_start_addr_in_ROM (linker command file)
+#>0000F200          F_StackAddr (linker command file)
+#>0000FF7F          F_StackEndAddr (linker command file)
+#>00002000          F_Xdata_start_addr_in_RAM (linker command file)
+#>00002000          FmemEXbit (linker command file)
+#>00002001          FmemNumIMpartitions (linker command file)
+#>00002002          FmemNumEMpartitions (linker command file)
+#>00002003          FmemIMpartitionList (linker command file)
+#>00002005          FmemEMpartitionList (linker command file)
+#>00000000          F_Xdata_ROMtoRAM_length (linker command file)
+#>00002007          F_Xbss_start_addr (linker command file)
+#>00002007          _X_BSS_ADDR (linker command file)
+  00002007 00000001 .bss    FSTDOUTBufferCount	(MSL C 56800.Lib console.o      )
+  00002008 00000001 .bss    F__stdout_ready	(MSL C 56800.Lib console.o      )
+  00002009 00000050 .bss    FSTDOUTBuffer	(MSL C 56800.Lib console.o      )
+#>00000052          F_Xbss_length (linker command file)
+#>00001000          FArchIO (linker command file)
+#>0000FF80          FArchCore (linker command file)
+
+
+# Memory map:
+  00000000 0000010C .pInterruptVector
+  00000086 00000276 .pExtRAM
+  00000000 00000060 .xAvailable
+  00000030 00000020 .xCWRegisters
+  00000040 00001F80 .xIntRAM_DynamicMem
+  00001000 00000800 .xPeripherals
+  00001400 00000800 .xReserved
+  00001800 00001000 .xFlash
+  00002000 000000B2 .xExtRAM
+  0000E000 00002400 .xExtRAM_DynamicMem
+  0000F200 00001B00 .xStack
+  0000FF80 00000100 .xCoreRegisters
+
+# Link start time: Wed Jan 17 04:13:02 2001
+# Link end time: Wed Jan 17 04:13:02 2001

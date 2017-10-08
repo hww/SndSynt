@@ -1,0 +1,1463 @@
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+MAX+plus II Compiler Report File
+Version 10.0 9/14/2000
+Compiled: 02/10/2001 10:58:39
+
+Copyright (C) 1988-2000 Altera Corporation
+Any megafunction design, and related net list (encrypted or decrypted),
+support information, device programming or simulation file, and any other
+associated documentation or information provided by Altera or a partner
+under Altera's Megafunction Partnership Program may be used only to
+program PLD devices (but not masked PLD devices) from Altera.  Any other
+use of such megafunction design, net list, support information, device
+programming or simulation file, or any other related documentation or
+information is prohibited for any other purpose, including, but not
+limited to modification, reverse engineering, de-compiling, or use with
+any other silicon devices, unless such use is explicitly licensed under
+a separate agreement with Altera or a megafunction partner.  Title to
+the intellectual property, including patents, copyrights, trademarks,
+trade secrets, or maskworks, embodied in any such megafunction design,
+net list, support information, device programming or simulation file, or
+any other related documentation or information provided by Altera or a
+megafunction partner, remains with Altera, the megafunction partner, or
+their respective licensors.  No other licenses, including any licenses
+needed under any third party's intellectual property, are provided herein.
+
+
+
+***** Project compilation was successful
+
+
+Untitled
+
+
+** DEVICE SUMMARY **
+
+Chip/                     Input   Output   Bidir         Shareable
+POF       Device          Pins    Pins     Pins     LCs  Expanders  % Utilized
+
+sdram7    EPM3128ATC100-7  21       23       32     81      2           63 %
+
+User Pins:                 21       23       32 
+
+
+
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+** AUTO GLOBAL SIGNALS **
+
+
+
+INFO: Signal '/wr' chosen for auto global Clock
+INFO: Signal 'clki' chosen for auto global Clock
+
+
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+** PIN/LOCATION/CHIP ASSIGNMENTS **
+
+                  Actual                  
+    User       Assignments                
+Assignments   (if different)     Node Name
+
+sdram7@75                         a0
+sdram7@72                         a1
+sdram7@71                         a2
+sdram7@70                         a3
+sdram7@69                         a4
+sdram7@68                         a5
+sdram7@67                         a6
+sdram7@64                         a7
+sdram7@63                         a8
+sdram7@61                         a9
+sdram7@60                         a10
+sdram7@58                         a11
+sdram7@57                         a12
+sdram7@56                         a13
+sdram7@55                         a14
+sdram7@54                         a15
+sdram7@28                         cas
+sdram7@24                         cke
+sdram7@87                         clki
+sdram7@1                          /cs
+sdram7@25                         cs
+sdram7@52                         dqm
+sdram7@100                        d0
+sdram7@99                         d1
+sdram7@98                         d2
+sdram7@97                         d3
+sdram7@96                         d4
+sdram7@94                         d5
+sdram7@93                         d6
+sdram7@92                         d7
+sdram7@85                         d8
+sdram7@84                         d9
+sdram7@83                         d10
+sdram7@81                         d11
+sdram7@80                         d12
+sdram7@79                         d13
+sdram7@77                         d14
+sdram7@76                         d15
+sdram7@6                          ma0
+sdram7@7                          ma1
+sdram7@8                          ma2
+sdram7@9                          ma3
+sdram7@10                         ma4
+sdram7@12                         ma5
+sdram7@13                         ma6
+sdram7@14                         ma7
+sdram7@16                         ma8
+sdram7@17                         ma9
+sdram7@19                         ma10
+sdram7@20                         ma11
+sdram7@21                         ma12
+sdram7@22                         ma13
+sdram7@23                         mclk
+sdram7@30                         md0
+sdram7@31                         md1
+sdram7@32                         md2
+sdram7@35                         md3
+sdram7@36                         md4
+sdram7@37                         md5
+sdram7@40                         md6
+sdram7@41                         md7
+sdram7@42                         md8
+sdram7@44                         md9
+sdram7@45                         md10
+sdram7@46                         md11
+sdram7@47                         md12
+sdram7@48                         md13
+sdram7@49                         md14
+sdram7@50                         md15
+sdram7@27                         ras
+sdram7@88                         /rd
+sdram7@2                          /rdr
+sdram7@89                         /reset
+sdram7@5                          test
+sdram7@29                         we
+sdram7@90                         /wr
+
+
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+** STATE MACHINE ASSIGNMENTS **
+
+
+ws: MACHINE
+        OF BITS (
+           b11,
+           b10,
+           b9,
+           b8,
+           b7,
+           b6,
+           b5,
+           b4,
+           b3,
+           b2,
+           b1,
+           b0,
+           rasa,
+           out
+        )
+        WITH STATES (
+                             off = B"00000000000001", 
+                              on = B"11000000000001", 
+                          active = B"10100000000011", 
+                           wrcol = B"10010000000011", 
+                           rdcol = B"10001000000011", 
+                           wrdat = B"10000100000001", 
+                           rdnop = B"10000010000000", 
+                           rdinp = B"10000001000000", 
+                            mode = B"10000000100011", 
+                           prech = B"10000000010011", 
+                            rfsh = B"10000000001001", 
+                           srfsh = B"10000000000101"
+);
+
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+***** Logic for device 'sdram7' compiled without errors.
+
+
+
+
+Device: EPM3128ATC100-7
+
+Device Options:
+    Turbo Bit                                    = ON
+    Security Bit                                 = OFF
+    Enable JTAG Support                        = ON
+    User Code                                  = ffffffff
+    MultiVolt I/O                              = OFF
+
+                              V   /                            
+                              C   r             V              
+                              C   e   c         C              
+                      G       I / s / l G     d C d d d G d d  
+            d d d d d N d d d N w e r k N d d 1 I 1 1 1 N 1 1  
+            0 1 2 3 4 D 5 6 7 T r t d i D 8 9 0 O 1 2 3 D 4 5  
+          ----------------------------------------------------_ 
+         / 100  98  96  94  92  90  88  86  84  82  80  78  76   |_ 
+        /     99  97  95  93  91  89  87  85  83  81  79  77    | 
+   /cs |  1                                                    75 | a0 
+  /rdr |  2                                                    74 | GND 
+ VCCIO |  3                                                    73 | #TDO 
+  #TDI |  4                                                    72 | a1 
+  test |  5                                                    71 | a2 
+   ma0 |  6                                                    70 | a3 
+   ma1 |  7                                                    69 | a4 
+   ma2 |  8                                                    68 | a5 
+   ma3 |  9                                                    67 | a6 
+   ma4 | 10                                                    66 | VCCIO 
+   GND | 11                                                    65 | GND 
+   ma5 | 12                                                    64 | a7 
+   ma6 | 13                  EPM3128ATC100-7                   63 | a8 
+   ma7 | 14                                                    62 | #TCK 
+  #TMS | 15                                                    61 | a9 
+   ma8 | 16                                                    60 | a10 
+   ma9 | 17                                                    59 | GND 
+ VCCIO | 18                                                    58 | a11 
+  ma10 | 19                                                    57 | a12 
+  ma11 | 20                                                    56 | a13 
+  ma12 | 21                                                    55 | a14 
+  ma13 | 22                                                    54 | a15 
+  mclk | 23                                                    53 | GND 
+   cke | 24                                                    52 | dqm 
+    cs | 25                                                    51 | VCCIO 
+       |      27  29  31  33  35  37  39  41  43  45  47  49  _| 
+        \   26  28  30  32  34  36  38  40  42  44  46  48  50   | 
+         \----------------------------------------------------- 
+            G r c w m m m G V m m m G V m m m G m m m m m m m  
+            N a a e d d d N C d d d N C d d d N d d d d d d d  
+            D s s   0 1 2 D C 3 4 5 D C 6 7 8 D 9 1 1 1 1 1 1  
+                            I         I           0 1 2 3 4 5  
+                            O         N                        
+                                      T                        
+
+
+N.C. = No Connect. This pin has no internal connection to the device.
+VCCINT = Dedicated power pin, which MUST be connected to VCC (3.3 volts).
+VCCIO = Dedicated power pin, which MUST be connected to VCC (3.3 volts).
+GND = Dedicated ground pin or unused dedicated input, which MUST be connected to GND.
+RESERVED = Unused I/O pin, which MUST be left unconnected.
+
+^ = Dedicated configuration pin.
++ = Reserved configuration pin, which is tri-stated during user mode.
+* = Reserved configuration pin, which drives out in user mode.
+PDn = Power Down pin. 
+@ = Special-purpose pin. 
+# = JTAG Boundary-Scan Testing/In-System Programming or Configuration Pin. The JTAG inputs TMS and TDI should be tied to VCC and TCK should be tied to GND when not in use.
+& = JTAG pin used for I/O. When used as user I/O, JTAG pins must be kept stable before and during configuration.  JTAG pin stability prevents accidental loading of JTAG instructions.
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** RESOURCE USAGE **
+
+                                                Shareable     External
+Logic Array Block     Logic Cells   I/O Pins    Expanders   Interconnect
+
+A:     LC1 - LC16    14/16( 87%)  10/10(100%)   0/16(  0%)  15/36( 41%) 
+B:    LC17 - LC32    11/16( 68%)  10/10(100%)  11/16( 68%)  29/36( 80%) 
+C:    LC33 - LC48    16/16(100%)  10/10(100%)   5/16( 31%)  24/36( 66%) 
+D:    LC49 - LC64    14/16( 87%)   9/ 9(100%)   1/16(  6%)  23/36( 63%) 
+E:    LC65 - LC80    10/16( 62%)  10/10(100%)   0/16(  0%)  13/36( 36%) 
+F:    LC81 - LC96     8/16( 50%)   9/ 9(100%)   0/16(  0%)   9/36( 25%) 
+G:   LC97 - LC112     0/16(  0%)   9/ 9(100%)   0/16(  0%)   0/36(  0%) 
+H:  LC113 - LC128     8/16( 50%)   9/ 9(100%)   0/16(  0%)  10/36( 27%) 
+
+
+Total dedicated input pins used:                 4/4      (100%)
+Total I/O pins used:                            76/76     (100%)
+Total logic cells used:                         81/128    ( 63%)
+Total shareable expanders used:                  2/128    (  1%)
+Total Turbo logic cells used:                   81/128    ( 63%)
+Total shareable expanders not available (n/a):  15/128    ( 11%)
+Average fan-in:                                  5.60
+Total fan-in:                                   454
+
+Total input pins required:                      21
+Total output pins required:                     23
+Total bidirectional pins required:              32
+Total reserved pins required                     4
+Total logic cells required:                     81
+Total flipflops required:                       77
+Total product terms required:                  249
+Total logic cells lending parallel expanders:    0
+Total shareable expanders in database:           2
+
+Synthesized logic cells:                         1/ 128   (  0%)
+
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** INPUTS **
+
+                                         Shareable
+                                         Expanders     Fan-In    Fan-Out
+ Pin     LC  LAB  Primitive    Code   Total Shared n/a INP  FBK  OUT  FBK  Name
+  75  (113)  (H)      INPUT               0      0   0    0    0    1    2  a0
+  72  (110)  (G)      INPUT               0      0   0    0    0    1    2  a1
+  71  (109)  (G)      INPUT               0      0   0    0    0    1    2  a2
+  70  (107)  (G)      INPUT               0      0   0    0    0    1    0  a3
+  69  (105)  (G)      INPUT               0      0   0    0    0    1    0  a4
+  68  (104)  (G)      INPUT               0      0   0    0    0    1    0  a5
+  67  (102)  (G)      INPUT               0      0   0    0    0    1    0  a6
+  64   (99)  (G)      INPUT               0      0   0    0    0    1    0  a7
+  63   (97)  (G)      INPUT               0      0   0    0    0    1    0  a8
+  61   (94)  (F)      INPUT               0      0   0    0    0    1    0  a9
+  60   (93)  (F)      INPUT               0      0   0    0    0    1    0  a10
+  58   (91)  (F)      INPUT               0      0   0    0    0    1    0  a11
+  57   (89)  (F)      INPUT               0      0   0    0    0    1    0  a12
+  56   (88)  (F)      INPUT               0      0   0    0    0    1    0  a13
+  55   (86)  (F)      INPUT               0      0   0    0    0    1    0  a14
+  54   (85)  (F)      INPUT               0      0   0    0    0    1    0  a15
+  87      -   -       INPUT  G            0      0   0    0    0    1    0  clki
+   1    (3)  (A)      INPUT               0      0   0    0    0    1    0  /cs
+ 100      5    A      BIDIR               0      0   0    2    1    1    0  d0
+  99      6    A      BIDIR               0      0   0    2    1    1    0  d1
+  98      8    A      BIDIR               0      0   0    2    1    1    0  d2
+  97      9    A      BIDIR               0      0   0    2    1    1    0  d3
+  96     11    A      BIDIR               0      0   0    2    1    1    0  d4
+  94     13    A      BIDIR               0      0   0    2    1    1    0  d5
+  93     14    A      BIDIR               0      0   0    2    1    1    0  d6
+  92     16    A      BIDIR               0      0   0    2    1    1    0  d7
+  85    128    H      BIDIR               0      0   0    2    1    1    0  d8
+  84    126    H      BIDIR               0      0   0    2    1    1    0  d9
+  83    125    H      BIDIR               0      0   0    2    1    1    0  d10
+  81    123    H      BIDIR               0      0   0    2    1    1    0  d11
+  80    121    H      BIDIR               0      0   0    2    1    1    0  d12
+  79    120    H      BIDIR               0      0   0    2    1    1    0  d13
+  77    117    H      BIDIR               0      0   0    2    1    1    0  d14
+  76    115    H      BIDIR               0      0   0    2    1    1    0  d15
+  30     59    D      BIDIR               0      0   0    1    2    1    1  md0
+  31     57    D      BIDIR               0      0   0    1    2    1    1  md1
+  32     56    D      BIDIR               0      0   0    1    2    2    0  md2
+  35     53    D      BIDIR               0      0   0    1    2    2    0  md3
+  36     51    D      BIDIR               0      0   0    1    2    2    0  md4
+  37     49    D      BIDIR               0      0   0    1    2    2    0  md5
+  40     65    E      BIDIR               0      0   0    1    2    2    0  md6
+  41     67    E      BIDIR               0      0   0    1    2    2    0  md7
+  42     69    E      BIDIR               0      0   0    1    2    1    0  md8
+  44     70    E      BIDIR               0      0   0    1    2    1    0  md9
+  45     72    E      BIDIR               0      0   0    1    2    1    0  md10
+  46     73    E      BIDIR               0      0   0    1    2    1    0  md11
+  47     75    E      BIDIR               0      0   0    2    2    1    0  md12
+  48     77    E      BIDIR               0      0   0    1    2    1    0  md13
+  49     78    E      BIDIR               0      0   0    1    2    1    0  md14
+  50     80    E      BIDIR               0      0   0    1    2    1    0  md15
+  88      -   -       INPUT               0      0   0    0    0    1    1  /rd
+  89      -   -       INPUT               0      0   0    0    0   52   24  /reset
+  90      -   -       INPUT  G            0      0   0    0    0    0    0  /wr
+
+
+Code:
+
+s = Synthesized pin or logic cell
+t = Turbo logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+G = Global Source. Fan-out destinations counted here do not include destinations
+that are driven using global routing resources. Refer to the Auto Global Signals,
+Clock Signals, Clear Signals, Synchronous Load Signals, and Synchronous Clear Signals
+Sections of this Report File for information on which signals' fan-outs are used as
+Clock, Clear, Preset, Output Enable, and synchronous Load signals.
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** OUTPUTS **
+
+                                         Shareable
+                                         Expanders     Fan-In    Fan-Out
+ Pin     LC  LAB  Primitive    Code   Total Shared n/a INP  FBK  OUT  FBK  Name
+  28     62    D         FF   +  t        0      0   0    1    5    0    0  cas
+  24     35    C         FF   +  t        0      0   0    1    3    0    0  cke
+  25     33    C         FF   +  t        0      0   0    1    5    0    0  cs
+  52     81    F         FF   +  t        0      0   0    1    4    0    0  dqm
+ 100      5    A     TRI/FF   +  t        0      0   0    2    1    1    0  d0
+  99      6    A     TRI/FF   +  t        0      0   0    2    1    1    0  d1
+  98      8    A     TRI/FF   +  t        0      0   0    2    1    1    0  d2
+  97      9    A     TRI/FF   +  t        0      0   0    2    1    1    0  d3
+  96     11    A     TRI/FF   +  t        0      0   0    2    1    1    0  d4
+  94     13    A     TRI/FF   +  t        0      0   0    2    1    1    0  d5
+  93     14    A     TRI/FF   +  t        0      0   0    2    1    1    0  d6
+  92     16    A     TRI/FF   +  t        0      0   0    2    1    1    0  d7
+  85    128    H     TRI/FF   +  t        0      0   0    2    1    1    0  d8
+  84    126    H     TRI/FF   +  t        0      0   0    2    1    1    0  d9
+  83    125    H     TRI/FF   +  t        0      0   0    2    1    1    0  d10
+  81    123    H     TRI/FF   +  t        0      0   0    2    1    1    0  d11
+  80    121    H     TRI/FF   +  t        0      0   0    2    1    1    0  d12
+  79    120    H     TRI/FF   +  t        0      0   0    2    1    1    0  d13
+  77    117    H     TRI/FF   +  t        0      0   0    2    1    1    0  d14
+  76    115    H     TRI/FF   +  t        0      0   0    2    1    1    0  d15
+   6     29    B         FF   +  t        1      0   1    1    5    0    0  ma0
+   7     27    B         FF   +  t        1      0   1    1    5    0    0  ma1
+   8     25    B         FF   +  t        1      0   1    1    5    0    0  ma2
+   9     24    B         FF   +  t        1      0   1    1    5    0    0  ma3
+  10     22    B         FF   +  t        1      0   1    1    5    0    0  ma4
+  12     21    B         FF   +  t        1      0   1    1    5    0    0  ma5
+  13     19    B         FF   +  t        1      0   1    1    5    0    0  ma6
+  14     17    B         FF   +  t        1      0   1    1    5    0    0  ma7
+  16     46    C         FF   +  t        1      0   1    1    5    0    0  ma8
+  17     45    C         FF   +  t        1      0   1    1    5    0    0  ma9
+  19     43    C         FF   +  t        0      0   0    1    2    0    0  ma10
+  20     41    C         FF   +  t        0      0   0    1    4    0    0  ma11
+  21     40    C         FF   +  t        1      0   1    1    5    1    0  ma12
+  22     38    C         FF   +  t        1      0   1    1    5    1    0  ma13
+  23     37    C     OUTPUT      t        0      0   0    1    0    0    0  mclk
+  30     59    D     TRI/FF   +  t        0      0   0    1    2    1    1  md0
+  31     57    D     TRI/FF   +  t        0      0   0    1    2    1    1  md1
+  32     56    D     TRI/FF   +  t        0      0   0    1    2    2    0  md2
+  35     53    D     TRI/FF   +  t        0      0   0    1    2    2    0  md3
+  36     51    D     TRI/FF   +  t        0      0   0    1    2    2    0  md4
+  37     49    D     TRI/FF   +  t        0      0   0    1    2    2    0  md5
+  40     65    E     TRI/FF   +  t        0      0   0    1    2    2    0  md6
+  41     67    E     TRI/FF   +  t        0      0   0    1    2    2    0  md7
+  42     69    E     TRI/FF   +  t        0      0   0    1    2    1    0  md8
+  44     70    E     TRI/FF   +  t        0      0   0    1    2    1    0  md9
+  45     72    E     TRI/FF   +  t        0      0   0    1    2    1    0  md10
+  46     73    E     TRI/FF   +  t        0      0   0    1    2    1    0  md11
+  47     75    E     TRI/FF   +  t        0      0   0    2    2    1    0  md12
+  48     77    E     TRI/FF   +  t        0      0   0    1    2    1    0  md13
+  49     78    E     TRI/FF   +  t        0      0   0    1    2    1    0  md14
+  50     80    E     TRI/FF   +  t        0      0   0    1    2    1    0  md15
+  27     64    D         FF   +  t        0      0   0    1    5    0    0  ras
+   2      1    A     OUTPUT      t        0      0   0    4    1    0    0  /rdr
+   5     30    B     OUTPUT      t        0      0   0   13    0   17    5  test
+  29     61    D         FF   +  t        0      0   0    1    3    0    0  we
+
+
+Code:
+
+s = Synthesized pin or logic cell
+t = Turbo logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** BURIED LOGIC **
+
+                                         Shareable
+                                         Expanders     Fan-In    Fan-Out
+ Pin     LC  LAB  Primitive    Code   Total Shared n/a INP  FBK  OUT  FBK  Name
+   -     12    A       DFFE   +  t        0      0   0    2    1    0   10  bufa0
+   -      2    A       DFFE   +  t        0      0   0    2    1    0   10  bufa1
+   -     10    A       DFFE   +  t        0      0   0    2    1    0   10  bufa2
+   -     58    D       TFFE   +  t        0      0   0    1    6    3    2  b0
+   -     50    D       DFFE   +  t        0      0   0    1    5    2    1  b1
+   -     55    D       DFFE   +  t        0      0   0    1    5    2    1  b2
+   -     34    C       DFFE   +  t        0      0   0    1    5    3    1  b3
+   -     82    F       DFFE   +  t        0      0   0    1    1    2    2  b4
+   -     84    F       DFFE   +  t        0      0   0    1    1    3    2  b5
+   -     42    C       DFFE   +  t        0      0   0    1    5    3    1  b6
+   -     44    C       DFFE   +  t        0      0   0    1    5   15    4  b7
+   -     36    C       DFFE   +  t        0      0   0    1    5   14    3  b8
+ (15)    48    C       DFFE   +  t        0      0   0    1    5    1    1  b9
+   -     52    D       DFFE   +  t        1      0   0    1   14    1   10  b10
+   -      4    A       DFFE   +  t        0      0   0    1    0    2    1  b11
+ (57)    89    F       DFFE   +  t        0      0   0    1    1   16    0  inp
+   -     83    F       DFFE   +  t        0      0   0    1    2    0    0  mdout
+   -     47    C       DFFE   +  t        0      0   0    1    2    0    2  out
+   -     39    C       DFFE   +  t        1      0   1    1    5   14    2  rasa
+  (1)     3    A       SOFT    s t        0      0   0    4    1    0    0  rdi0~1
+   -     23    B       DFFE   +  t        1      0   1    1    5    1    2  rma0
+   -     31    B       DFFE   +  t        2      0   1    1    6    1    1  rma1
+   -     95    F       DFFE   +  t        0      0   0    1    1    0   11  tmsg
+   -     54    D       DFFE   +  t        0      0   0    0    2    0    1  :172
+ (61)    94    F       DFFE   +  t        0      0   0    1    1    0    1  :212
+   -     90    F       DFFE   +  t        0      0   0    1    1    0    1  :214
+
+
+Code:
+
+s = Synthesized pin or logic cell
+t = Turbo logic cell
++ = Synchronous flipflop
+/ = Slow slew-rate output
+! = NOT gate push-back
+r = Fitter-inserted logic cell
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'A':
+
+                                     Logic cells placed in LAB 'A'
+        +--------------------------- LC12 bufa0
+        | +------------------------- LC2 bufa1
+        | | +----------------------- LC10 bufa2
+        | | | +--------------------- LC4 b11
+        | | | | +------------------- LC5 d0
+        | | | | | +----------------- LC6 d1
+        | | | | | | +--------------- LC8 d2
+        | | | | | | | +------------- LC9 d3
+        | | | | | | | | +----------- LC11 d4
+        | | | | | | | | | +--------- LC13 d5
+        | | | | | | | | | | +------- LC14 d6
+        | | | | | | | | | | | +----- LC16 d7
+        | | | | | | | | | | | | +--- LC3 rdi0~1
+        | | | | | | | | | | | | | +- LC1 /rdr
+        | | | | | | | | | | | | | | 
+        | | | | | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | | | | | |   that feed LAB 'A'
+LC      | | | | | | | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'A':
+
+Pin
+75   -> * - - - - - - - - - - - * * | * - - - - - - - | <-- a0
+72   -> - * - - - - - - - - - - * * | * - - - - - - - | <-- a1
+71   -> - - * - - - - - - - - - * * | * - - - - - - - | <-- a2
+87   -> - - - - - - - - - - - - - - | - - * - - - - - | <-- clki
+30   -> - - - - * - - - - - - - - - | * - - - - - - - | <-- md0
+31   -> - - - - - * - - - - - - - - | * - - - - - - - | <-- md1
+32   -> - - - - - - * - - - - - - - | * - - - - - - - | <-- md2
+35   -> - - - - - - - * - - - - - - | * - - - - - - - | <-- md3
+36   -> - - - - - - - - * - - - - - | * - - - - - - - | <-- md4
+37   -> - - - - - - - - - * - - - - | * - - - - - - - | <-- md5
+40   -> - - - - - - - - - - * - - - | * - - - - - - - | <-- md6
+41   -> - - - - - - - - - - - * - - | * - - - - - - - | <-- md7
+88   -> - - - - - - - - - - - - * * | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * * * * * - - | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - - - - - - - | - - - - - - - - | <-- /wr
+LC89 -> - - - - * * * * * * * * - - | * - - - - - - * | <-- inp
+LC30 -> * * * - - - - - - - - - * * | * - - * * - - - | <-- test
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'B':
+
+                               Logic cells placed in LAB 'B'
+        +--------------------- LC29 ma0
+        | +------------------- LC27 ma1
+        | | +----------------- LC25 ma2
+        | | | +--------------- LC24 ma3
+        | | | | +------------- LC22 ma4
+        | | | | | +----------- LC21 ma5
+        | | | | | | +--------- LC19 ma6
+        | | | | | | | +------- LC17 ma7
+        | | | | | | | | +----- LC23 rma0
+        | | | | | | | | | +--- LC31 rma1
+        | | | | | | | | | | +- LC30 test
+        | | | | | | | | | | | 
+        | | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | | |   that feed LAB 'B'
+LC      | | | | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'B':
+LC23 -> * - - - - - - - * * - | - * - - - - - - | <-- rma0
+LC31 -> - * - - - - - - - * - | - * - - - - - - | <-- rma1
+
+Pin
+69   -> - - - - - - - - - - * | - * - - - - - - | <-- a4
+68   -> - - - - - - - - - - * | - * - - - - - - | <-- a5
+67   -> - - - - - - - - - - * | - * - - - - - - | <-- a6
+64   -> - - - - - - - - - - * | - * - - - - - - | <-- a7
+63   -> - - - - - - - - - - * | - * - - - - - - | <-- a8
+61   -> - - - - - - - - - - * | - * - - - - - - | <-- a9
+60   -> - - - - - - - - - - * | - * - - - - - - | <-- a10
+58   -> - - - - - - - - - - * | - * - - - - - - | <-- a11
+57   -> - - - - - - - - - - * | - * - - - - - - | <-- a12
+56   -> - - - - - - - - - - * | - * - - - - - - | <-- a13
+55   -> - - - - - - - - - - * | - * - - - - - - | <-- a14
+54   -> - - - - - - - - - - * | - * - - - - - - | <-- a15
+87   -> - - - - - - - - - - - | - - * - - - - - | <-- clki
+1    -> - - - - - - - - - - * | - * - - - - - - | <-- /cs
+88   -> - - - - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * * * - | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - - - - | - - - - - - - - | <-- /wr
+LC44 -> * * * * * * * * * * - | - * * * - * - - | <-- b7
+LC36 -> * * * * * * * * * * - | - * * * - - - - | <-- b8
+LC59 -> - - * - - - - - * - - | - * - - - - - - | <-- md0
+LC57 -> - - - * - - - - - * - | - * - - - - - - | <-- md1
+LC56 -> * - - - * - - - - - - | - * - - - - - - | <-- md2
+LC53 -> - * - - - * - - - - - | - * - - - - - - | <-- md3
+LC51 -> - - * - - - * - - - - | - * - - - - - - | <-- md4
+LC49 -> - - - * - - - * - - - | - * - - - - - - | <-- md5
+LC65 -> - - - - * - - - - - - | - * * - - - - - | <-- md6
+LC67 -> - - - - - * - - - - - | - * * - - - - - | <-- md7
+LC69 -> - - - - - - * - - - - | - * - - - - - - | <-- md8
+LC70 -> - - - - - - - * - - - | - * - - - - - - | <-- md9
+LC39 -> * * * * * * * * * * - | - * * - - - - - | <-- rasa
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'C':
+
+                                         Logic cells placed in LAB 'C'
+        +------------------------------- LC34 b3
+        | +----------------------------- LC42 b6
+        | | +--------------------------- LC44 b7
+        | | | +------------------------- LC36 b8
+        | | | | +----------------------- LC48 b9
+        | | | | | +--------------------- LC35 cke
+        | | | | | | +------------------- LC33 cs
+        | | | | | | | +----------------- LC46 ma8
+        | | | | | | | | +--------------- LC45 ma9
+        | | | | | | | | | +------------- LC43 ma10
+        | | | | | | | | | | +----------- LC41 ma11
+        | | | | | | | | | | | +--------- LC40 ma12
+        | | | | | | | | | | | | +------- LC38 ma13
+        | | | | | | | | | | | | | +----- LC37 mclk
+        | | | | | | | | | | | | | | +--- LC47 out
+        | | | | | | | | | | | | | | | +- LC39 rasa
+        | | | | | | | | | | | | | | | | 
+        | | | | | | | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | | | | | | | |   that feed LAB 'C'
+LC      | | | | | | | | | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'C':
+LC44 -> - - - - - - - * * - * * * - * - | - * * * - * - - | <-- b7
+LC36 -> - - - - - - * * * - * * * - - - | - * * * - - - - | <-- b8
+LC40 -> - - - - - - - - - - - * - - - - | - - * - - - - - | <-- ma12
+LC38 -> - - - - - - - - - - - - * - - - | - - * - - - - - | <-- ma13
+LC39 -> - - - - - - - * * * * * * - - - | - * * - - - - - | <-- rasa
+
+Pin
+87   -> - - - - - - - - - - - - - * - - | - - * - - - - - | <-- clki
+88   -> - - - - - - - - - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * * * * * * - * * | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - - - - - - - - - | - - - - - - - - | <-- /wr
+LC12 -> * * * * * - - - - - - - - - - * | - - * * - - - - | <-- bufa0
+LC2  -> * * * * * - - - - - - - - - - * | - - * * - - - - | <-- bufa1
+LC10 -> * * * * * - - - - - - - - - - * | - - * * - - - - | <-- bufa2
+LC58 -> - - - - - * - - - - - - - - - - | - - * * - - - - | <-- b0
+LC82 -> - - - - - - * - - - - - - - - - | - - * * - * - - | <-- b4
+LC84 -> - - - - - * * - - - - - - - * - | - - * - - * - - | <-- b5
+LC52 -> * * * * * - * - - - - - - - - * | - - * * - - - - | <-- b10
+LC4  -> - - - - - * * - - - - - - - - - | - - * * - - - - | <-- b11
+LC65 -> - - - - - - - * - - - - - - - - | - * * - - - - - | <-- md6
+LC67 -> - - - - - - - - * - - - - - - - | - * * - - - - - | <-- md7
+LC72 -> - - - - - - - * - - - - - - - - | - - * - - - - - | <-- md10
+LC73 -> - - - - - - - - * - - - - - - - | - - * - - - - - | <-- md11
+LC75 -> - - - - - - - - - * - - - - - - | - - * - - - - - | <-- md12
+LC77 -> - - - - - - - - - - * - - - - - | - - * - - - - - | <-- md13
+LC78 -> - - - - - - - - - - - * - - - - | - - * - - - - - | <-- md14
+LC80 -> - - - - - - - - - - - - * - - - | - - * - - - - - | <-- md15
+LC95 -> * * * * * - - - - - - - - - - * | - - * * - - - - | <-- tmsg
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'D':
+
+                                     Logic cells placed in LAB 'D'
+        +--------------------------- LC58 b0
+        | +------------------------- LC50 b1
+        | | +----------------------- LC55 b2
+        | | | +--------------------- LC52 b10
+        | | | | +------------------- LC62 cas
+        | | | | | +----------------- LC59 md0
+        | | | | | | +--------------- LC57 md1
+        | | | | | | | +------------- LC56 md2
+        | | | | | | | | +----------- LC53 md3
+        | | | | | | | | | +--------- LC51 md4
+        | | | | | | | | | | +------- LC49 md5
+        | | | | | | | | | | | +----- LC64 ras
+        | | | | | | | | | | | | +--- LC61 we
+        | | | | | | | | | | | | | +- LC54 :172
+        | | | | | | | | | | | | | | 
+        | | | | | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | | | | | |   that feed LAB 'D'
+LC      | | | | | | | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'D':
+LC58 -> * - - * * - - - - - - * - - | - - * * - - - - | <-- b0
+LC50 -> - - - * * - - - - - - * - - | - - - * - - - - | <-- b1
+LC55 -> - - - * - - - - - - - * * - | - - - * - - - - | <-- b2
+LC52 -> * * * * - - - - - - - - - - | - - * * - - - - | <-- b10
+
+Pin
+87   -> - - - - - - - - - - - - - - | - - * - - - - - | <-- clki
+88   -> - - - - - - - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * * * * * * - | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - - - - - - - | - - - - - - - - | <-- /wr
+LC12 -> * * * * - - - - - - - - - - | - - * * - - - - | <-- bufa0
+LC2  -> * * * * - - - - - - - - - - | - - * * - - - - | <-- bufa1
+LC10 -> * * * * - - - - - - - - - - | - - * * - - - - | <-- bufa2
+LC34 -> - - - * * - - - - - - * * - | - - - * - - - - | <-- b3
+LC82 -> - - - * - - - - - - - - - - | - - * * - * - - | <-- b4
+LC42 -> - - - * * - - - - - - - * - | - - - * - * - - | <-- b6
+LC44 -> - - - - * - - - - - - - - - | - * * * - * - - | <-- b7
+LC36 -> - - - * - - - - - - - - - - | - * * * - - - - | <-- b8
+LC48 -> - - - * - - - - - - - * - - | - - - * - - - - | <-- b9
+LC4  -> - - - * - - - - - - - - - - | - - * * - - - - | <-- b11
+LC5  -> - - - - - * - - - - - - - - | - - - * - - - - | <-- d0
+LC6  -> - - - - - - * - - - - - - - | - - - * - - - - | <-- d1
+LC8  -> - - - - - - - * - - - - - - | - - - * - - - - | <-- d2
+LC9  -> - - - - - - - - * - - - - - | - - - * - - - - | <-- d3
+LC11 -> - - - - - - - - - * - - - - | - - - * - - - - | <-- d4
+LC13 -> - - - - - - - - - - * - - - | - - - * - - - - | <-- d5
+LC30 -> - - - - - * * * * * * - - * | * - - * * - - - | <-- test
+LC95 -> * * * * - - - - - - - - - * | - - * * - - - - | <-- tmsg
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'E':
+
+                             Logic cells placed in LAB 'E'
+        +------------------- LC65 md6
+        | +----------------- LC67 md7
+        | | +--------------- LC69 md8
+        | | | +------------- LC70 md9
+        | | | | +----------- LC72 md10
+        | | | | | +--------- LC73 md11
+        | | | | | | +------- LC75 md12
+        | | | | | | | +----- LC77 md13
+        | | | | | | | | +--- LC78 md14
+        | | | | | | | | | +- LC80 md15
+        | | | | | | | | | | 
+        | | | | | | | | | |   Other LABs fed by signals
+        | | | | | | | | | |   that feed LAB 'E'
+LC      | | | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'E':
+
+Pin
+70   -> - - - - - - * - - - | - - - - * - - - | <-- a3
+87   -> - - - - - - - - - - | - - * - - - - - | <-- clki
+88   -> - - - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * * * | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - - - | - - - - - - - - | <-- /wr
+LC14 -> * - - - - - - - - - | - - - - * - - - | <-- d6
+LC16 -> - * - - - - - - - - | - - - - * - - - | <-- d7
+LC128-> - - * - - - - - - - | - - - - * - - - | <-- d8
+LC126-> - - - * - - - - - - | - - - - * - - - | <-- d9
+LC125-> - - - - * - - - - - | - - - - * - - - | <-- d10
+LC123-> - - - - - * - - - - | - - - - * - - - | <-- d11
+LC121-> - - - - - - * - - - | - - - - * - - - | <-- d12
+LC120-> - - - - - - - * - - | - - - - * - - - | <-- d13
+LC117-> - - - - - - - - * - | - - - - * - - - | <-- d14
+LC115-> - - - - - - - - - * | - - - - * - - - | <-- d15
+LC30 -> * * * * * * * * * * | * - - * * - - - | <-- test
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'F':
+
+                         Logic cells placed in LAB 'F'
+        +--------------- LC82 b4
+        | +------------- LC84 b5
+        | | +----------- LC81 dqm
+        | | | +--------- LC89 inp
+        | | | | +------- LC83 mdout
+        | | | | | +----- LC95 tmsg
+        | | | | | | +--- LC94 :212
+        | | | | | | | +- LC90 :214
+        | | | | | | | | 
+        | | | | | | | |   Other LABs fed by signals
+        | | | | | | | |   that feed LAB 'F'
+LC      | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'F':
+LC82 -> - - * - - - * - | - - * * - * - - | <-- b4
+LC84 -> * - * - - - - - | - - * - - * - - | <-- b5
+LC94 -> - - - * - - - - | - - - - - * - - | <-- :212
+LC90 -> - - - - * - - - | - - - - - * - - | <-- :214
+
+Pin
+87   -> - - - - - - - - | - - * - - - - - | <-- clki
+88   -> - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - | - - - - - - - - | <-- /wr
+LC42 -> - - * - - - - - | - - - * - * - - | <-- b6
+LC44 -> - * * - - - - - | - * * * - * - - | <-- b7
+LC47 -> - - - - * - - * | - - - - - * - - | <-- out
+LC54 -> - - - - - * - - | - - - - - * - - | <-- :172
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** LOGIC CELL INTERCONNECTIONS **
+
+Logic Array Block 'H':
+
+                         Logic cells placed in LAB 'H'
+        +--------------- LC128 d8
+        | +------------- LC126 d9
+        | | +----------- LC125 d10
+        | | | +--------- LC123 d11
+        | | | | +------- LC121 d12
+        | | | | | +----- LC120 d13
+        | | | | | | +--- LC117 d14
+        | | | | | | | +- LC115 d15
+        | | | | | | | | 
+        | | | | | | | |   Other LABs fed by signals
+        | | | | | | | |   that feed LAB 'H'
+LC      | | | | | | | | | A B C D E F G H |     Logic cells that feed LAB 'H':
+
+Pin
+87   -> - - - - - - - - | - - * - - - - - | <-- clki
+42   -> * - - - - - - - | - - - - - - - * | <-- md8
+44   -> - * - - - - - - | - - - - - - - * | <-- md9
+45   -> - - * - - - - - | - - - - - - - * | <-- md10
+46   -> - - - * - - - - | - - - - - - - * | <-- md11
+47   -> - - - - * - - - | - - - - - - - * | <-- md12
+48   -> - - - - - * - - | - - - - - - - * | <-- md13
+49   -> - - - - - - * - | - - - - - - - * | <-- md14
+50   -> - - - - - - - * | - - - - - - - * | <-- md15
+88   -> - - - - - - - - | * - - - - - - - | <-- /rd
+89   -> * * * * * * * * | * * * * * * - * | <-- /reset
+90   -> - - - - - - - - | - - - - - - - - | <-- /wr
+LC89 -> * * * * * * * * | * - - - - - - * | <-- inp
+
+
+* = The logic cell or pin is an input to the logic cell (or LAB) through the PIA.
+- = The logic cell or pin is not an input to the logic cell (or LAB).
+
+
+Device-Specific Information:              d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+sdram7
+
+** EQUATIONS **
+
+a0       : INPUT;
+a1       : INPUT;
+a2       : INPUT;
+a3       : INPUT;
+a4       : INPUT;
+a5       : INPUT;
+a6       : INPUT;
+a7       : INPUT;
+a8       : INPUT;
+a9       : INPUT;
+a10      : INPUT;
+a11      : INPUT;
+a12      : INPUT;
+a13      : INPUT;
+a14      : INPUT;
+a15      : INPUT;
+clki     : INPUT;
+/cs      : INPUT;
+/rd      : INPUT;
+/reset   : INPUT;
+/wr      : INPUT;
+
+-- Node name is 'bufa0' from file "sdram7.tdf" line 83, column 17
+-- Equation name is 'bufa0', location is LC012, type is buried.
+bufa0    = DFFE( a0 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'bufa1' from file "sdram7.tdf" line 83, column 17
+-- Equation name is 'bufa1', location is LC002, type is buried.
+bufa1    = DFFE( a1 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'bufa2' from file "sdram7.tdf" line 83, column 17
+-- Equation name is 'bufa2', location is LC010, type is buried.
+bufa2    = DFFE( a2 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'b0' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b0', location is LC058, type is buried.
+b0       = TFFE( _EQ001, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ001 =  bufa0 &  bufa1 &  bufa2 & !b0 &  b10 &  tmsg
+         # !bufa0 & !bufa1 & !bufa2 &  b0 &  tmsg;
+
+-- Node name is 'b1' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b1', location is LC050, type is buried.
+b1       = DFFE( _EQ002 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ002 = !bufa0 &  bufa1 &  bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b2' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b2', location is LC055, type is buried.
+b2       = DFFE( _EQ003 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ003 = !bufa0 & !bufa1 & !bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b3' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b3', location is LC034, type is buried.
+b3       = DFFE( _EQ004 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ004 =  bufa0 & !bufa1 &  bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b4' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b4', location is LC082, type is buried.
+b4       = DFFE( b5 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is 'b5' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b5', location is LC084, type is buried.
+b5       = DFFE( b7 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is 'b6' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b6', location is LC042, type is buried.
+b6       = DFFE( _EQ005 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ005 = !bufa0 & !bufa1 &  bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b7' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b7', location is LC044, type is buried.
+b7       = DFFE( _EQ006 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ006 = !bufa0 &  bufa1 & !bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b8' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b8', location is LC036, type is buried.
+b8       = DFFE( _EQ007 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ007 =  bufa0 &  bufa1 & !bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b9' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b9', location is LC048, type is buried.
+b9       = DFFE( _EQ008 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ008 =  bufa0 & !bufa1 & !bufa2 &  b10 &  tmsg;
+
+-- Node name is 'b10' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b10', location is LC052, type is buried.
+b10      = DFFE( _EQ009 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ009 = !bufa0 & !bufa1 & !bufa2 &  b0 &  tmsg
+         #  b10 & !tmsg
+         #  _X001;
+  _X001  = EXP(!b1 & !b2 & !b3 & !b4 & !b6 & !b8 & !b9 &  b11);
+
+-- Node name is 'b11' from file "sdram7.tdf" line 88, column 29
+-- Equation name is 'b11', location is LC004, type is buried.
+b11      = DFFE( VCC $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is 'cas' = ':206' from file "sdram7.tdf" line 254, column 8
+-- Equation name is 'cas', type is output 
+ cas     = DFFE( _EQ010 $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ010 = !b0 & !b1 & !b3 & !b6 & !b7;
+
+-- Node name is 'cke' = ':210' from file "sdram7.tdf" line 258, column 8
+-- Equation name is 'cke', type is output 
+ cke     = DFFE( _EQ011 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ011 = !b0 & !b5 &  b11;
+
+-- Node name is 'cs' = ':209' from file "sdram7.tdf" line 257, column 7
+-- Equation name is 'cs', type is output 
+ cs      = DFFE( _EQ012 $  VCC, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ012 = !b4 & !b5 & !b8 & !b10 &  b11;
+
+-- Node name is 'dqm' = ':208' from file "sdram7.tdf" line 256, column 8
+-- Equation name is 'dqm', type is output 
+ dqm     = DFFE( _EQ013 $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ013 = !b4 & !b5 & !b6 & !b7;
+
+-- Node name is 'd0' = 'rdi0' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd0', location is LC005, type is bidir.
+d0       = TRI(rdi0,  _LC003);
+rdi0     = DFFE( md0 $  GND, GLOBAL(!clki),  VCC,  /reset,  inp);
+
+-- Node name is 'd1' = 'rdi1' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd1', location is LC006, type is bidir.
+d1       = TRI(rdi1,  _LC003);
+rdi1     = DFFE( md1 $  GND, GLOBAL(!clki),  VCC,  /reset,  inp);
+
+-- Node name is 'd2' = 'rdi2' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd2', location is LC008, type is bidir.
+d2       = TRI(rdi2,  _LC003);
+rdi2     = DFFE( md2 $  GND, GLOBAL(!clki),  VCC,  /reset,  inp);
+
+-- Node name is 'd3' = 'rdi3' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd3', location is LC009, type is bidir.
+d3       = TRI(rdi3,  _LC003);
+rdi3     = DFFE( md3 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd4' = 'rdi4' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd4', location is LC011, type is bidir.
+d4       = TRI(rdi4,  _LC003);
+rdi4     = DFFE( md4 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd5' = 'rdi5' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd5', location is LC013, type is bidir.
+d5       = TRI(rdi5,  _LC003);
+rdi5     = DFFE( md5 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd6' = 'rdi6' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd6', location is LC014, type is bidir.
+d6       = TRI(rdi6,  _LC003);
+rdi6     = DFFE( md6 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd7' = 'rdi7' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd7', location is LC016, type is bidir.
+d7       = TRI(rdi7,  _LC003);
+rdi7     = DFFE( md7 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd8' = 'rdi8' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd8', location is LC128, type is bidir.
+d8       = TRI(rdi8,  _LC003);
+rdi8     = DFFE( md8 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd9' = 'rdi9' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd9', location is LC126, type is bidir.
+d9       = TRI(rdi9,  _LC003);
+rdi9     = DFFE( md9 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd10' = 'rdi10' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd10', location is LC125, type is bidir.
+d10      = TRI(rdi10,  _LC003);
+rdi10    = DFFE( md10 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd11' = 'rdi11' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd11', location is LC123, type is bidir.
+d11      = TRI(rdi11,  _LC003);
+rdi11    = DFFE( md11 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd12' = 'rdi12' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd12', location is LC121, type is bidir.
+d12      = TRI(rdi12,  _LC003);
+rdi12    = DFFE( md12 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd13' = 'rdi13' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd13', location is LC120, type is bidir.
+d13      = TRI(rdi13,  _LC003);
+rdi13    = DFFE( md13 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd14' = 'rdi14' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd14', location is LC117, type is bidir.
+d14      = TRI(rdi14,  _LC003);
+rdi14    = DFFE( md14 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'd15' = 'rdi15' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'd15', location is LC115, type is bidir.
+d15      = TRI(rdi15,  _LC003);
+rdi15    = DFFE( md15 $  GND, GLOBAL(!clki),  /reset,  VCC,  inp);
+
+-- Node name is 'inp' from file "sdram7.tdf" line 260, column 8
+-- Equation name is 'inp', location is LC089, type is buried.
+inp      = DFFE( _LC094 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is 'ma0' = 'rma2' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma0', location is LC029, type is output.
+ ma0     = DFFE( _EQ014 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ014 =  bufd2 & !b7 & !b8
+         #  b7 &  rma0
+         #  b8 &  rma0;
+
+-- Node name is 'ma1' = 'rma3' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma1', location is LC027, type is output.
+ ma1     = DFFE( _EQ015 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ015 =  bufd3 & !b7 & !b8
+         #  b7 &  rma1
+         #  b8 &  rma1;
+
+-- Node name is 'ma2' = 'rma4' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma2', location is LC025, type is output.
+ ma2     = DFFE( _EQ016 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ016 =  bufd4 & !b7 & !b8
+         #  bufd0 &  b7
+         #  bufd0 &  b8;
+
+-- Node name is 'ma3' = 'rma5' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma3', location is LC024, type is output.
+ ma3     = DFFE( _EQ017 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ017 =  bufd5 & !b7 & !b8
+         #  bufd1 &  b7
+         #  bufd1 &  b8;
+
+-- Node name is 'ma4' = 'rma6' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma4', location is LC022, type is output.
+ ma4     = DFFE( _EQ018 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ018 =  bufd6 & !b7 & !b8
+         #  bufd2 &  b7
+         #  bufd2 &  b8;
+
+-- Node name is 'ma5' = 'rma7' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma5', location is LC021, type is output.
+ ma5     = DFFE( _EQ019 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ019 =  bufd7 & !b7 & !b8
+         #  bufd3 &  b7
+         #  bufd3 &  b8;
+
+-- Node name is 'ma6' = 'rma8' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma6', location is LC019, type is output.
+ ma6     = DFFE( _EQ020 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ020 =  bufd8 & !b7 & !b8
+         #  bufd4 &  b7
+         #  bufd4 &  b8;
+
+-- Node name is 'ma7' = 'rma9' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma7', location is LC017, type is output.
+ ma7     = DFFE( _EQ021 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ021 =  bufd9 & !b7 & !b8
+         #  bufd5 &  b7
+         #  bufd5 &  b8;
+
+-- Node name is 'ma8' = 'rma10' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma8', location is LC046, type is output.
+ ma8     = DFFE( _EQ022 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ022 =  bufd10 & !b7 & !b8
+         #  bufd6 &  b7
+         #  bufd6 &  b8;
+
+-- Node name is 'ma9' = 'rma11' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma9', location is LC045, type is output.
+ ma9     = DFFE( _EQ023 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ023 =  bufd11 & !b7 & !b8
+         #  bufd7 &  b7
+         #  bufd7 &  b8;
+
+-- Node name is 'ma10' = 'rma12' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma10', location is LC043, type is output.
+ ma10    = DFFE( bufd12 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+
+-- Node name is 'ma11' = 'rma13' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma11', location is LC041, type is output.
+ ma11    = DFFE( _EQ024 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ024 =  bufd13 & !b7 & !b8;
+
+-- Node name is 'ma12' = 'rma14' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma12', location is LC040, type is output.
+ ma12    = DFFE( _EQ025 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ025 =  bufd14 & !b7 & !b8
+         #  b7 &  ma12
+         #  b8 &  ma12;
+
+-- Node name is 'ma13' = 'rma15' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'ma13', location is LC038, type is output.
+ ma13    = DFFE( _EQ026 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ026 =  bufd15 & !b7 & !b8
+         #  b7 &  ma13
+         #  b8 &  ma13;
+
+-- Node name is 'mclk' 
+-- Equation name is 'mclk', location is LC037, type is output.
+ mclk    = LCELL( clki $  GND);
+
+-- Node name is 'mdout' from file "sdram7.tdf" line 261, column 9
+-- Equation name is 'mdout', location is LC083, type is buried.
+mdout    = DFFE( _EQ027 $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ027 =  _LC090 &  out;
+
+-- Node name is 'md0' = 'bufd0' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md0', location is LC059, type is bidir.
+md0      = TRI(bufd0,  mdout);
+bufd0    = DFFE( d0 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md1' = 'bufd1' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md1', location is LC057, type is bidir.
+md1      = TRI(bufd1,  mdout);
+bufd1    = DFFE( d1 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md2' = 'bufd2' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md2', location is LC056, type is bidir.
+md2      = TRI(bufd2,  mdout);
+bufd2    = DFFE( d2 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md3' = 'bufd3' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md3', location is LC053, type is bidir.
+md3      = TRI(bufd3,  mdout);
+bufd3    = DFFE( d3 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md4' = 'bufd4' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md4', location is LC051, type is bidir.
+md4      = TRI(bufd4,  mdout);
+bufd4    = DFFE( d4 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md5' = 'bufd5' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md5', location is LC049, type is bidir.
+md5      = TRI(bufd5,  mdout);
+bufd5    = DFFE( d5 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md6' = 'bufd6' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md6', location is LC065, type is bidir.
+md6      = TRI(bufd6,  mdout);
+bufd6    = DFFE( d6 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md7' = 'bufd7' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md7', location is LC067, type is bidir.
+md7      = TRI(bufd7,  mdout);
+bufd7    = DFFE( d7 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md8' = 'bufd8' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md8', location is LC069, type is bidir.
+md8      = TRI(bufd8,  mdout);
+bufd8    = DFFE( d8 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md9' = 'bufd9' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md9', location is LC070, type is bidir.
+md9      = TRI(bufd9,  mdout);
+bufd9    = DFFE( d9 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md10' = 'bufd10' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md10', location is LC072, type is bidir.
+md10     = TRI(bufd10,  mdout);
+bufd10   = DFFE( d10 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md11' = 'bufd11' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md11', location is LC073, type is bidir.
+md11     = TRI(bufd11,  mdout);
+bufd11   = DFFE( d11 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md12' = 'bufd12' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md12', location is LC075, type is bidir.
+md12     = TRI(bufd12,  mdout);
+bufd12   = DFFE( _EQ028 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+  _EQ028 =  a3
+         #  d12;
+
+-- Node name is 'md13' = 'bufd13' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md13', location is LC077, type is bidir.
+md13     = TRI(bufd13,  mdout);
+bufd13   = DFFE( d13 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md14' = 'bufd14' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md14', location is LC078, type is bidir.
+md14     = TRI(bufd14,  mdout);
+bufd14   = DFFE( d14 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'md15' = 'bufd15' from file "sdram7.tdf" line 83, column 5
+-- Equation name is 'md15', location is LC080, type is bidir.
+md15     = TRI(bufd15,  mdout);
+bufd15   = DFFE( d15 $  GND, GLOBAL( /wr),  /reset,  VCC,  test);
+
+-- Node name is 'out' from file "sdram7.tdf" line 261, column 49
+-- Equation name is 'out', location is LC047, type is buried.
+out      = DFFE( _EQ029 $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ029 = !b5 & !b7;
+
+-- Node name is 'ras' = ':205' from file "sdram7.tdf" line 253, column 8
+-- Equation name is 'ras', type is output 
+ ras     = DFFE( _EQ030 $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ030 = !b0 & !b1 & !b2 & !b3 & !b9;
+
+-- Node name is 'rasa' from file "sdram7.tdf" line 169, column 17
+-- Equation name is 'rasa', location is LC039, type is buried.
+rasa     = DFFE( _EQ031 $  VCC, GLOBAL(!clki),  /reset,  VCC,  VCC);
+  _EQ031 = !bufa0 &  bufa2
+         #  bufa1 &  bufa2
+         # !tmsg
+         # !b10;
+
+-- Node name is 'rdi0~1' from file "sdram7.tdf" line 86, column 4
+-- Equation name is 'rdi0~1', location is LC003, type is buried.
+-- synthesized logic cell 
+_LC003   = LCELL( _EQ032 $  GND);
+  _EQ032 = !a0 & !a1 &  a2 & !/rd &  test;
+
+-- Node name is 'rma0' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'rma0', location is LC023, type is buried.
+rma0     = DFFE( _EQ033 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ033 =  bufd0 & !b7 & !b8
+         #  b7 & !rma0
+         #  b8 & !rma0;
+
+-- Node name is 'rma1' from file "sdram7.tdf" line 108, column 4
+-- Equation name is 'rma1', location is LC031, type is buried.
+rma1     = DFFE( _EQ034 $  GND, GLOBAL(!clki),  /reset,  VCC,  rasa);
+  _EQ034 =  bufd1 & !b7 & !b8
+         # !rma0 &  rma1 &  _X002
+         #  rma0 & !rma1 &  _X002;
+  _X002  = EXP(!b7 & !b8);
+
+-- Node name is 'test' = 'ce' from file "sdram7.tdf" line 122, column 22
+-- Equation name is 'test', location is LC030, type is output.
+ test    = LCELL( _EQ035 $  GND);
+  _EQ035 =  a4 &  a5 &  a6 & !a7 &  a8 &  a9 &  a10 &  a11 &  a12 &  a13 & 
+              a14 &  a15 & !/cs;
+
+-- Node name is 'tmsg' from file "sdram7.tdf" line 85, column 1
+-- Equation name is 'tmsg', location is LC095, type is buried.
+tmsg     = DFFE( _LC054 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is 'we' = ':207' from file "sdram7.tdf" line 255, column 7
+-- Equation name is 'we', type is output 
+ we      = DFFE( _EQ036 $  VCC, GLOBAL(!clki),  VCC,  /reset,  VCC);
+  _EQ036 =  b2
+         #  b3
+         #  b6;
+
+-- Node name is '/rdr' = ':280' from file "sdram7.tdf" line 132, column 15
+-- Equation name is '/rdr', type is output 
+ /rdr    = LCELL( _EQ037 $  GND);
+  _EQ037 = !a0 & !a1 &  a2 &  test
+         #  /rd;
+
+-- Node name is ':172' from file "sdram7.tdf" line 153, column 11
+-- Equation name is '_LC054', type is buried 
+_LC054   = DFFE( test $  GND, GLOBAL( /wr), !tmsg,  VCC,  VCC);
+
+-- Node name is ':212' from file "sdram7.tdf" line 260, column 13
+-- Equation name is '_LC094', type is buried 
+_LC094   = DFFE( b4 $  GND, GLOBAL(!clki),  /reset,  VCC,  VCC);
+
+-- Node name is ':214' from file "sdram7.tdf" line 261, column 14
+-- Equation name is '_LC090', type is buried 
+_LC090   = DFFE( out $  GND, GLOBAL(!clki),  VCC,  /reset,  VCC);
+
+
+
+--     Shareable expanders that are duplicated in multiple LABs:
+--     (none)
+
+
+
+
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+** TIMING ASSIGNMENTS **
+
+                         User       Actual 
+Type  Location        Assignment    Value     Status   Critical Path
+
+tco   :204               15.0 ns     9.8 ns            clki to :204, through register mdout.Q
+tco   :204               15.0 ns     5.0 ns            /wr to :204, through register bufd15.Q
+tco   :203               15.0 ns     9.8 ns            clki to :203, through register mdout.Q
+tco   :203               15.0 ns     5.0 ns            /wr to :203, through register bufd14.Q
+tco   :202               15.0 ns     9.8 ns            clki to :202, through register mdout.Q
+tco   :202               15.0 ns     5.0 ns            /wr to :202, through register bufd13.Q
+tco   :201               15.0 ns     9.8 ns            clki to :201, through register mdout.Q
+tco   :201               15.0 ns     5.0 ns            /wr to :201, through register bufd12.Q
+tco   :200               15.0 ns     9.8 ns            clki to :200, through register mdout.Q
+tco   :200               15.0 ns     5.0 ns            /wr to :200, through register bufd11.Q
+tco   :199               15.0 ns     9.8 ns            clki to :199, through register mdout.Q
+tco   :199               15.0 ns     5.0 ns            /wr to :199, through register bufd10.Q
+tco   :198               15.0 ns     9.8 ns            clki to :198, through register mdout.Q
+tco   :198               15.0 ns     5.0 ns            /wr to :198, through register bufd9.Q
+tco   :197               15.0 ns     9.8 ns            clki to :197, through register mdout.Q
+tco   :197               15.0 ns     5.0 ns            /wr to :197, through register bufd8.Q
+tco   :196               15.0 ns     9.8 ns            clki to :196, through register mdout.Q
+tco   :196               15.0 ns     5.0 ns            /wr to :196, through register bufd7.Q
+tco   :195               15.0 ns     9.8 ns            clki to :195, through register mdout.Q
+tco   :195               15.0 ns     5.0 ns            /wr to :195, through register bufd6.Q
+tco   :194               15.0 ns     9.8 ns            clki to :194, through register mdout.Q
+tco   :194               15.0 ns     5.0 ns            /wr to :194, through register bufd5.Q
+tco   :193               15.0 ns     9.8 ns            clki to :193, through register mdout.Q
+tco   :193               15.0 ns     5.0 ns            /wr to :193, through register bufd4.Q
+tco   :192               15.0 ns     9.8 ns            clki to :192, through register mdout.Q
+tco   :192               15.0 ns     5.0 ns            /wr to :192, through register bufd3.Q
+tco   :191               15.0 ns     9.8 ns            clki to :191, through register mdout.Q
+tco   :191               15.0 ns     5.0 ns            /wr to :191, through register bufd2.Q
+tco   :190               15.0 ns     9.8 ns            clki to :190, through register mdout.Q
+tco   :190               15.0 ns     5.0 ns            /wr to :190, through register bufd1.Q
+tco   :189               15.0 ns     9.8 ns            clki to :189, through register mdout.Q
+tco   :189               15.0 ns     5.0 ns            /wr to :189, through register bufd0.Q
+
+
+Project Information                       d:\dsp56prjs\plis_sdram_7\sdram7.rpt
+
+** COMPILATION SETTINGS & TIMES **
+
+Processing Menu Commands
+------------------------
+
+Design Doctor                             = off
+
+Logic Synthesis:
+
+   Synthesis Type Used                    = Multi-Level
+
+   Default Synthesis Style                = NORMAL
+
+      Logic option settings in 'NORMAL' style for 'MAX3000A' family
+
+      DECOMPOSE_GATES                     = on
+      DUPLICATE_LOGIC_EXTRACTION          = on
+      MINIMIZATION                        = full
+      MULTI_LEVEL_FACTORING               = on
+      NOT_GATE_PUSH_BACK                  = on
+      PARALLEL_EXPANDERS                  = off
+      REDUCE_LOGIC                        = on
+      REFACTORIZATION                     = on
+      REGISTER_OPTIMIZATION               = on
+      RESYNTHESIZE_NETWORK                = on
+      SLOW_SLEW_RATE                      = off
+      SOFT_BUFFER_INSERTION               = on
+      SUBFACTOR_EXTRACTION                = on
+      TURBO_BIT                           = on
+      XOR_SYNTHESIS                       = on
+      IGNORE_SOFT_BUFFERS                 = off
+      USE_LPM_FOR_AHDL_OPERATORS          = off
+
+   Other logic synthesis settings:
+
+      Automatic Global Clock              = on
+      Automatic Global Clear              = on
+      Automatic Global Preset             = on
+      Automatic Global Output Enable      = on
+      Automatic Fast I/O                  = on
+      Automatic Register Packing          = on
+      Automatic Open-Drain Pins           = off
+      Automatic Implement in EAB          = on
+      One-Hot State Machine Encoding      = on
+      Optimize                            = 5
+
+Default Timing Specifications: 
+
+
+Cut All Bidir Feedback Timing Paths       = on
+Cut All Clear & Preset Timing Paths       = on
+
+Ignore Timing Assignments                 = off
+
+Functional SNF Extractor                  = off
+
+Linked SNF Extractor                      = off
+Timing SNF Extractor                      = on
+Optimize Timing SNF                       = on
+Generate AHDL TDO File                    = off
+Fitter Settings                           = NORMAL
+Smart Recompile                           = off
+Total Recompile                           = off
+
+Interfaces Menu Commands
+------------------------
+
+EDIF Netlist Writer                       = off
+Verilog Netlist Writer                    = off
+VHDL Netlist Writer                       = off
+
+Compilation Times
+-----------------
+
+   Compiler Netlist Extractor             00:00:00
+   Database Builder                       00:00:01
+   Logic Synthesizer                      00:00:02
+   Partitioner                            00:00:00
+   Fitter                                 00:00:01
+   Timing SNF Extractor                   00:00:01
+   Assembler                              00:00:04
+   Timing SNF Optimization                00:00:01
+   --------------------------             --------
+   Total Time                             00:00:10
+
+
+Memory Allocated
+-----------------
+
+Peak memory allocated during compilation  = 5,676K

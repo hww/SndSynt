@@ -1,0 +1,79 @@
+
+				SECTION vector
+				include "asmdef.h"
+				GLOBAL FconfigInterruptVector
+				ORG	P:
+FconfigInterruptVector:
+				jsr     FarchStart
+				jsr     FarchStart
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FInterrupt46
+				jsr     FInterrupt47
+				jsr     FInterrupt48
+				jsr     FInterrupt49
+				jsr     FInterrupt50
+				jsr     FInterrupt51
+				jsr     FInterrupt52
+				jsr     FInterrupt53
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FconfigUnhandledInterruptISR
+				jsr     FarchStart
+				jsr     FarchStart
+				movei   #-482,X0
+
+
+				ORG	X:
+
+				ENDSEC
+				END

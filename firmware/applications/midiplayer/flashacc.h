@@ -1,0 +1,2 @@
+void LoadFromFlash();
+void SaveToFlash();

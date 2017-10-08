@@ -1,0 +1,162 @@
+# Link map of FarchStart
+
+
+
+# .ApplicationInterruptVector
+  00000000 00000086 .text   FconfigInterruptVector	(vector.c)
+
+# .ApplicationCode
+  00000086 0000000F .text   Fmain	(testmain.c)
+  00000095 00000002 .text   FconfigUnhandledInterruptISR	(config.c)
+  00000097 0000005D .text   FconfigInitialize	(config.c)
+  000000F4 00000003 .text   FconfigFinalize	(config.c)
+  000000F7 00000001 .text   FUserPreMain	(appconfig.c)
+  000000F8 0000000E .text   FUserPostMain	(appconfig.c)
+  00000106 000002CF .text   FtestRfft16	(testrfft16static.c)
+  000003D5 00000254 .text   FtestRfft32	(testrfft16static.c)
+  00000629 000001A1 .text   FtestRifft32	(testrfft16static.c)
+  000007CA 0000002A .text   FplldrvInitialize	(bsp.lib plldrv.o       )
+  000007F4 0000000E .text   FarchGetSetSaturationMode	(sys.lib arch.o         )
+  00000802 00000041 .text   FarchInitializeRAM	(sys.lib arch.o         )
+  00000843 0000001C .text   FarchStart	(sys.lib arch.o         )
+  0000085F 0000000E .text   FL_deposit_h	(dspfunc.lib basic_op.o     )
+  0000086D 0000000C .text   Fdfr16RFFTInitFFT_SIZE_8	(dspfunc.lib dfr16.o        )
+  00000879 0000000C .text   Fdfr16RFFTInitFFT_SIZE_16	(dspfunc.lib dfr16.o        )
+  00000885 0000000C .text   Fdfr16RFFTInitFFT_SIZE_32	(dspfunc.lib dfr16.o        )
+  00000891 0000060D .text   Fdfr16RFFTC	(dspfunc.lib dfr16.o        )
+  00000E9E 000008EE .text   Fdfr16RIFFTC	(dspfunc.lib dfr16.o        )
+  0000178C 00000088 .text   Fdfr16CbitrevC	(dspfunc.lib dfr16.o        )
+  00001814 00000007 .text   FdspfuncInitialize	(dspfunc.lib dspfunc.o      )
+  0000181B 00000020 .text   FtestStart	(tools.lib test.o         )
+  0000183B 0000001A .text   FtestFailed	(tools.lib test.o         )
+  00001855 00000017 .text   FtestComment	(tools.lib test.o         )
+  0000186C 00000020 .text   FtestEnd	(tools.lib test.o         )
+  0000188C 00000013 .text   FtestPrintString	(tools.lib test.o         )
+  0000189F 0000000D .text   FstackcheckInitialize	(tools.lib stackcheck.o   )
+  000018AC 0000000E .text   FstackcheckSizeUsed	(tools.lib stackcheck.o   )
+  000018BA 00000007 .text   FstackcheckSizeAllocated	(tools.lib stackcheck.o   )
+  000018C1 0000004D .text   Ffwrite	(MSL C 56800.Lib console.o      )
+  0000190E 0000000A .text   F__console_write	(MSL C 56800.Lib console.o      )
+  00001918 0000000A .text   Ffflush	(MSL C 56800.Lib console.o      )
+  00001922 00000016 .text   F__put_char	(MSL C 56800.Lib console.o      )
+  00001938 00000006 .text   Fflush_buf	(MSL C 56800.Lib console.o      )
+  0000193E 00000006 .text   Fabs	(MSL C 56800.Lib arith.o        )
+  00001944 00000009 .text   Fstrlen	(MSL C 56800.Lib string.o       )
+  0000194D 0000001D .text   Fstrncpy	(MSL C 56800.Lib string.o       )
+  0000196A 0000000A rtlib.text F@DummyFn1	(sys.lib memset.o       )
+  0000196A 00000000 rtlib.text FmemMemset	(sys.lib memset.o       )
+  0000196A 0000000A rtlib.text rtlib.text	(sys.lib memset.o       )
+  00001974 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptox.o  )
+  00001974 00000000 rtlib.text FmemCopyPtoX	(sys.lib memcopyptox.o  )
+  00001974 0000000C rtlib.text rtlib.text	(sys.lib memcopyptox.o  )
+  00001980 0000000C rtlib.text F@DummyFn1	(sys.lib memcopyptop.o  )
+  00001980 00000000 rtlib.text FmemCopyPtoP	(sys.lib memcopyptop.o  )
+  00001980 0000000C rtlib.text rtlib.text	(sys.lib memcopyptop.o  )
+  0000198C 0000000B rtlib.text F@DummyFn1	(sys.lib memsetp.o      )
+  0000198C 00000000 rtlib.text FmemMemsetP	(sys.lib memsetp.o      )
+  0000198C 0000000B rtlib.text rtlib.text	(sys.lib memsetp.o      )
+  00001998 0000026A rtlib.text F@DummyFn1	(dspfunc.lib dfr16rifft.o   )
+  00001998 00000000 rtlib.text Fdfr16RIFFT	(dspfunc.lib dfr16rifft.o   )
+  00001998 0000026A rtlib.text rtlib.text	(dspfunc.lib dfr16rifft.o   )
+  00001C02 0000025C rtlib.text F@DummyFn1	(dspfunc.lib dfr16rfft.o    )
+  00001C02 00000000 rtlib.text Fdfr16RFFT	(dspfunc.lib dfr16rfft.o    )
+  00001C02 0000025C rtlib.text rtlib.text	(dspfunc.lib dfr16rfft.o    )
+  00001E5E 0000002A rtlib.text F@DummyFn1	(dspfunc.lib dfr16bitrev.o  )
+  00001E5E 00000000 rtlib.text Fdfr16Cbitrev	(dspfunc.lib dfr16bitrev.o  )
+  00001E5E 0000002A rtlib.text rtlib.text	(dspfunc.lib dfr16bitrev.o  )
+  00001E88 00000012 rtlib.text F@DummyFn1	(MSL C 56800.Lib artdivu16uz.o  )
+  00001E88 00000000 rtlib.text ARTDIVU16UZ	(MSL C 56800.Lib artdivu16uz.o  )
+  00001E88 00000012 rtlib.text rtlib.text	(MSL C 56800.Lib artdivu16uz.o  )
+
+# .InitializedDataForProgramRAM
+#>00001E9B          F_Pdata_start_addr_in_ROM (linker command file)
+#>00007E00          F_Pdata_start_addr_in_RAM (linker command file)
+#>00007E00          _P_DATA_ADDR (linker command file)
+#>00000000          F_Pdata_ROMtoRAM_length (linker command file)
+
+# .InitializedConstData
+  00001800 0000000C .data   Fdfr16RFFTTwiddleTable8	(const.c)
+  0000180C 00000008 .data   Fdfr16RFFTTwiddleTable8br	(const.c)
+  00001814 0000000A .data   Fdfr16RFFTTwiddleTable16	(const.c)
+  0000181E 00000010 .data   Fdfr16RFFTTwiddleTable16br	(const.c)
+  0000182E 00000012 .data   Fdfr16RFFTTwiddleTable32	(const.c)
+  00001840 00000010 .data   Fdfr16RFFTTwiddleTable32br	(const.c)
+  00001850 0000000A .data   FSTR_TESTING_RFFT16	(appconst.c)
+  0000185A 00000010 .data   FSTR_TESTING_RFFT	(appconst.c)
+  0000186A 0000000D .data   FSTR_FOR_N_8	(appconst.c)
+  00001877 0000000E .data   FSTR_FOR_N_16	(appconst.c)
+  00001885 0000000E .data   FSTR_FOR_N_32	(appconst.c)
+  00001893 0000001B .data   FSTR_REAL_FFT_FAILED_C	(appconst.c)
+  000018AE 0000001B .data   FSTR_REAL_FFT_PASSED_C	(appconst.c)
+  000018C9 0000001D .data   FSTR_REAL_FFT_FAILED_ASM	(appconst.c)
+  000018E6 0000001D .data   FSTR_REAL_FFT_PASSED_ASM	(appconst.c)
+  00001903 0000001C .data   FSTR_TESTING_RIFFT	(appconst.c)
+  0000191F 0000001C .data   FSTR_RIFFT_PASSED_C	(appconst.c)
+  0000193B 0000001E .data   FSTR_RIFFT_FAILED_ASM	(appconst.c)
+  00001959 0000001E .data   FSTR_RIFFT_PASSED_ASM	(appconst.c)
+  00001977 0000001C .data   FSTR_RIFFT_FAILED_C	(appconst.c)
+  00001993 00000015 .data   FSTR_SCALE_BY_N	(appconst.c)
+  000019A8 0000001D .data   FSTR_SCALE_DATA_SIZE	(appconst.c)
+  000019C5 00000020 .data   FpX_input	(appconst.c)
+  000019E5 00000008 .data   FActual_op_8	(appconst.c)
+  000019ED 00000010 .data   FActual_op_16	(appconst.c)
+  000019FD 00000020 .data   FpX32_input	(appconst.c)
+  00001A1D 00000020 .data   FActual_op_option_1	(appconst.c)
+  00001A3D 00000020 .data   FActual_op_option_2	(appconst.c)
+  00001A5D 00000020 .data   FActual_op_rifft_option_1	(appconst.c)
+  00001A7D 00000020 .data   FActual_op_rifft_option_2	(appconst.c)
+
+# .ApplicationInitializedData
+#>00001E9C          F_Xdata_start_addr_in_ROM (linker command file)
+#>00000EA0          F_StackAddr (linker command file)
+#>00000FFF          F_StackEndAddr (linker command file)
+#>00000040          F_Xdata_start_addr_in_RAM (linker command file)
+#>00000040          _X_DATA_ADDR (linker command file)
+  00000040 0000000C .data   F@5	(tools.lib test.o         )
+  0000004C 00000013 .data   F@10	(tools.lib test.o         )
+  0000005F 00000002 .data   F@11	(tools.lib test.o         )
+  00000061 00000004 .data   F@16	(tools.lib test.o         )
+  00000065 0000000B .data   F@23	(tools.lib test.o         )
+  00000070 0000000A .data   F@24	(tools.lib test.o         )
+  0000007A 0000005D .data   F__files	(MSL C 56800.Lib ansi_files.o   )
+#>00000097          F_Xdata_ROMtoRAM_length (linker command file)
+
+# .DataForProgramRAM
+#>00007E01          F_Pbss_start_addr (linker command file)
+#>00007E01          _P_BSS_ADDR (linker command file)
+#>00000000          F_Pbss_length (linker command file)
+
+# .DataForDataRAM
+#>000000D7          F_Xbss_start_addr (linker command file)
+#>000000D7          _X_BSS_ADDR (linker command file)
+  000000D7 00000020 .bss    FFFTInplaceBuf	(testrfft16static.c)
+  000000F7 00000020 .bss    FFFTBuf	(testrfft16static.c)
+  00000117 0000003E .bss    FtestRec	(testrfft16static.c)
+  00000155 00000001 .bss    FSTDOUTBufferCount	(MSL C 56800.Lib console.o      )
+  00000156 00000001 .bss    F__stdout_ready	(MSL C 56800.Lib console.o      )
+  00000157 00000050 .bss    FSTDOUTBuffer	(MSL C 56800.Lib console.o      )
+#>000000D0          F_Xbss_length (linker command file)
+#>00001000          FArchIO (linker command file)
+#>0000FF80          FArchCore (linker command file)
+
+
+# Memory map:
+  00000000 0000010C .pInterruptVector
+  00000086 00003C28 .pFlash
+  00007E00 00000002 .pIntRAM
+  00007E00 00000000 .pIntRAM_Mirror
+  00008000 00001000 .pBootFlash
+  00008800 0000F000 .pReserved
+  00000000 00000060 .xAvailable
+  00000030 00000020 .xCWRegisters
+  00000040 000002CE .xIntRAM
+  00001E9C 0000012E .xIntRAM_Mirror
+  00000EA0 000002C0 .xStack
+  00001000 00000800 .xPeripherals
+  00001400 00000800 .xReserved
+  00001800 0000053A .xFlash
+  00002000 0001BF00 .xExtRAM
+  0000FF80 00000100 .xCoreRegisters
+
+# Link start time: Sat Feb 24 13:11:34 2001
+# Link end time: Sat Feb 24 13:11:35 2001

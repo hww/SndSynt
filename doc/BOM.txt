@@ -1,0 +1,280 @@
+P-CAD Bill of Materials                                    FINALV4.sch
+
+======================================================================
+
+Count  ComponentName        RefDes               PatternName          Value           Description         
+------ -------------------- -------------------- -------------------- --------------- --------------------
+
+     2 1N4007               VD2                  DO-41                DO-41           Lead-Mounted Silicon
+                            VD3                                                                           
+     3 1N4148               VD5                  DO-35                1N4148 (DO35)   Silicon Zener Diode,
+                            VD6                                                                           
+                            VD7                                                                           
+     1 6N139N               D15                  DIP8                 DIP-8           Optocoupler/Optoisol
+     1 74AC244              D5                   SO20                 74AC244 SO-20   Hot Insert Compatibl
+     2 74HC08               D2                   SO14                 MC74HC08D SOIC- Quadruple 2-Input Po
+                            D12                                                                           
+     2 74HC139              D4                   SO16                 74HC139 SO-16   HCMOS series AC HC  
+                            D16                                                                           
+     1 74HC244              D17                  SO20                 74HC244 SO-20   Hot Insert Compatibl
+     1 AT45DB321TSOP32      D1                   TSSOP32              TSOP-32                             
+     5 BC807                VT2                  SOT-23               BC807-16LT1 (SO General Purpose PNP 
+                            VT7                                                                           
+                            VT8                                                                           
+                            VT9                                                                           
+                            VT10                                                                          
+     5 BC817                VT1                  SOT-23               BC817-25LT1 (SO Amplifier NPN Transi
+                            VT3                                                                           
+                            VT4                                                                           
+                            VT5                                                                           
+                            VT6                                                                           
+     1 BUTTON               SB1                  SW-42-8              SW-42-8                             
+    11 BUTTON               SB4                  SWT-15-7             SWT-15-7                            
+                            SB5                                                                           
+                            SB7                                                                           
+                            SB8                                                                           
+                            SB9                                                                           
+                            SB11                                                                          
+                            SB12                                                                          
+                            SB13                                                                          
+                            SB15                                                                          
+                            SB16                                                                          
+                            SB17                                                                          
+     5 BUTTON               SB2                  SWT-81-7             SWT-81-7                            
+                            SB3                                                                           
+                            SB6                                                                           
+                            SB10                                                                          
+                            SB14                                                                          
+    54 CAP0805              C1                   CC0805               0.1uF           Capacitor           
+                            C3                                                                            
+                            C6                                                                            
+                            C7                                                                            
+                            C12                                                                           
+                            C13                                                                           
+                            C14                                                                           
+                            C15                                                                           
+                            C17                                                                           
+                            C18                                                                           
+                            C19                                                                           
+                            C20                                                                           
+                            C21                                                                           
+                            C22                                                                           
+                            C23                                                                           
+                            C24                                                                           
+                            C25                                                                           
+                            C26                                                                           
+                            C27                                                                           
+                            C28                                                                           
+                            C29                                                                           
+                            C30                                                                           
+                            C31                                                                           
+                            C32                                                                           
+                            C33                                                                           
+                            C34                                                                           
+                            C35                                                                           
+                            C36                                                                           
+                            C37                                                                           
+                            C38                                                                           
+                            C39                                                                           
+                            C40                                                                           
+                            C41                                                                           
+                            C42                                                                           
+                            C43                                                                           
+                            C44                                                                           
+                            C45                                                                           
+                            C46                                                                           
+                            C47                                                                           
+                            C48                                                                           
+                            C49                                                                           
+                            C50                                                                           
+                            C58                                                                           
+                            C59                                                                           
+                            C66                                                                           
+                            C67                                                                           
+                            C68                                                                           
+                            C70                                                                           
+                            C74                                                                           
+                            C75                                                                           
+                            C76                                                                           
+                            C77                                                                           
+                            C78                                                                           
+                            C79                                                                           
+     2 CAP0805              C51                  CC0805               15pF            Capacitor           
+                            C52                                                                           
+     2 CAP0805              C64                  CC0805               100pF           Capacitor           
+                            C65                                                                           
+     2 CAP0805              C60                  CC0805               680pF           Capacitor           
+                            C61                                                                           
+     1 CAP0805              C63                  CC0805               1500            Capacitor           
+     1 CAP0805              C62                  CC0805               15000           Capacitor           
+     2 CRYSTAL              Q1                   XTAL                 8.192 MHz       Crystal             
+                            Q2                                                                            
+     2 DS485                D13                  SO8                  SO-8                                
+                            D14                                                                           
+     1 DSP56826             D6                   LQFP-100             LQFP-100                            
+     1 EPM3128ATC100-7      D8                   TQFP100              TQFP100                             
+     3 FERITE               L3                   EC24                 47uH EC24-470K  Ferrite Bead        
+                            L4                                                                            
+                            L6                                                                            
+     3 FERITE               L1                   DO-15                FERRITE BEAD    Ferrite Bead        
+                            L2                                                                            
+                            L5                                                                            
+     1 GVT73128A16-12       D7                   TSOP-44              TSOP-44                             
+     1 IDC10                X13                  PLD-10               PLD-10                              
+     1 IDC14M               X14                  PLD-14               PLD-14                              
+     2 K4S280832A           D9                   TSSOP54              TSSOP-54                            
+                            D10                                                                           
+    12 LED                  VD4                  LED100               L-1394-YD       Light Emitting Diode
+                            VD8                                                                           
+                            VD9                                                                           
+                            VD10                                                                          
+                            VD11                                                                          
+                            VD12                                                                          
+                            VD13                                                                          
+                            VD14                                                                          
+                            VD15                                                                          
+                            VD16                                                                          
+                            VD17                                                                          
+                            VD18                                                                          
+     2 LM1117ADJ            DA2                  DPAK                 LM1117DT-ADJ D-                     
+                            DA3                                                                           
+     1 LM2931CT(D2PACK)     DA1                  D2PACK               D2PACK                              
+     1 MC34164              D3                   SO8                  MC33164D-3 SOP8                     
+     1 MIDI5                X9                   ŒÕ√÷5                DIN5F 45                            
+     1 PBD20                X12                  PBD20                PBD20                               
+     2 PCAP                 C69                  4X5.4                22uFx6.3V  4x5. Capacitor           
+                            C73                                                                           
+     5 PCAP                 C53                  6.3X5.4              100uFx6.3V  6.3 Capacitor           
+                            C54                                                                           
+                            C55                                                                           
+                            C71                                                                           
+                            C72                                                                           
+     2 PCAP                 C2                   10X10.5              470uFx16V  10x1 Capacitor           
+                            C4                                                                            
+     1 PCAP                 C16                  A                    T 4.7uFx10V (A) Capacitor           
+     5 PCAP                 C8                   B                    T 10uFx10V (B)  Capacitor           
+                            C9                                                                            
+                            C56                                                                           
+                            C57                                                                           
+                            C80                                                                           
+     3 PCAP                 C5                   B                    T 22uFx10V (B)  Capacitor           
+                            C10                                                                           
+                            C11                                                                           
+     1 PCM1717              D11                  SSOP-20              SSOP20          DIGITAL TO ANALOG DE
+     1 PHONEJACKSTEREO      X8                   3.5 STEREO MINI JACK 3.5 STEREO MINI Phone Jack          
+     1 PLD4                 J6                   PLD4                 PLD4                                
+     1 PLD20                J8                   PLD20                PLD20                               
+     1 PLD20                X17                  PLDL-20              PLDL-20                             
+     1 PLS2                 X1                   JMP2                 PLS2                                
+     3 PLS2                 J2                   PLS2                 PLS2                                
+                            J3                                                                            
+                            J7                                                                            
+     1 PLS2                 J1                   PLS-2                                                    
+     2 PLS3                 J4                   PLS3                 PLS3                                
+                            J5                                                                            
+     2 PLS4                 X5                   PLS4                 PLS4                                
+                            X7                                                                            
+     2 PLS9                 X15                  PLS-9                PLS-9                               
+                            X16                                                                           
+     1 POWERIN              X3                   DJK-02B (5.5-2.5)    ADAPTOR DJK-02B                     
+     2 RCA                  X4                   RCAX2                RCA                                 
+                            X6                                                                            
+    15 RES0805              R13                  RC0805               0               Resistor            
+                            R31                                                                           
+                            R32                                                                           
+                            R33                                                                           
+                            R34                                                                           
+                            R35                                                                           
+                            R36                                                                           
+                            R37                                                                           
+                            R39                                                                           
+                            R40                                                                           
+                            R41                                                                           
+                            R42                                                                           
+                            R43                                                                           
+                            R44                                                                           
+                            R71                                                                           
+     9 RES0805              R8                   RC0805               1K              Resistor            
+                            R9                                                                            
+                            R10                                                                           
+                            R11                                                                           
+                            R46                                                                           
+                            R47                                                                           
+                            R48                                                                           
+                            R59                                                                           
+                            R65                                                                           
+     5 RES0805              R74                  RC0805               5.1K            Resistor            
+                            R85                                                                           
+                            R86                                                                           
+                            R87                                                                           
+                            R88                                                                           
+    41 RES0805              R7                   RC0805               10K             Resistor            
+                            R12                                                                           
+                            R14                                                                           
+                            R15                                                                           
+                            R16                                                                           
+                            R17                                                                           
+                            R18                                                                           
+                            R19                                                                           
+                            R20                                                                           
+                            R21                                                                           
+                            R22                                                                           
+                            R23                                                                           
+                            R24                                                                           
+                            R25                                                                           
+                            R26                                                                           
+                            R27                                                                           
+                            R28                                                                           
+                            R29                                                                           
+                            R30                                                                           
+                            R38                                                                           
+                            R50                                                                           
+                            R51                                                                           
+                            R52                                                                           
+                            R53                                                                           
+                            R54                                                                           
+                            R55                                                                           
+                            R56                                                                           
+                            R57                                                                           
+                            R58                                                                           
+                            R60                                                                           
+                            R61                                                                           
+                            R62                                                                           
+                            R63                                                                           
+                            R64                                                                           
+                            R66                                                                           
+                            R67                                                                           
+                            R68                                                                           
+                            R69                                                                           
+                            R70                                                                           
+                            R79                                                                           
+                            R80                                                                           
+     1 RES0805              R45                  RC0805               10M             Resistor            
+     1 RES0805              R2                   RC0805               12K             Resistor            
+     7 RES0805              R1                   RC0805               33K             Resistor            
+                            R72                                                                           
+                            R73                                                                           
+                            R75                                                                           
+                            R76                                                                           
+                            R77                                                                           
+                            R78                                                                           
+     5 RES0805              R49                  RC0805               100             Resistor            
+                            R81                                                                           
+                            R82                                                                           
+                            R83                                                                           
+                            R84                                                                           
+     3 RES0805              R3                   RC0805               240             Resistor            
+                            R5                                                                            
+                            R6                                                                            
+     1 RES0805              R4                   RC0805               510             Resistor            
+     2 RJ116P6C             X10                  T46P6C                                                   
+                            X11                                                                           
+     1 RL201 DO-15          VD1                  DO-15                RL201 (DO15)    Lead-Mounted Silicon
+     1 TDA7050T             DA5                  SO8                  SO-8            Head Phones Amplifer
+     5 TP                   TP1                                                                           
+                            TP2                                                                           
+                            TP3                                                                           
+                            TP4                                                                           
+                            TP5                                                                           
+     1 TS922 SO-8           DA4                  SO8                  TS922 SO-8      Low Power Dual OPERA
+     1 WF-06M               X2                                        ASTEC PWR       ASTEC POWER SUPPLY  
