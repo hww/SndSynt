@@ -1,18 +1,18 @@
 #include "port.h"
 #include "audiolib.h"
 
-void   	MainCase(ALSeqPlayer * seqp, Int16 key);	// Цикл обработки клавиатуры
-void   	HelpCase(ALSeqPlayer * seqp, Int16 key);	// Цикл обработки клавиатуры
+void   	MainCase(ALSeqPlayer * seqp, Int16 key);	
+void   	HelpCase(ALSeqPlayer * seqp, Int16 key);	
 void   	speakerUpdate(ALSeqPlayer * seqp);
 void 	speakWords(const UInt16 * ptr);
 void 	speakCreate();
 void 	speakDigit(  UInt16  val );
 
-extern bool   teacherMode;				// Режим учителя вкл-выкл
+extern bool   teacherMode;	// Teacher mode on/off
 void ControlCreate(ALSeqPlayer * seqp);
 void EnterCase( ALSeqPlayer * seqp, UInt16 key );
 
-#define WORDS_INS 125		// Инструмент с фразами
+#define WORDS_INS 125	// Instrument with voice over phrases
 #define MIN_TEMPO_US   (1000000L/(150*4))
 #define MAX_TEMPO_US   (1000000L/(20*4))
 #define DELTA_TEMPO_US (1000000L/(20*4))
@@ -31,7 +31,7 @@ typedef enum
 	KBD_MODE_GAME,
 } eKbdMode;
 
-// Фразы в банке звуков
+// Phrases in bank
 
 typedef enum
 {	WORD_EOF			= 0,
@@ -69,8 +69,8 @@ typedef enum
 } eWords;
 
 typedef struct
-{	UInt16	mode;			// Из какого режима клавиатуры
-	UInt16  key;			// Какая клавиша
-	UInt16	word[4];		// Подсказка до символа 0
+{	UInt16	mode;			// Keyboard mode
+	UInt16  key;			// Key pressed
+	UInt16	word[4];		// Help phrase (0 terminated)
 } tHelpList;
 

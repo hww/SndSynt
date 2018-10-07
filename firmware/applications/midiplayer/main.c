@@ -13,8 +13,8 @@
 //#define PC_MODE
 //#define SAVE_TO_FLASH
 
-ALGlobals global;		// ЭТО СИНТЕЗАТОР 
-ALSeqDir midiBank;		// ЭТО СЕКВЕНЦИИ 
+ALGlobals global;		// Synthesizer
+ALSeqDir midiBank;		// Sequences
 ALSeqDir bgBank;
 ALSeqDir demoBank;
 ALSeqDir gameLevel[5];
@@ -59,12 +59,12 @@ void main (void)
 UWord32			size, drama = DRAM_FREE_ADDR;
 UWord32			ctl_src;
 size_t			ctl_size;
-ALSeqPlayer 	seqp;				// ЭТО ПЛЕЕР СЕКВЕНЦИЙ
-ALSeqpConfig 	seqcnf;				// ЭТО ЕГО КОНФИГУРАЦИЯ
-ALBankFile	*	bankfile;			// ЭТО .CFG ФАЙЛ
-ALSynConfig 	syncfg;				// ЭТО КОНФИГУРАЦИЯ СИНТЕЗАТОРА
+ALSeqPlayer 	seqp;				// Sequence player
+ALSeqpConfig 	seqcnf;				// Seq. player configure
+ALBankFile	*	bankfile;			// Configuration file
+ALSynConfig 	syncfg;				// Synthesizer configuration
 int				n;
-Int16			key;				// НОМЕР КНОПКИ НА ПУЛЬТЕ
+Int16			key;				// Number of button
 
 #define SECTION_COUNT 4
 #define SECTION_SIZE  2
@@ -72,23 +72,23 @@ Int16			key;				// НОМЕР КНОПКИ НА ПУЛЬТЕ
 UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
 
      4,   250 ms,
-  // output    coef  
+	 // output    coef  
      240 ms,   0x1000, 
      200 ms,   0x500, 
      139 ms,   0x100,
       78 ms,   0x100
       };
 
-	// **************** Инициализировали терминал *******************	
+	// **************** Terminal *******************	
 	terminalOpen();
 	terminalSetAnimate(&stdAnimePP);
 	
-	// *************** Инициализировали синтезатор ******************	
+	// ************** Synthesizer ******************	
 	syncfg.maxPVoices = get_cfg();
 	syncfg.params = &params;      
 	alInit(&global, &syncfg);
 
-	// *************** Инициализировали секвенсор *******************	
+	// *************** Sequencer *******************	
 	createAllOsc();
 
 	seqcnf.maxVoices      = MAX_VOICES;
@@ -100,7 +100,7 @@ UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
     
     alSeqpNew(&seqp, &seqcnf);
 
-	// *************** Загрузили банк звуков ************************
+	// *********** Load sound bank *****************
 #ifdef PC_MODE
 	size = snd_load_tbl( "\\\\PC\\D\\sbk\\tone.tbl", drama );
 	sdram_write32( DRAM_TBL_ADDR, drama );	
@@ -119,10 +119,10 @@ UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
 #endif // PC_MODE
 	alBnkfNew( bankfile , 0 );
 
-	// *************** Установили банк для плеера *******************
+	// ************ Set player bank ****************
     alSeqpSetBank(&seqp, bankfile->bankArray[0]);
 
-	// *************** Загрузили банк миди фалйов *******************
+	// ************ Load midi bank *****************
 #ifdef PC_MODE
 	size   = alSeqFileLoad( "\\\\PC\\D\\sbk\\midi.sbk", drama );
 	sdram_write32( DRAM_MIDI_ADDR, drama );	
@@ -151,7 +151,7 @@ UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
 	ControlCreate(&seqp);
 	
 	for(n=0 ; n<16 ; n++)
-	{													// Связали
+	{													
 		alSeqpSetChlProgram(&seqp, n, 0);
 		alSeqpSetChlVol(&seqp, n, 0x7f);
 		alSeqpSetChlPan(&seqp, n, 0x40);

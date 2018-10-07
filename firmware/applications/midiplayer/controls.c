@@ -111,11 +111,11 @@ void SetVoices(ALSeqPlayer * seqp)
 void selectFile( ALSeqPlayer * seqp, ALSeqDir * bank, UInt16 fnum);
 void selectFile( ALSeqPlayer * seqp, ALSeqDir * bank, UInt16 fnum)
 {	alSeqFileNew(&bank->seqFile, bank->drama, fnum );
-	// *************** Установка фала МИДИ для секвенсора ***********
+	// *************** Setup midi file for sequencer ***********
 	alSeqNew(&seq, bank->seqFile.seqArray[0].offset, bank->seqFile.seqArray[0].len);
 	alSeqpSetSeq(seqp, &seq);
-    alSeqGetLoc(&seq, &begMarker);		// Маркер начала файла
-    alSeqGetLoc(&seq, &twoMarker);		// Маркер начала файла
+    alSeqGetLoc(&seq, &begMarker);		// Marker of file start
+    alSeqGetLoc(&seq, &twoMarker);		
 	isMarkers		= false;
 	seqp->xTempo = 0;
 	seqp->relTone = 0;
@@ -125,15 +125,15 @@ void PlayPauseFile( ALSeqPlayer * seqp);
 void PlayPauseFile( ALSeqPlayer * seqp)
 {
 	if(seqp->state == AL_PLAYING)
-	{	alSeqpStop(seqp);				// "Пауза"
+	{	alSeqpStop(seqp);				// Pause
 		muteAllChls(seqp);	
 		memcpy(&oneMarker,&twoMarker,sizeof(ALSeqMarker));
-		alSeqGetLoc(&seq, &twoMarker);	//  Маркер последней паузы
+		alSeqGetLoc(&seq, &twoMarker);	// Marker of last pause
 		isMarkers		= true;
 		terminalSetAnimate(NULL);
 	}
 	else
-	{	alSeqpPlay(seqp);				// "Воспроизведение"
+	{	alSeqpPlay(seqp);				// Play
 		if(demoMode)terminalSetAnimate(&stdAnimeR);
 	}
 }
@@ -151,8 +151,8 @@ void StopFile( ALSeqPlayer * seqp)
 	if(seqp->state == AL_PLAYING)
 	{	alSeqpStop(seqp);
 		//muteAllChls(seqp);	
-	    alSeqSetLoc(&seq, &begMarker);	// В начало файла
-    	alSeqGetLoc(&seq, &twoMarker);		// Маркер начала файла
+	    alSeqSetLoc(&seq, &begMarker);	// To file start
+    	alSeqGetLoc(&seq, &twoMarker);	// Marker of file start
 		isMarkers		= false;
 		terminalSetAnimate(NULL);
 	}
@@ -168,8 +168,8 @@ void RepeatOne( ALSeqPlayer * seqp )
 	else 
 	{	if(isMarkers)
 		{	alSeqpLoop(seqp, &oneMarker, &twoMarker, 0);
-			alSeqSetLoc(&seq, &oneMarker);	// В начало блока
-			alSeqpPlay(seqp);				// "Воспроизведение"
+			alSeqSetLoc(&seq, &oneMarker);	// To start of block and play
+			alSeqpPlay(seqp);				
 		}
 	}
 }
@@ -179,14 +179,14 @@ void RepeatTwo( ALSeqPlayer * seqp )
 {
 	if((seqp->state != AL_PLAYING)  && isMarkers)
 	{	alSeqpLoop(seqp, &begMarker, &twoMarker, 0);
-		alSeqSetLoc(&seq, &begMarker);	// В начало блока
-		alSeqpPlay(seqp);				// "Воспроизведение"
+		alSeqSetLoc(&seq, &begMarker);	// To start of block and play
+		alSeqpPlay(seqp);				
 	}
 }
 
 /******************************************************************************
 *
-*	Нажатие на клавишу.
+*	On key pressed
 *
 *******************************************************************************/
 
@@ -255,7 +255,7 @@ void HelpCase( ALSeqPlayer * seqp, Int16 key )
 
 /******************************************************************************
 *
-*	Нажатие на клавишу внутри режима смены тональности и темпа
+*	On pressed key in change tone mode
 *
 *******************************************************************************/
 
@@ -292,7 +292,7 @@ void AltCaseTone( ALSeqPlayer * seqp, Int16 key )
 
 /******************************************************************************
 *
-*	Нажатие на клавишу внутри режима смены файла
+*	On pressed key in change fle mode
 *
 *******************************************************************************/
 
@@ -335,7 +335,7 @@ void AltCaseFile( ALSeqPlayer * seqp, Int16 key )
 
 /******************************************************************************
 *
-*	Нажатие на клавишу внутри режима смены инструмента
+*	On pressed key in change instrument mode
 *
 *******************************************************************************/
 
@@ -372,7 +372,7 @@ void AltCaseIns( ALSeqPlayer * seqp, Int16 key )
 
 /******************************************************************************
 *
-*	Нажатие на клавишу внутри режима игры
+*	On pressed key in change game mode
 *
 *******************************************************************************/
 
@@ -384,7 +384,7 @@ void AltCaseGame( ALSeqPlayer * seqp, Int16 key )
 
 /******************************************************************************
 *
-*	Нажатие на клавишу внутри режима
+*	On pressed key dispatched
 *
 *******************************************************************************/
 
@@ -407,7 +407,7 @@ void EnterCase( ALSeqPlayer * seqp, UInt16 key )
 
 /******************************************************************************
 *
-*	Инициализация контрол структуры
+*	Initializing of control structure 
 *
 *******************************************************************************/
 

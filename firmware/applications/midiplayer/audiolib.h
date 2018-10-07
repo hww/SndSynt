@@ -21,7 +21,7 @@ extern "C" {
 #define EI	archEnableInt() 
 	
 /*****************************************************************************
-* ТИПЫ ДАННЫХ
+* Data types
 ******************************************************************************/
 
 typedef char s8;
@@ -34,34 +34,34 @@ typedef Int32  f32;
 typedef UInt32 Ptr32;
 
 /*****************************************************************************
-* КЛЮЧЕВЫЕ МАССИВЫ ПАМЯТИ
+* Settings and definitions
 ******************************************************************************/
-#define PCHANELS 16							// количество полифонических каналов
-#define MAX_VOICES 32						// виртуальных голосов
-#define MAX_EVENTS 96						// Максимум сообщений
-#define MAX_CHANNELS 16						// количество МИДИ каналов
-#define MIX_BUF_SIZE 640					// буфер миксера семплов 10 мс
-#define VOL_BUF_SIZE MIX_BUF_SIZE/32		// буфер fadeout семплов 4 мкс
-#define CASH_L2_SIZE MIX_BUF_SIZE			// буфер рендеринга семплов 10 мс
-#define CASH_L1_SIZE (CASH_L2_SIZE << 1)	// буфер кеширования семплов
-#define MIXFREQ 32000						// частота дискретизации
-#define FRAME_TIME_US  20000				// время в uS на один фрейм
-#define FRAME_SIZE (MIXFREQ/1000*(FRAME_TIME_US/1000)) // размер одного фрейма в семплах
-#define FRAME_BUF_SIZE (FRAME_SIZE << 1)	// размер всех фреймов в семплах
-#define	FX_ADDR  0xC000						// адресс начала буфера FX
-#define	FX_MODULO (0xFFFF-FX_ADDR)			// для него MODULO
-#define	FX_SIZE  (FX_MODULO + 1)			// размер буфера FX
-#define FX_SCALE (0x7FFF/0x7F)				// масштаб громкости FX
-#define PAN_SCALE ((0x7FFF)/0x7F)			// масштаб громкости
-#define MAX_PRIORITY    127					// максимальный приоритет
-#define INT2FRAC(x) (x * (0x7FFF/0x7F))			// Масштабирование 0..127 в 0..32767
-#define ms *(((Int32)MIXFREQ/500) & ~0x1)	// преобразование ms в stereo16
+#define PCHANELS 16							// Polyphony
+#define MAX_VOICES 32						// Virtual voices
+#define MAX_EVENTS 96						// Max events
+#define MAX_CHANNELS 16						// Max MIDI channels
+#define MIX_BUF_SIZE 640					// buffer of samples mixer 10 ms
+#define VOL_BUF_SIZE MIX_BUF_SIZE/32		// fadeout buffer 4 mks
+#define CASH_L2_SIZE MIX_BUF_SIZE			// sample's renderer buffer 10 ms
+#define CASH_L1_SIZE (CASH_L2_SIZE << 1)	// sample's cache buffer
+#define MIXFREQ 32000						// Sample frequency
+#define FRAME_TIME_US  20000				// Time uS for single frame
+#define FRAME_SIZE (MIXFREQ/1000*(FRAME_TIME_US/1000)) // Size of file in samples
+#define FRAME_BUF_SIZE (FRAME_SIZE << 1)	// Size of all frames in samples
+#define	FX_ADDR  0xC000						// Buffer start FX
+#define	FX_MODULO (0xFFFF-FX_ADDR)			// For MODULO
+#define	FX_SIZE  (FX_MODULO + 1)			// Buffer size for FX
+#define FX_SCALE (0x7FFF/0x7F)				// Volume scale FX
+#define PAN_SCALE ((0x7FFF)/0x7F)			// Volume scale
+#define MAX_PRIORITY    127					// Max priority
+#define INT2FRAC(x) (x * (0x7FFF/0x7F))		// Scale 0..127 to 0..32767
+#define ms *(((Int32)MIXFREQ/500) & ~0x1)	// Convert ms to stereo16
 #define FX_OUT_MAX_POINTERS 4
-#define ENVELOPE_TIME_US  20000				// время в uS на единицу огибающей
-#define VOLUME_PRIORITY						// громкость главнее приоритета
+#define ENVELOPE_TIME_US  20000				// time uS on the single envelope unit
+#define VOLUME_PRIORITY						// priority of volume 
 #undef  DMAS_ON
-#define NBUFFERS       		16				// число буферов DMA	
-#define MAX_BUFFER_LENGTH 	1024			// размер буфера DMA
+#define NBUFFERS       		16				// Number of DMAs	
+#define MAX_BUFFER_LENGTH 	1024			// DMA buffer size
 
 #include "alLinker.h"
 
@@ -274,50 +274,49 @@ UWord32 snd_load_tbl( char * name, UInt32 addr );
 
 /*****************************************************************************
 *
-* СТРУКТУРЫ СИНТЕЗАТОРА
+* Synthesizer
 *
 ******************************************************************************/
 
 
 /*****************************************************************************
-* СТРУКТУРА ПОЛИФОНИЧЕСКОГО КАНАЛА
+* Single polyphony-channel
 ******************************************************************************/
 
 typedef struct PVoice_s
 {   
-// Переменные полифонического голоса
-    ALLink  node;		 		// связка
-	void   *vvoice;				// указатель на виртуальный голос
-    UInt32	pos;	            // текущая позиция в семпле
-	UInt16 	fpos;				// дробная часть позиции
-    UInt32 	end;  	            // конец петли
-    UInt32 	endsub;             // отнять при достижении конца
-    UInt32	count;				// Количество петель
-    UInt32  pitch;				// фиксированная точка инкремент
-    Int32	curVolume;			// Текущая громкость
-    Int32	tgtVolume;			// Конечная громкость
-	Int32	addVolume;    		// Изменение громкости
-	Int16	phaseVolume;		// Позиция внутри 32х семплов
-    Int16 	curPan;             // текущая панорама 
-    Int16 	tgtPan;             // текущая панорама 
-    Int16 	addPan;             // текущая панорама 
-    Int16	gain;				// масштаб громкости
-    Int16	lvol;				// левая громкость
-    Int16	rvol;				// правая громкость
+    ALLink  node;		 		// link
+	void   *vvoice;				// virtual voice pointer
+    UInt32	pos;	            // current position in the sample
+	UInt16 	fpos;				// fraction par of position in the sample
+    UInt32 	end;  	            // end of loop
+    UInt32 	endsub;             // subtract at the end
+    UInt32	count;				// Loop's count
+    UInt32  pitch;				// fixed point increment
+    Int32	curVolume;			// current volume
+    Int32	tgtVolume;			// target volume
+	Int32	addVolume;    		// volume increment
+	Int16	phaseVolume;		// position in the 32х samples buffer
+    Int16 	curPan;             // current pan 
+    Int16 	tgtPan;             // target pan 
+    Int16 	addPan;             // pan increment 
+    Int16	gain;				// volume scale
+    Int16	lvol;				// left volume
+    Int16	rvol;				// right volume
 } PVoice;
 
 typedef struct Voice_s
 {
-    ALLink           node;		// связка
-    PVoice  		*pvoice;	// Указатель на полифонический голос
-    ALWaveTable 	*wavetable; // параметры волновой формы
+    ALLink           node;		// link
+    PVoice  		*pvoice;	// polyphony voice
+    ALWaveTable 	*wavetable; // waveform parameters
     UInt16 			state;   	// (loop/one-shot)(release)
-    UInt16 	        priority;	// приоритет семпла
-    Frac16			unityPitch;	// отношение waverate/MIXFREQ
+    UInt16 	        priority;	// sample's priority
+    Frac16			unityPitch;	// ratio Waverate/MIXFREQ
 } ALVoice;
 
 /*****************************************************************************
-* СТРУКТУРА СИНТЕЗАТОРА И СТРУКТУРА ЕГО КОНФИГУРИРУЮЩАЯ
+* Synthesizer and it's configuration
 ******************************************************************************/
 
 typedef ALMicroTime (*ALVoiceHandler)(void *);
@@ -336,18 +335,18 @@ typedef struct {
 
 typedef struct
 {
-    ALLink      pFreeList;      // список свободных полифон-голосов
-    ALLink      pAllocList;     // список занятых полифон-голосов
-    ALLink      pLameList;      // список сомнительных полифон-голосов
-    void       *clientData;   	// указатель на данные плеера
-    ALVoiceHandler handler;     // указатель на процедуру плеера
-    ALMicroTime callTime;    	// мкросекунд до вызова
-    UInt32      samplesLeft;    // сколько семплов до вызова
-    ALVoiceHandler fhandler;    // указатель на процедуру плеера с частотой FRAME_TIME_US    
-    ALMicroTime fcallTime;   	// мкросекунд до вызова fhandler
-	UInt16      numPVoices;		// число полифонических каналов
-	PVoice     *pvoice;			// Указатель на масив голосов
-	stereo32   *mix_buf;		// Указатель на буфер миксера
+    ALLink      pFreeList;      // free polyphony-voices
+    ALLink      pAllocList;     // used polyphony-voices
+    ALLink      pLameList;      // lame polyphony-voices (maybe to delete)
+    void       *clientData;   	// player's data
+    ALVoiceHandler handler;     // player's procedure
+    ALMicroTime callTime;    	// mks before call
+    UInt32      samplesLeft;    // sample's count before call
+    ALVoiceHandler fhandler;    // procedure pointer FRAME_TIME_US    
+    ALMicroTime fcallTime;   	// mks before call f handler
+	UInt16      numPVoices;		// number of polyphony-voices
+	PVoice     *pvoice;			// voices list
+	stereo32   *mix_buf;		// mixer buffer
 } ALSynth;
 
 void 	alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples);
@@ -373,7 +372,7 @@ void   	alSynSetGain( ALSynth * s, ALVoice *v, Int16 vol);
 
 /*****************************************************************************
 *
-* Глобальная библиотека
+* Globals
 *
 ******************************************************************************/
 
@@ -388,7 +387,7 @@ void    alClose(ALGlobals *glob);
 
 /*****************************************************************************
 *
-* СТРУКТУРЫ БАНКА МИДИ ФАЙЛОВ
+* MIDI files bank
 *
 ******************************************************************************/
 
@@ -399,7 +398,7 @@ typedef struct {
     s32         len;
 } ALSeqData;
 
-typedef struct {                /* Note: sizeof won't be correct        */
+typedef struct {                /* Note: size of won't be correct       */
     s16         revision;       /* format revision of this file         */
     s16         seqCount;       /* number of sequences                  */
     ALSeqData   seqArray[1];    /* ARRAY of sequence info               */
@@ -419,7 +418,7 @@ UWord32 alSeqFileLoad( char * name, UInt32 addr );
 
 /*****************************************************************************
 *
-* СТРУКТУРЫ СЕКВЕНСОРА
+* Sequencer data
 *
 ******************************************************************************/
 
@@ -441,31 +440,31 @@ UWord32 alSeqFileLoad( char * name, UInt32 addr );
 enum ALMsg {
 	AL_SEQ_NOP_EVT,
     AL_SEQ_REF_EVT,			// Reference to a pending event in the sequence.
-    AL_SEQ_MIDI_EVT,		// Миди сообщение 	
-    AL_SEQP_MIDI_EVT,		// Миди сообщение приостановившее секвенсор
-    AL_TEMPO_EVT,			// Изменение темпа
-    AL_SEQP_TEMPO_EVT,		// Изменение темпа
-    AL_SEQ_END_EVT,			// Конец секвенции
-    AL_NOTE_END_EVT,		// Звук отзвучал голос освобождается
-    AL_SEQP_EVOL_EVT,		// сообщение ГРОМКОСТЬ огибающей
-    AL_SEQP_EPAN_EVT,		// сообщение ПАНОРАМА огибающей
+    AL_SEQ_MIDI_EVT,		// midi event	
+    AL_SEQP_MIDI_EVT,		// midi event to stop sequencer
+    AL_TEMPO_EVT,			// change tempo
+    AL_SEQP_TEMPO_EVT,		// change tempo
+    AL_SEQ_END_EVT,			// end of sequence
+    AL_NOTE_END_EVT,		// end of sound, voice is free
+    AL_SEQP_EVOL_EVT,		// volume of envelope
+    AL_SEQP_EPAN_EVT,		// pan of envelope
     AL_SEQP_META_EVT,
-    AL_SEQP_PROG_EVT,		// Смена инструмента
+    AL_SEQP_PROG_EVT,		// change instrument
     AL_SEQP_API_EVT,		
-    AL_SEQP_VOL_EVT,		// сообщение ГРОМКОСТЬ общая
+    AL_SEQP_VOL_EVT,		// event main volume
     AL_SEQP_LOOP_EVT,
-    AL_SEQP_PRIORITY_EVT,	// Смена приоритета
+    AL_SEQP_PRIORITY_EVT,	// change priority
     AL_SEQP_SEQ_EVT,	
-    AL_SEQP_BANK_EVT,		// Смена банка
-    AL_SEQP_PLAY_EVT,		// Воспроизведение
-    AL_SEQP_STOP_EVT,		// Стоп
-    AL_SEQP_STOPPING_EVT,	// Остановка (FADEOUT)
-    AL_TRACK_END,			// Конец трека
+    AL_SEQP_BANK_EVT,		// change bank
+    AL_SEQP_PLAY_EVT,		// play
+    AL_SEQP_STOP_EVT,		// stop
+    AL_SEQP_STOPPING_EVT,	// stop (FADEOUT)
+    AL_TRACK_END,			// end of track
     AL_CSP_LOOPSTART,		
     AL_CSP_LOOPEND,
     AL_CSP_NOTEOFF_EVT,
-    AL_TREM_OSC_EVT,		// сообщение TREMOLO OSC
-    AL_VIB_OSC_EVT			// сообщение VIBTRATO OSC
+    AL_TREM_OSC_EVT,		// event TREMOLO OSC
+    AL_VIB_OSC_EVT			// event VIBTRATO OSC
 };
 
 /*
@@ -676,20 +675,20 @@ typedef struct ALEnvState_s {
 
 typedef struct ALVoiceState_s {
     ALVoice     voice;
-    ALSound     *sound;			// Указатель на звук
-    ALInstrument*instrument;    // указатель на инструмент
-    s32         pitch;       	// текущее питчбенд значение        
-    s32         vibrato;     	// текущее значение вибрато
+    ALSound     *sound;			// Sound pointer
+    ALInstrument*instrument;    // Instrument pointer
+    s32         pitch;       	// Pitch state        
+    s32         vibrato;     	// Vibrato state
 	u16         envPhase;    	// AL_PHASE_SUSTAIN, AL_PHASE_RELEASE, AL_PHASE_SUSTREL 
-	ALMicroTime	fadeTime;		// Время RELEASE
-	u16			fadeVol;		// Громкость звука
-	ALEnvState	envVolState;	// Состояние огибающей громкости
-	ALEnvState  envPanState;	// Состояние огибающей панорамы
+	ALMicroTime	fadeTime;		// Time RELEASE
+	u16			fadeVol;		// Volume of sound
+	ALEnvState	envVolState;	// State of volume envelope
+	ALEnvState  envPanState;	// State of pan envelope
     u8          channel;        // channel assignment          
     u8          key;            // note on key number          
     u8          velocity;       // note on velocity            
-	void		*VibOscState;	// где генератор вибрато
-    u8          flags;          // вибрато включено            
+	void		*VibOscState;	// vibrato OSC
+    u8          flags;          // vibrato enabled?
 } ALVoiceState;
 
 #define NO_OSC      0

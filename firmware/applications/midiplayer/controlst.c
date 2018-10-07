@@ -3,12 +3,12 @@
 
 /******************************************************************************
 *
-*	Структура генерируящая текст подсказки
+*	Help narration text
 *
 *******************************************************************************/
 
 const tHelpList HelpList[]=
-{	// В любом режиме
+{	// Mode: any
 	{KBD_MODE_ANY,KEY_HELP,		{WORD_HELP,0,0,0}},
 	{KBD_MODE_ANY,KEY_M1,  		{WORD_TEMP,WORD_TONE,0,0}},
 	{KBD_MODE_ANY,KEY_M2,  		{WORD_SELECT,WORD_FILES,0,0}},
@@ -17,41 +17,41 @@ const tHelpList HelpList[]=
 	{KBD_MODE_ANY,KEY_M5,  		{WORD_SELECT,WORD_GAME,0}},
 	{KBD_MODE_ANY,KEY_NEXT,		{WORD_REPEAT,0,0,0}},
 	{KBD_MODE_ANY,KEY_PREV,		{WORD_REPEAT,WORD_TWO,0,0}},
-	// Режим тональность, темп
+	// Modes: tone, tempo
 	{KBD_MODE_TONE,KEY_PLAY,    {WORD_START,WORD_FILES,0,0}},
 	{KBD_MODE_TONE,KEY_STOP,    {WORD_STOP,WORD_FILES,0,0}},
 	{KBD_MODE_TONE,KEY_PLUS_10, {WORD_TEMP,WORD_PLUS,0,0}},
 	{KBD_MODE_TONE,KEY_MINUS_10,{WORD_TEMP,WORD_MINUS,0,0}},
 	{KBD_MODE_TONE,KEY_PLUS_1,  {WORD_TONE,WORD_PLUS,0,0}},
 	{KBD_MODE_TONE,KEY_MINUS_1, {WORD_TONE,WORD_MINUS,0,0}},
-	// Режим выбор пьесы
+	// Mode: choose song
 	{KBD_MODE_FILE,KEY_PLAY,    {WORD_START,WORD_FILES,0,0}},
 	{KBD_MODE_FILE,KEY_STOP,    {WORD_STOP,WORD_FILES,0,0}},
 	{KBD_MODE_FILE,KEY_PLUS_10, {WORD_NUMBER,WORD_FILES,WORD_TENS,WORD_PLUS}},
 	{KBD_MODE_FILE,KEY_MINUS_10,{WORD_NUMBER,WORD_FILES,WORD_TENS,WORD_MINUS}},
 	{KBD_MODE_FILE,KEY_PLUS_1,  {WORD_NUMBER,WORD_FILES,WORD_ONES,WORD_PLUS}},
 	{KBD_MODE_FILE,KEY_MINUS_1, {WORD_NUMBER,WORD_FILES,WORD_ONES,WORD_MINUS}},
-	// Режим выбор инструмента
+	// Mode: chose 
 	{KBD_MODE_INS,KEY_PLAY,     {WORD_START,WORD_FILES,0,0}},
 	{KBD_MODE_INS,KEY_STOP,     {WORD_STOP,WORD_FILES,0,0}},
 	{KBD_MODE_INS,KEY_PLUS_10,  {WORD_VOLUME,WORD_PLUS,0,0}},
 	{KBD_MODE_INS,KEY_MINUS_10, {WORD_VOLUME,WORD_MINUS,0,0}},
 	{KBD_MODE_INS,KEY_PLUS_1,   {WORD_NUMBER,WORD_INS,WORD_PLUS,0}},
 	{KBD_MODE_INS,KEY_MINUS_1,  {WORD_NUMBER,WORD_INS,WORD_MINUS,0}},
-	// Режим игры
+	// Mode: game
 	{KBD_MODE_GAME,KEY_PLAY,    {WORD_START,WORD_GAME,0,0}},
 	{KBD_MODE_GAME,KEY_STOP,    {WORD_STOP,WORD_GAME,0,0}},
 	{KBD_MODE_GAME,KEY_PLUS_10, {WORD_NUMBER,WORD_GAME,WORD_PLUS,0}},
 	{KBD_MODE_GAME,KEY_MINUS_10,{WORD_NUMBER,WORD_GAME,WORD_MINUS,0}},
 	{KBD_MODE_GAME,KEY_PLUS_1,  {WORD_VARIANT,WORD_GAME,WORD_PLUS,0}},
 	{KBD_MODE_GAME,KEY_MINUS_1, {WORD_VARIANT,WORD_GAME,WORD_MINUS,0}},
-	// Последняя строка
+	// EOL
 	{KBD_MODE_UNDEFINED,0, 		{0,0,0,0}}
 };
 
 /******************************************************************************
 *
-*	Подсказка на клавишу
+*	Buttons help
 *
 *******************************************************************************/
 const UInt16 * toSpeak;

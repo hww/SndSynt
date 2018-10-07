@@ -8,7 +8,7 @@
 #define DELAY } asm { nop }; asm { nop }; asm {
 #define FDELAY } asm { nop }; asm { nop }; asm {
 
-#define SMART_DMA		// DMA не грузит блок если он в памяти
+#define SMART_DMA		// DMA skip block if it is already in memory
 
 #ifdef SMART_DMA
 static UInt16 last_addressl;
@@ -19,7 +19,7 @@ static UInt16 sucess;
 
 /*****************************************************************************
 *
-* ИНИЦИАЛИЗАЦИЯ SDRAM
+* Initialize SDRAM
 *
 *****************************************************************************/
 
@@ -45,7 +45,7 @@ asm	{
 
 /*****************************************************************************
 *
-* ФУНКЦИИ ЧТЕНИЯ ИЗ ПАМЯТИ
+* Memory read
 *
 *****************************************************************************/
 
@@ -78,7 +78,7 @@ asm	{
 
 /*****************************************************************************
 *
-* ПРОЦЕДУРЫ ЗАПИСИ В ПАМЯТЬ
+* Memory write
 *
 *****************************************************************************/
 
@@ -110,7 +110,7 @@ asm	{
 
 /*****************************************************************************
 *
-* ПРОЦЕДУРЫ КОПИРОВАНИЯ БЛОКОВ
+* Copy blocks in memory
 *
 *****************************************************************************/
 
@@ -138,15 +138,15 @@ UInt32 sdram_save( UInt32 addr, UWord16 * dst, size_t size )
 
 /*****************************************************************************
 *
-*	ПРОЦЕДУРЫ НЕОБХОДИМЫЕ ДЛЯ СЕМПЛЕРА
+*	Routines for sampler
 *
 *	void sdram_load_64( UInt32 addr, UWord16 * dst, size_t size )
 *
-* 	Прочитывает блок из SDRAM в память
+* 	Read block to SDRAM 
 * 	
-*		A		addr	Адрес источника
-*		R2		dst		Адрес кеш области
-*		Y0		size	Размер измеряется 64 битных записях
+*		A		addr	source
+*		R2		dst		destination (cache) address
+*		Y0		size	size in 64 bits words
 *
 *****************************************************************************/
 
@@ -202,13 +202,13 @@ EndDo:
 
 /*****************************************************************************
 *
-* ЗАГРУЗКА ФАЙЛА В SDRAM
+* Load file to SDRAM
 *
 *	int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
 *
-*	Fd		дескриптор файла
-*	addr	адрес назначения в SDRAM
-*	nWords	количество слов для копирования
+*	Fd		file descriptor
+*	addr	target address SDRAM
+*	nWords	words count
 *
 *****************************************************************************/
 
@@ -220,22 +220,22 @@ int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
 size_t   words;
 UWord16 *copybuf;
 
-	copybuf = (UWord16*)malloc(COPY_BUFFER_SIZE);	// Запросим память на буфер COPY
-	if(copybuf == 0) return 0;						// Ошибка
+	copybuf = (UWord16*)malloc(COPY_BUFFER_SIZE);	
+	if(copybuf == 0) return 0;						
 	
-	words = COPY_BUFFER_SIZE;						// Блоками по длине буфера копированния
+	words = COPY_BUFFER_SIZE;						
 	
 	do
 	{
-		if(nWords < COPY_BUFFER_SIZE)				// Осталось слов меньше буфера
+		if(nWords < COPY_BUFFER_SIZE)				
 		{
-			words=nWords;							// Значит блок такой сколько осталось
+			words=nWords;							
 		}
-		read(Fd,copybuf, words );					// прочитали блок
-		addr = sdram_load( addr, copybuf, words );	// Переписали в SDRAM
-		nWords-=words;								// Уменьшили счётчик
-	} while(nWords>0);								// Если 0 то ВСЁ!
+		read(Fd,copybuf, words );					
+		addr = sdram_load( addr, copybuf, words );	
+		nWords-=words;								
+	} while(nWords>0);								
 	
-	free(copybuf);									// Освободим память
+	free(copybuf);									
 	return 1;
 }

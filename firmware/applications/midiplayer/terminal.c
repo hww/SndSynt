@@ -5,11 +5,11 @@
 #include "timer.h"
 #include "terminal.h"
 
-static UInt16 kbdState;	//  состояние всех клавиш
-static UInt16 kbdTrig;		//  1 только для клавиш которые были нажаты
-static UInt16 kbdDelay;	//  противодребезгный буфер
-static UInt16 ledState;	//  состояние светодиодов (1 включен)
-static UInt16 kbdPhase;		//  текущая позиция сканирования
+static UInt16 kbdState;		//  all keys state
+static UInt16 kbdTrig;		//  state 1 for pressed keys
+static UInt16 kbdDelay;		//  anti-glitch delay
+static UInt16 ledState;		//  LED states (1 enabled)
+static UInt16 kbdPhase;		//  current scan position
 static const UInt16 *ledAnimation;
 static UInt16 curFrame;
 UInt16 ledFlash;
@@ -82,15 +82,15 @@ void terminalUpdate(void)
 	row = (kbdPhase & 3)<<4; 
 	bit =  row >> 2;
 	mask = 0xf << bit;
-	periphMemWrite(KBD_ENA | row ,&ArchIO.PortB.DataReg);			// Set Bits
-	periphMemWrite(0xf0,&ArchIO.PortB.DataDirectionReg);// Input pins
+	periphMemWrite(KBD_ENA | row ,&ArchIO.PortB.DataReg); // Set Bits
+	periphMemWrite(0xf0,&ArchIO.PortB.DataDirectionReg);  // Input pins
 	keys      = ((~periphMemRead(&ArchIO.PortB.DataReg)) & 0xf)<<bit;	
 	trig  	  = kbdState;
 	kbdState = (kbdState & ~mask)|(kbdDelay & keys); 
 	kbdDelay = (kbdDelay & ~mask)| keys; 
 	kbdTrig |= (~trig & kbdState); 
 	periphMemWrite(0xff,&ArchIO.PortB.DataDirectionReg);// All output
-	periphMemWrite(LED_ENA | row | (~(ledState>>bit) & 0xf),&ArchIO.PortB.DataReg);			// Set Bits
+	periphMemWrite(LED_ENA | row | (~(ledState>>bit) & 0xf),&ArchIO.PortB.DataReg); // Set Bits
 	kbdPhase++;	
 	if((kbdPhase & 0x3f)==0)	terminalAnimate();
 }
