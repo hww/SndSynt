@@ -364,7 +364,8 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
         		pv->pos -= pv->endsub;
            	}
            	else
-           	{	// семпл не зациклен
+           	{	
+				// семпл не зациклен
                	// остановим воспроизведение
 				alSynStopVoice(s, (ALVoice*)pv->vvoice);
 				//((ALVoice*)pv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);
@@ -402,11 +403,11 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 *
 *	void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 *
-*	ГЕНЕРАЦИЯ БУФЕРА
+*	Generate buffer
 *
-*	s		синтезатор
-*	outBuf	выходной буфер
-*	samples	количество семплов
+*	s		synthesizer
+*	outBuf	output buffer
+*	samples sample's count
 *
 *	Переменная todo в количествах семплов на один канал. Генерирует целый буфер
 *	размером todo. Нарезает его на фрагменты необходимые для секвенсора. 
@@ -426,7 +427,8 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 	UWord16   fxoutptr;
 	
     while(samples>0)
-    {   // Вызов плеера и инициализация таймера секвенсора
+    {   
+		// Initialize timers
     	if(s->samplesLeft==0)
         {   if(s->handler!=NULL)
         	{	 s->callTime	= s->handler((ALSeqPlayer*) s->clientData);
@@ -434,9 +436,6 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
         	}
         	else s->samplesLeft = samples;
         }
-        /*
-		 * наименьшее из двух, заказанный блок или интервал SEQ-таймера
-         */
         left = MIN(s->samplesLeft, samples);
         
         dst	    		= outBuf;
@@ -473,7 +472,7 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 
 /******************************************************************************
 *
-*	ОБНОВЛЕНИЕ ДРАЙВЕРА СИНТЕЗАТОРА
+*	Update synthesizer's driver
 *
 *******************************************************************************/
 
@@ -482,8 +481,8 @@ void alSynUpdate( ALSynth* s )
 Int16 * ptr; 
 long delta=0;
 
-	ptr = fcodecWaitBuf();							// текущий буфер
-	alAudioFrame( s, (stereo16*)ptr, FRAME_SIZE);	// сгенерировали
+	ptr = fcodecWaitBuf();							// current buffer
+	alAudioFrame( s, (stereo16*)ptr, FRAME_SIZE);	
 	alSynPanSlide( s );
 	if(s->fcallTime == 0)return;
 	alMicroTimeSub(&s->fcallTime, FRAME_TIME_US);
@@ -493,7 +492,7 @@ long delta=0;
 
 /******************************************************************************
 *
-*	СОЗДАЁТ И ИНИЦИАЛИЗИРУЕТ СИНТЕЗАТОР
+*	Create and initialize synthesizer
 *
 *******************************************************************************/
 
@@ -532,7 +531,7 @@ error:
 
 /******************************************************************************
 *
-*	УНИЧТОЖАЕТ СИНТЕЗАТОР
+*	Destroy synthesizer
 *
 *******************************************************************************/
 
@@ -546,8 +545,7 @@ void alSynDelete( ALSynth * s )
 
 /******************************************************************************
 *
-*	Назначает клиента для синтезатора
-*	клиент является программой секвенсора
+*	Set client (sequencer) to synthesizer
 *
 *******************************************************************************/
 
@@ -560,12 +558,11 @@ void alSynAddPlayer(ALSynth *s, void *client)
 *
 *	synt_env_set_delta( sVinfo* voice, ALMicroTime time, UInt16 vol )
 *
-*	Инициализирует генератор огибающей для тостижения амплитуды
-*	в течении заданного времени.
+*	Start volume envelope
 *
-*	sVinfo* voice		Структура канала
-*	ALMicroTime time	Время за которое необходимо достичь громкости
-*	UInt16 vol			Громкость которую необходимо достичь
+*	sVinfo* voice		channel's structure
+*	ALMicroTime time	time to reach target volume
+*	UInt16 vol			target volume
 *						0 - 7FFF 
 *
 *******************************************************************************/
@@ -579,7 +576,6 @@ PVoice * pv = v->pvoice;
 	pv->phaseVolume = 32;
 	if(volume == 0) v->state |=  AL_SF_ZERO;
 	else 			v->state &= ~AL_SF_ZERO;
-
 	
 	if(time<1000)
 	{	pv->addVolume=0;
@@ -594,7 +590,7 @@ PVoice * pv = v->pvoice;
 
 /******************************************************************************
 *
-*	Скольжение громкости 
+*	Slide of volume
 *
 *******************************************************************************/
 
@@ -672,11 +668,11 @@ void   alSynSetGain( ALSynth * s, ALVoice *v, Int16 vol)
 *
 *	Set voice pitch
 *
-*	Значение ratio = 0x10000 означает воспроизводить ноту как есть
-*			 ratio = 0x20000 означает воспроизводить ноту на октаву выше
-*			 ratio = 0x08000 на октаву ниже
+*	Значение ratio = 0x10000 play tone as it is
+*			 ratio = 0x20000 play next octave
+*			 ratio = 0x08000 play lower octave
 *			 0 < ratio 0x2000
-*			 если rate>2 то rate ограничивается до двух
+*			 if rate>2 then rate is limited by 2
 *
 *******************************************************************************/
 
@@ -692,10 +688,9 @@ void    alSynSetPitch( ALSynth * s, ALVoice *v, Int32 ratio)
 *
 *	void    SynSetFXMix(ALSynth *s, ALVoice *voice, Int16 fxmix)
 *
-*	Устанавливает уровень FX для голоса
-*	Если значение рано MIX_VOL_MAX то на выход идёт только 
-*	обработанный эфектом поток. Если MIX_VOL_MIN то только
-*	чистый поток
+*	Set FX volume for channel
+*	If value is equal to MIX_VOL_MAX then output only FX 
+*	If value less than MIX_VOL_MIN then out only clean sound
 *
 *******************************************************************************/
 
@@ -708,7 +703,7 @@ void    alSynSetFXMix( ALSynth * s, ALVoice *v, Int16 fxmix)
 *
 *	void    SynSetPriority(ALSynth *s, ALVoice *voice, Int16 priority)
 *
-*	Устанавливает приоритет голоса
+*	Set voice's priority
 *
 *******************************************************************************/
 
@@ -721,9 +716,9 @@ void    alSynSetPriority(ALSynth * s, ALVoice *v, Int16 priority)
 *
 *	Int16     SynGetPriority(ALSynth *s, ALVoice *voice)
 *
-*	Возвращает приоритет голоса
+*	Return voice's priority
 *
-*	return Int16 		Приоритет
+*	return Int16 		priority
 *
 *******************************************************************************/
 
@@ -736,8 +731,7 @@ Int16     alSynGetPriority( ALSynth * s, ALVoice *v )
 *
 *	void    SynStartVoice(ALSynth *s, ALVoice *voice, ALWaveTable *w)
 *
-*	Запуск воспроизведения волновой формы
-*
+*	Start waveform
 *
 *******************************************************************************/
 
@@ -746,17 +740,17 @@ void    alSynStartVoice( ALSynth * s, ALVoice *voice, ALWaveTable *w )
 	PVoice    * pv = voice->pvoice;
 
 	voice->wavetable = w;	
-	voice->state    |= (w->ltype & AL_SF_LOOP); // параметры волновой формы
+	voice->state    |= (w->ltype & AL_SF_LOOP); // parameters
 	voice->state    |= AL_SF_ACTIVE;
-	pv->pos		     = w->base;   				// старт семпла
+	pv->pos		     = w->base;   				// sample start
  
 	if((voice->state & AL_SF_LOOP) != 0)
-    {	pv->end 	= w->end + w->base;     	// конец петли
-    	pv->endsub 	= (w->end- w->start)+1;		// отнять при достижении конца +1
+    {	pv->end 	= w->end + w->base;     	// end of loop
+    	pv->endsub 	= (w->end- w->start)+1;		// subtract at end +1
 		pv->count   = w->count;
 	}
 	else
-	{	pv->end	= w->base + w->len - 2;    		// конец семпла
+	{	pv->end	= w->base + w->len - 2;    		// sample's end
 	}
 }
 
@@ -766,8 +760,7 @@ void    alSynStartVoice( ALSynth * s, ALVoice *voice, ALWaveTable *w )
 *							Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix
 *							ALMicroTime t)
 *
-*	Запуск воспроизведения волновой формы
-*
+*	Start waveform
 *
 *******************************************************************************/
 
@@ -775,18 +768,18 @@ void    alSynStartVoiceParams(  ALSynth * s, ALVoice *v, ALWaveTable *w,
                               Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
                               ALMicroTime t)
 {
-   alSynStartVoice( s, v, w);		// Запуск семпла
+   alSynStartVoice( s, v, w);		// start stample
 	 alSynSetFXMix( s, v, fxmix);	// FX
-	 alSynSetPitch( s, v, pitch);	// тональность
-	   alSynSetPan( s, v, pan, t);	// панорама
-	   alSynSetVol( s, v, vol, t);	// громкость	
+	 alSynSetPitch( s, v, pitch);	// tone
+	   alSynSetPan( s, v, pan, t);	// pan
+	   alSynSetVol( s, v, vol, t);	// volume	
 }
 
 void alSynStopVoice(ALSynth *drvr, ALVoice *voice)
 {
-	voice->state &= ~AL_SF_ACTIVE;						// Остановим синтез
-	alUnlink(&voice->pvoice->node);						// выкинули из списка занятых	
-	alLink(&voice->pvoice->node, &drvr->pLameList);		// в список сомнительных
+	voice->state &= ~AL_SF_ACTIVE;						// stop voice
+	alUnlink(&voice->pvoice->node);						// delete from used list	
+	alLink(&voice->pvoice->node, &drvr->pLameList);		// add to lame list
 }
 
 /******************************************************************************
@@ -824,8 +817,7 @@ PVoice  * newpv = NULL;
 		goto good;
 	}
 	/*
-	 *	Найдём голос сприоритетом меньше или равным заданному и
-	 *	минимальной громкостью.
+	 *	find voice with lover priority and volume
 	 */
 	pv = s->pAllocList.next;
 	while(pv != NULL)
@@ -834,11 +826,11 @@ PVoice  * newpv = NULL;
 		{	minvol = pv->curVolume;
 			newpv  = pv;
 		}	
-		pv = pv->node.next;								// следующий
+		pv = pv->node.next;								
 	}
 	
 	if(newpv!=NULL)	
-	{ 	// предыдущий виртуальный канал не активен и не имеет полиголоса
+	{ 	
 		((ALVoice*)newpv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);	
 		((ALVoice*)newpv->vvoice)->pvoice = NULL;				
 		goto good;										
@@ -846,10 +838,10 @@ PVoice  * newpv = NULL;
 	return 0;
 
 good:
-	v->pvoice = newpv;				// привязали к голосу один полифонический голос
-	v->priority = priority;			// Установили приоритет
-	v->pvoice->vvoice = v;			// полиголос -> виртуальный
-	v->state = AL_SF_ALOCATED;		// флаг ALOC САМЫЙ ПЕРВЫЙ ФЛАГ У ГОЛОСА
+	v->pvoice = newpv;				// link voice one poly-voice
+	v->priority = priority;			// set priority
+	v->pvoice->vvoice = v;			// poly -> virtual
+	v->state = AL_SF_ALOCATED;		// ALOC first flag of voice
 	return 1;
 }
 
@@ -857,16 +849,14 @@ good:
 *
 *	void    alSynFreeVoice(ALSynth *s, ALVoice *voice)
 *
-*	Освобождает полифонический голос
-*
-*	НО! возвращает 0 если это не произошло
+*	Release poly-voice but returns 0 if it did not happens
 *
 *******************************************************************************/
 
 void    alSynFreeVoice(ALSynth *s, ALVoice *voice)
 {
-	alUnlink(&voice->pvoice->node);						// выкинули из списка занятых	
-	alLink(&voice->pvoice->node, &s->pFreeList);		// в список свободных
-	voice->pvoice = NULL;								// Убили связку на физический
+	alUnlink(&voice->pvoice->node);						// remove from used	
+	alLink(&voice->pvoice->node, &s->pFreeList);		// add to free list
+	voice->pvoice = NULL;								// kill physical voice
 	voice->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);
 }

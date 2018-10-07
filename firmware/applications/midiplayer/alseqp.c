@@ -72,26 +72,27 @@ UWord32 rate;
 UInt16  n,o;
 UInt16  ftnotes, ftpercents;
 
-	finetune += 1200;						// без знаковое 0..2400
-	ftnotes   = finetune / 100;				// смещение 0..24
-	ftpercents= finetune % 100;				// процент  0..99
-	note      = note - 12 + ftnotes;		// сместили ноту
-	n    	  = note % 12;					// Нота в октаве
-	o         = note / 12;					// Октава
-	rate 	  = ratestable[n];				// Взяли из таблици RATE
+	finetune += 1200;						// positive 0..2400
+	ftnotes   = finetune / 100;				// offset 0..24
+	ftpercents= finetune % 100;				// percent  0..99
+	note      = note - 12 + ftnotes;		// shift note
+	n    	  = note % 12;					// note in octave
+	o         = note / 12;					// octave
+	rate 	  = ratestable[n];				// get RATE
 
 	if(ftpercents != 0)
 	{	
-		rate     *= (100-ftpercents); 		// Теперь проитерполируем
+		rate     *= (100-ftpercents); 		
 		rate     += (ratestable[n+1] * ftpercents);
 		rate     /=100;
 	}
 
 	if(o < 	OCT_OF_RATE_TABLE)
-	{	// Если октава меньше чем та что в таблице
+	{	
+		// octave less than in table
 		while( o< OCT_OF_RATE_TABLE)
 		{
-			rate>>=1;						// делим на два
+			rate>>=1;						
 			o++;							
 		}
 	}
@@ -99,20 +100,6 @@ UInt16  ftnotes, ftpercents;
 	return rate;
 }
 
-/******************************************************************************
-*
-*	void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
-*	s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
-*
-* PARAMETERS
-*    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 prog	   номер инструмента
-*
-* DESCRIPTION
-*     Возвращает и устанавливает инструмент в канале
-*     
-*******************************************************************************/
 
 void    alSeqpNew(ALSeqPlayer *seqp, ALSeqpConfig *config)
 {
@@ -124,16 +111,16 @@ ALVoiceState    * voices;
 	seqp->nextEvent.type = AL_SEQ_NOP_EVT;
 	seqp->curTime 	 = 0;
 	seqp->nextDelta  = 0;
-	seqp->initOsc    = config->initOsc;									// генераторы
-	seqp->updateOsc  = config->updateOsc;								// огибающих
+	seqp->initOsc    = config->initOsc;									// OSCs of envelopes
+	seqp->updateOsc  = config->updateOsc;								
 	seqp->stopOsc 	 = config->stopOsc;
-	seqp->debugFlags = config->debugFlags;								// флаги для отладки
+	seqp->debugFlags = config->debugFlags;								
 	max			     = config->maxChannels;
 	seqp->maxChannels= max;
-	seqp->chanState  = calloc(max, sizeof(ALChanState));				// память для каналов	
+	seqp->chanState  = calloc(max, sizeof(ALChanState));				// memory for channels	
 			
 	max				 = config->maxVoices;
-	seqp->vvoices    = calloc(max, sizeof(ALVoiceState));				// память для голосов
+	seqp->vvoices    = calloc(max, sizeof(ALVoiceState));				// memory for voices
 
 	seqp->vAllocList.next = NULL;
 	seqp->vAllocList.prev = NULL;
@@ -141,26 +128,25 @@ ALVoiceState    * voices;
 	seqp->vFreeList.prev  = NULL;
 		
 	for(n=0 ; n<max ; n++)
-	{																	// Связали
-		alLink(&seqp->vvoices[n].voice.node,&seqp->vFreeList);	 		// список свободных
+	{																	
+		alLink(&seqp->vvoices[n].voice.node,&seqp->vFreeList);	 		// free list
 	}
-
 	
-	seqp->chanMask  = 0xFFFF;											// Все включены					// все каналы не активны
+	seqp->chanMask  = 0xFFFF;											// all chanels inactive
 
 	max = config->maxEvents;
-	seqp->eventItems = calloc( max, sizeof(ALEventListItem));			// Для сообщений	
-	alEvtqNew(&seqp->evtq, seqp->eventItems, max);						// Создали список свободных
-	seqp->feventItems = calloc( max, sizeof(ALEventListItem));			// Для сообщений	
-	alEvtqNew(&seqp->fevtq, seqp->feventItems, max);					// Создали список свободных
+	seqp->eventItems = calloc( max, sizeof(ALEventListItem));			// for messages 
+	alEvtqNew(&seqp->evtq, seqp->eventItems, max);						
+	seqp->feventItems = calloc( max, sizeof(ALEventListItem));			// for free messages	
+	alEvtqNew(&seqp->fevtq, seqp->feventItems, max);					
 
-	seqp->drvr = &alGlobals->drvr;										// Указали на синтезатор
-	seqp->drvr->handler = &alSeqpHandler;								// Привязали плеер
-	seqp->drvr->clientData = (void*)seqp;								// Привязали секвенцию
-	seqp->drvr->fhandler = &alSeqpFrameHandler;								// Привязали плеер
+	seqp->drvr = &alGlobals->drvr;										// synthesizer
+	seqp->drvr->handler = &alSeqpHandler;								// player
+	seqp->drvr->clientData = (void*)seqp;								// sequencer
+	seqp->drvr->fhandler = &alSeqpFrameHandler;							// player
 	seqp->xTempo = 0;
 	seqp->relTone = 0;
-	midiOpen();															// Открыли МИДИ устройство
+	midiOpen();															// open MIDI
 }
 
 /******************************************************************************
@@ -170,19 +156,19 @@ ALVoiceState    * voices;
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 prog	   номер инструмента
+*	 chan	   MIDI channel
+*	 prog	   Instrument number
 *
 * DESCRIPTION
-*     Возвращает и устанавливает инструмент в канале
+*     Return and set instrument in the channel
 *     
 *******************************************************************************/
 
 void    alSeqpDelete(ALSeqPlayer *seqp)
 {
-	free(seqp->chanState);		// память для каналов	
-	free(seqp->vvoices); 		// память для голосов
-	free(seqp->eventItems); 	// память для сообщений
+	free(seqp->chanState);		// memory for channels	
+	free(seqp->vvoices); 		// memory for voices
+	free(seqp->eventItems); 	// memory for events
 	midiClose();
 }
 
@@ -688,7 +674,7 @@ void alSeqpFlushEventsOfVoice( ALSeqPlayer * seqp, ALVoiceState * vs )
 *
 *	void	alSeqpKeyOn( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
 *
-*	seqp		указатель на плеер последовательностей
+*	seqp		the player последовательностей
 *	chan		номер МИДИ канала
 *	key			клавиша
 *	velocity	сила нажатия
@@ -752,7 +738,7 @@ Int16		   ok;
 *
 *	void	alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
 *
-*	seqp		указатель на плеер последовательностей
+*	seqp		the player последовательностей
 *	chan		номер МИДИ канала
 *	key			клавиша
 *	velocity	сила нажатия
@@ -788,7 +774,7 @@ ALVoiceState * vs;
 *
 *	ALSound * alSeqpGetSound( ALInstrument ins, u8 key )
 *
-*	seqp		указатель на плеер последовательностей
+*	seqp		the player последовательностей
 *	key			клавиша
 *
 *	Возвращает указатель на sound структуру ALSound. Определяет это по номеру
@@ -817,10 +803,10 @@ ALKeyMap* kmap;
 *
 *	void alSeqpEnvelope(  ALEnvState * state, ALEnvelopeTable * env, bool sustane )
 *
-*	vs			указатель на виртуальный голос
-*	state		указатель состояние огибающей
-*	env			указатель на таблицу огибающей 
-*	sustane		состояние SUSTANE если TRUE
+*	vs			pointer to virtual voice
+*	state		state of envelope
+*	env			pointer to envelope's table 
+*	sustane		state SUSTANE if TRUE
 *
 *	Переходит в следующую фазу огибающей. Действует и на громкость и на панораму.
 *	Возвращает true если мы перешли и false стоим в одной точке
@@ -871,9 +857,9 @@ bool step = true;
 *
 *	void 	alSeqpEnvTimers( ALSeqPlayer * seqp, ALMicroTime delta );
 *
-*	seqp		указатель на плеер
+*	seqp	the player
 *	
-*	Уменьшает счётчики огибающих и fadeout.
+*	Decrease counter of envelopes and fade-outs.
 *
 *******************************************************************************/
 
@@ -907,8 +893,8 @@ ALVoiceState * vsnext;
 *
 *	void alSeqpEnvPhase( ALSeqPlayer * seqp, ALVoiceState * vs )
 *
-*	seqp		указатель на плеер
-*	vs			указатель на состояние голоса
+*	seqp		the player
+*	vs			pointer to voice state
 *
 *	Устанавливает в голосе параметры огибающей, и переходит в следующую фазу.
 *	Так как эта функция вызывается по сообщению. То и она отправляет следующее
@@ -951,10 +937,10 @@ ALVoiceState *	vs = event->msg.note.voice;
 *
 *	void	alSeqpStartEnvelope( ALSeqPlayer * seqp, ALVoiceState * vs )
 *
-*	seqp		указатель на плеер
-*	vs			указатель на состояние голоса
+*	seqp		the player
+*	vs			pointer to voice state
 *
-*	Запуск огибающей в голосе
+*	Start envelope
 * 
 *******************************************************************************/
 
@@ -1003,8 +989,8 @@ ALMicroTime time;
 *
 *	void alSeqpVolMix( ALSeqPlayer * seqp, ALVoiceState *vs )
 *
-*	seqp		указатель на плеер
-*	vs			указатель на состояние голоса
+*	seqp		the player
+*	vs			pointer to voice state
 *
 *	Устанавливает результирующую громкость. Учитывая целый ряд параметров
 *
@@ -1057,8 +1043,8 @@ ALPan cpan, lpan, epan;
 *
 *	ALVoiceState * alSeqpFindVoiceChl( ALVoiceState * vs, UWord16 chan )
 *
-*	vs			указатель на состояние голоса
-*	chan		миди канал
+*	vs			pointer to voice state
+*	chan		MIDI channel
 *
 *	Ищет голос у которого МИДИ канал такой как в переменной chan.
 *
@@ -1066,8 +1052,8 @@ ALPan cpan, lpan, epan;
 *
 *	ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
 *
-*	vs			указатель на состояние голоса
-*	chan		миди канал
+*	vs			pointer to voice state
+*	chan		MIDI channel
 *
 *	Ищет голос, канал и нота которого такие как на входе функции.
 *
@@ -1095,8 +1081,8 @@ ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
 *
 *	void alSeqpSetPitch( ALSeqPlayer * seqp, ALVoiceState * vs)
 *
-*	seqp		указатель на плеер
-*	vs			указатель на состояние голоса
+*	seqp		the player
+*	vs			pointer to voice state
 *
 *	Устанавливает Pitch у канала.
 *
@@ -1104,7 +1090,7 @@ ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
 *
 *	void alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel)
 *
-*	seqp		указатель на плеер
+*	seqp		the player
 *	channel		миди канал
 *
 *	Ищет голоса, канал которых равен channel, и устанавливает его Pitch.
@@ -1143,8 +1129,8 @@ ALVoiceState * vs = seqp->vAllocList.next;
 *
 *	void	alSeqpStartOsc( ALSeqPlayer * seqp, ALVoiceState * vs )
 *
-*	seqp		указатель на плеер
-*	vs			указатель на состояние голоса
+*	seqp		the player
+*	vs			pointer to voice state
 *
 *	Запускает OSC канала. Ставит в очередь сообщение для него.
 *
@@ -1152,7 +1138,7 @@ ALVoiceState * vs = seqp->vAllocList.next;
 *
 *	void	alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  )
 *
-*	seqp		указатель на плеер
+*	seqp		the player
 *	event		сообщение
 *
 *	Сообщение OSC для вибраты обновляет переменную vibrato а затем
