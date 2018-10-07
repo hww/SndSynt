@@ -17,12 +17,12 @@ oscData  oscStates[OSC_STATE_COUNT];
 *	ALMicroTime initOsc(void **oscState, f32 *initVal,  u8 oscType,
 *                         u8   oscRate,   u8  oscDepth, u8 oscDelay)
 *
-*	oscState	укаазтель на структуру OSC
-*	initVal		начальное значение
-*	oscType		тип вибрато
-*	oscRate		частота вибрато
-*	oscDepth	глубина вибрато
-*	oscDelay	задержка вибрато
+*	oscState	pointer to OSC
+*	initVal		start value
+*	oscType		vibrato type
+*	oscRate		vibrato frequency
+*	oscDepth	vibrato depth
+*	oscDelay	vibrato delay
 *
 *******************************************************************************/
 
@@ -40,25 +40,22 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
         statePtr->type = oscType;
         *oscState = statePtr;
 
-        //
-        // конвертирование задержки в микросекунды умножением
-        // на 1000.
-        //
+        // Convert delay to microseconds
         deltaTime = (ALMicroTime)(oscDelay+1) * 1000;
 
-        switch(oscType) // установка в начальное состояние
+        switch(oscType) // reset to initial state
         {
             case VIBRATO_SIN:
                 statePtr->data.vsin.depthcents = oscDepth;
                 statePtr->curCount = 0;
-                statePtr->maxCount = 4+frames; 	    // значения 4-259
-                *initVal = 0; 						// начальное pitch 
+                statePtr->maxCount = 4+frames; 	    // values 4-259
+                *initVal = 0; 						// start pitch 
                 break;
 
             case VIBRATO_SQR:
                 {
                     Int16     cents;
-                    statePtr->maxCount = frames+1;// значения 1-256
+                    statePtr->maxCount = frames+1;// values 1-256
                     statePtr->curCount = statePtr->maxCount;
                     statePtr->stateFlags = OSC_HIGH;
                     cents = oscDepth;
@@ -71,7 +68,7 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
             case VIBRATO_DSC_SAW:
                 {
                     Int16     cents;
-                    statePtr->maxCount = frames+1; // значения 1-256 
+                    statePtr->maxCount = frames+1; // values 1-256 
                     statePtr->curCount = statePtr->maxCount;
                     cents = oscDepth;
                     statePtr->data.vdsaw.hicents 	= cents;
@@ -83,7 +80,7 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
             case VIBRATO_ASC_SAW:
                 {
                     Int16     cents;
-                    statePtr->maxCount = frames+1; // значения 1-256
+                    statePtr->maxCount = frames+1; // values 1-256
                     statePtr->curCount = statePtr->maxCount;
                     cents = oscDepth;
                     statePtr->data.vasaw.locents = -cents;
@@ -102,8 +99,8 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
 *
 *	ALMicroTime updateOsc(void *oscState, f32 *updateVal)
 *
-*	oscState	указатель на структуру osc
-*	updateVal	указатель на параметр который нужно изменить
+*	oscState	pointer to OSC
+*	updateVal	pointer to target value (modified by OSC)
 *
 *******************************************************************************/
 
@@ -113,28 +110,22 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
     Frac16			 tmp16;
     oscData         *statePtr = (oscData*)oscState;
     ALMicroTime     deltaTime = FRAME_TIME_US; // callback every
-                                               // кадр но может быть любое другое значение
 
     switch(statePtr->type)   /* perform update calculations */
     {
         case VIBRATO_SIN:
-            /* calculate a sin value (from -1 to 1) and multiply it by depthcents.
+            /* calculate a sin value (from -1 to 1) and multiply it by depth-cents.
                Then convert cents to ratio. */
 
             statePtr->curCount++;
             if(statePtr->curCount >= statePtr->maxCount)
                 statePtr->curCount = 0;
             tmp16  = div_s(statePtr->curCount , statePtr->maxCount)<<1;
-			//Странно но без этого обмена синус в этих точках
-			//вычисляется не правильно. Необходимо их поменять местами.  
+ 
             if(tmp16 == 0x4000)tmp16 = 0xc000;
             else if(tmp16 == 0xC000)tmp16 = 0x4000; 
 
-    //        DI;
-    //       printf(" %x ", tmp16);
             tmp16  = tfr16SinPIx (tmp16);
-	//	    printf(" %x \n", tmp16);
-	//		EI;
             tmp16  = mult(statePtr->data.vsin.depthcents, tmp16);
             *updateVal = tmp16;
             break;
@@ -181,7 +172,7 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
 *
 *	void stopOsc(void *oscState)
 *
-*	oscState	указатель на структуру osc
+*	oscState	pointer to OSC structure
 *
 *******************************************************************************/
 
@@ -203,5 +194,5 @@ int i;
     {   oscStatePtr->next = &oscStates[i+1];
         oscStatePtr = oscStatePtr->next;
     }
-    oscStatePtr->next = 0;  		// последний должен быть в 0
+    oscStatePtr->next = 0; // last should be 0
 }

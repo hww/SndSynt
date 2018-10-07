@@ -20,22 +20,23 @@ extern "C" {
 #define DI 	archDisableInt() 
 #define EI	archEnableInt() 
 
-	/*****************************************************************************
-	* Data types
-	******************************************************************************/
+/*****************************************************************************
+* Data types
+******************************************************************************/
 
-	typedef char s8;
-	typedef unsigned char u8;
-	typedef Int16  s16;
-	typedef UInt16 u16;
-	typedef Int32  s32;
-	typedef UInt32 u32;
-	typedef Int32  f32;
-	typedef UInt32 Ptr32;
+typedef char s8;
+typedef unsigned char u8;
+typedef Int16  s16;
+typedef UInt16 u16;
+typedef Int32  s32;
+typedef UInt32 u32;
+typedef Int32  f32;
+typedef UInt32 Ptr32;
 
-	/*****************************************************************************
-	* Settings and definitions
-	******************************************************************************/
+/*****************************************************************************
+* Settings and definitions
+******************************************************************************/
+
 #define PCHANELS 16							// Polyphony
 #define MAX_VOICES 32						// Virtual voices
 #define MAX_EVENTS 96						// Max events
@@ -142,12 +143,12 @@ void 		CleanDMABuffs(void);
 #define    AL_FX_ECHO          5
 #define    AL_FX_CUSTOM        6
 
-	typedef UInt16   ALFxId;
-	typedef void    *ALFxRef;
+typedef UInt16   ALFxId;
+typedef void    *ALFxRef;
 
-	/***********************************************************************
-	 * MicroTime & MiliTime
-	 ***********************************************************************/
+/***********************************************************************
+ * MicroTime & MiliTime
+ ***********************************************************************/
 
 #define AL_MAX_MICROTIME 999999999L
 
@@ -764,7 +765,7 @@ typedef struct {
 	ALMicroTime         frameTime;
 	ALChanState        *chanState;     /* 16 channels for MIDI             */
 	ALVoiceState       *vvoices;
-	ALLink        	    vAllocList;    /* list of alocated voice state structs */
+	ALLink        	    vAllocList;    /* list of allocated voice state structs */
 	ALLink        	    vFreeList;     /* list of free voice state structs */
 	ALOscInit           initOsc;
 	ALOscUpdate         updateOsc;

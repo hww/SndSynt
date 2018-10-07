@@ -1,6 +1,7 @@
 #include "controls.h"
 #include "terminal.h"
 #include "mfr16.h"
+
 /******************************************************************************
 *
 *	The sequence of narration for voice over
@@ -117,5 +118,5 @@ int n;
 
 void speakCreate( )
 {
-	wordIdx 		= -1;
+	wordIdx = -1;
 }

@@ -9,7 +9,7 @@
 *
 *	Word32  alSeqGetDeltaTime(UWord32 * addr)
 *
-*	Возвращает значение DELTA TIME и смещает указатель
+*	Return DELTA TIME and shift pointer
 *
 *******************************************************************************/
 Word32  alSeqGetDeltaTime(UWord32 * addr);
@@ -65,16 +65,16 @@ UWord16 temp;
 	seq->base 			= ptr;
 	
 	addr+=4;									// 'MThd'
-	chunksize 			= alSeqGet32( &addr );	// длина чанка
-	addr+=4;									// тип миди файла и количество треков
-	seq->division		= alSeqGet16( &addr );	// Тиков в четверти ноты
-	addr+=(chunksize - (6 - 4));				// 6 байтов отработали и 4 на MTrk
-	seq->len			= alSeqGet32( &addr );	// размер трека
-	seq->trackStart 	= addr;					// первое сообщение	(пропустим сигнатуру)
-	seq->curPtr			= seq->trackStart;		// текущее сообщение
-	seq->lastTicks		= 0;					// МИДИ тиков для последнего сообщения
-//	seq->qnpt			= 0;			// ???	// qrter notes / tick (1/division)
-	seq->lastStatus		= 0;					// Последний статус в секвенсоре
+	chunksize 			= alSeqGet32( &addr );	// size of chunk
+	addr+=4;									// MIDI type
+	seq->division		= alSeqGet16( &addr );	// Ticks in quoter
+	addr+=(chunksize - (6 - 4));				// 
+	seq->len			= alSeqGet32( &addr );	// Track size
+	seq->trackStart 	= addr;					// Firs message
+	seq->curPtr			= seq->trackStart;		// Current message
+	seq->lastTicks		= 0;					// MIDI ticks for last messahe
+//	seq->qnpt			= 0;			// ???	// quoter notes / tick (1/division)
+	seq->lastStatus		= 0;					// Last STATUS
 }
 
 /******************************************************************************
@@ -107,37 +107,35 @@ UWord32   delta = 0;
 	{
 		delta += alSeqGetDeltaTime(&seq->curPtr);
 		
-		tmp = alSeqGet8( addr );								// Прочитали предположительный статус
+		tmp = alSeqGet8( addr );								
 
 		if(tmp>0x7f)
-		{	// Если это действительно статус
-			event->msg.midi.status = tmp;						// Тип сообщения прочитали
-			seq->lastStatus 	   = tmp;						// Новое последнее ообщение
-			event->msg.midi.byte1  = alSeqGet8( addr );			// Прочитали первый байт
+		{	// it is STATUS
+			event->msg.midi.status = tmp;						
+			seq->lastStatus 	   = tmp;						
+			event->msg.midi.byte1  = alSeqGet8( addr );			
 		}
 		else
-		{	// Если действует прошедший статус
-			event->msg.midi.status = seq->lastStatus;			// Тип сообщения прочитали
-			event->msg.midi.byte1  = tmp;						// То был байт сообения
+		{	// actual previous STATUS
+			event->msg.midi.status = seq->lastStatus;			
+			event->msg.midi.byte1  = tmp;						
 		}
 		
-		msg = event->msg.midi.status & AL_MIDI_StatusMask;		// Только часть команды осталась
+		msg = event->msg.midi.status & AL_MIDI_StatusMask;		
 
 		switch(msg)
 		{
 	    	case AL_MIDI_ProgramChange:
 	    	case AL_MIDI_ChannelPressure:
-				event->type = AL_SEQ_MIDI_EVT;					// Скорее всего это МИДИ сообщение
-				// Сообщения имеют только один байт в теле
-				// этот байт уже прочитан
+				event->type = AL_SEQ_MIDI_EVT;					
 				break;
 	    	case AL_MIDI_SysEx:
-	    		msg = event->msg.midi.status;					// Полностью всю команду
-	    		switch(msg)										// для SYSEX это размер
+	    		msg = event->msg.midi.status;					
+	    		switch(msg)										
 	    		{
 	    			case AL_MIDI_Meta:
-			   			tmp = event->msg.midi.byte1;				// для META это команда
-						event->msg.tempo.len  = alSeqGet8( addr );	// размер сообщения
+			   			tmp = event->msg.midi.byte1;				
+						event->msg.tempo.len  = alSeqGet8( addr );	
 						switch(tmp)
 						{
 						case AL_MIDI_META_TEMPO:
@@ -150,13 +148,13 @@ UWord32   delta = 0;
 	    					event->type = AL_SEQ_END_EVT;
 	    					break;
 	    				default:
-							event->type = AL_SEQ_REF_EVT;		// очистим
+							event->type = AL_SEQ_REF_EVT;		
 							(*addr)+=event->msg.tempo.len;
 	    				}
 						break;
 					default:
-						event->type = AL_SEQ_REF_EVT;			// очистим
-						(*addr)+=event->msg.midi.byte1;			// Пропустили тело SYSEX
+						event->type = AL_SEQ_REF_EVT;			
+						(*addr)+=event->msg.midi.byte1;			
 						break;
 				}
 				break;
@@ -166,13 +164,12 @@ UWord32   delta = 0;
 	    		//case AL_MIDI_PolyKeyPressure:
 	    		//case AL_MIDI_ControlChange:
 	    		//case AL_MIDI_PitchBendChange:
-				// первый байт для этих сообщений уже прочитан
-				event->type = AL_SEQ_MIDI_EVT;					// Это МИДИ сообщение
+				event->type = AL_SEQ_MIDI_EVT;					
 				event->msg.midi.byte2 = alSeqGet8( addr );
 				break;
 		}
-	}while(event->type == AL_SEQ_REF_EVT);						// пока не получим МИДИ сообщение
-																// ТЕМПО или КОНЕЦтрека
+	}while(event->type == AL_SEQ_REF_EVT);						
+																
 		event->msg.midi.ticks  = delta;
 		seq->lastTicks		  += delta;
 }
@@ -237,20 +234,20 @@ u32     alSeqSecToTicks(ALSeq *seq, f32 sec, u32 tempo)
      
 void    alSeqNewMarker(ALSeq *seq, ALSeqMarker *m, u32 ticks)
 {
-Ptr32   taddr = seq->trackStart;				// В начало секвенции
+Ptr32   taddr = seq->trackStart;				
 UInt32  loc = 0;
 ALEvent event;
 ALSeq   tseq;
 
-	tseq.lastTicks 		= 0;					// Только эти переменные требуются 			
-	tseq.lastStatus 	= 0;					// для создания маркера		
+	tseq.lastTicks 		= 0;					
+	tseq.lastStatus 	= 0;					
 	tseq.curPtr   		= seq->curPtr;
 	
-	while(tseq.lastTicks<ticks)					// Пока позиция указателя меньше требуемого 
+	while(tseq.lastTicks<ticks)					
 	{
-		alSeqNextEvent(&tseq, &event);			// Пропустили сообщение
+		alSeqNextEvent(&tseq, &event);			
 	}
-	alSeqGetLoc( &seq, m );						// Установили маркер
+	alSeqGetLoc( &seq, m );						
 }
 
 /******************************************************************************
@@ -303,8 +300,8 @@ void    alSeqGetLoc(ALSeq *seq, ALSeqMarker *marker)
 {
 Ptr32 taddr = seq->curPtr;
 
-	marker->curPtr	   = taddr;      								  // Указатель на сообщение
-    marker->lastTicks  = seq->lastTicks;    						  // Время до последнего сообщения
-    marker->curTicks   = alSeqGetDeltaTime( &taddr ) + seq->lastTicks;// Время до следующего сообщения
-    marker->lastStatus = seq->lastStatus;    						  // Последний МИДИ статус
+	marker->curPtr	   = taddr;      								  
+    marker->lastTicks  = seq->lastTicks;    						  
+    marker->curTicks   = alSeqGetDeltaTime( &taddr ) + seq->lastTicks;
+    marker->lastStatus = seq->lastStatus;    						  
 }

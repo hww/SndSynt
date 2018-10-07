@@ -1,3 +1,5 @@
+#ifndef __TERMINAL_H
+#define __TERMINAL_H
 
 void 	terminalUpdate(void);
 void 	terminalOpen(void);
@@ -52,3 +54,5 @@ EXPORT const UInt16 stdAnimePP[];
 EXPORT const UInt16 stdAnimeM[];
 EXPORT const UInt16 stdLevels[];
 EXPORT const UInt16 stdPos[];
+
+#endif

@@ -17,13 +17,13 @@ static void alSynAddChannel(ALSynth* s, PVoice* v, stereo32* dst, size_t todo);
 static void alSynPanSlide(ALSynth * s);
 static void alSynMixPanGain(PVoice *pv);
 
-static Int32 volTable[VOL_BUF_SIZE+1];// Таблица громкостей 32 бита
-static Int32 panTable[VOL_BUF_SIZE+1];// Таблица панормаированых громкостей 16 бит
-UInt16 *cash_1;						// Указатель на кеш первого уровня
-UInt16 *cash_2;						// Указатель на кеш второго уровня
+static Int32 volTable[VOL_BUF_SIZE+1];	// Volumes tables 
+static Int32 panTable[VOL_BUF_SIZE+1];	// Volume conversion table
+UInt16 *cash_1;							// Cache of first level
+UInt16 *cash_2;							// Cache of second level
 
 /******************************************************************************
-* Макросы модуля
+* Common macro definitions
 *******************************************************************************/
 
 #ifndef MIN
@@ -43,7 +43,7 @@ UInt16 *cash_2;						// Указатель на кеш второго уровня
 #endif
 
 /*****************************************************************************
-* ДОСТУП ИЗ АССЕМБЛЕРА К СТРУКТУРЕ ГОЛОСА
+* API to machine code
 ******************************************************************************/
 
 #define v(x) X:(r3+PVoice.x)
@@ -69,14 +69,14 @@ UInt16 *cash_2;						// Указатель на кеш второго уровня
 #define CASH_2 cash_2
 
 /******************************************************************************
-* 	ПРИМЕШАТЬ РЕНДЕРЁНЫЙ СЕМПЛ В ПРАВЫЙ КАНАЛ БУФЕРА MIX
+* 	Mix rendered sample to right channel of MIX
 *
-* 	Посчитаем на сколько сместится счётчик
-*	r1 = адрес приёмника
-*	r2 = адрес источника
-*	x0 = количество семплов
-*	y0 = левая громкость
-*	y1 = правая громкость
+* 	Count address difference
+*	r1 = target
+*	r2 = source
+*	x0 = size
+*	y0 = left volume
+*	y1 = right volume
 *******************************************************************************/
 void alSynMakeVolumes( PVoice * v );
 void alSynMakeVolumes( PVoice * v )
@@ -93,17 +93,17 @@ void alSynMakeVolumes( PVoice * v )
 		move	DVOLH,y1				// Y 	= deltaVolume
 		move	DVOLL,y0		
 		tstw	y1
-		bgt		isplus					// Y 	положительное
+		bgt		isplus					// Y 	positive
 		blt		isminus
 iszero:	//********************************************************
-		do		x0,zeroend				// Y	отрицательное
+		do		x0,zeroend				// Y	negative
 		move	a,X:(r2+1)				// *dst++ = curVolume
 		move	a0,X:(r2)+N				
 zeroend:
 		jmp		plsend				
 
 isminus://********************************************************
-		do		x0,minend				// Y	отрицательное
+		do		x0,minend				// Y	negative
 		move	a,X:(r2+1)				// *dst++ = curVolume
 		move	a0,X:(r2)+N				
 		add		y,a						// curVolume+=deltaVolume
@@ -139,14 +139,14 @@ panend:
 *
 * void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo )
 *
-*	ПРИМЕШАТЬ ОДИН ГОЛОС К БУФЕРУ
+*	Mix single voice to the buffer
 *
-*	s		синтезатор
-*	v		полифонический канал
-*	dst		приёмник
-*	todo	размер
+*	s		synthesizer
+*	v		poly-channel
+*	dst		target
+*	todo	size
 *
-* 	cash_2 	источник входных данных
+* 	cash_2 	source of data
 *
 *******************************************************************************/
 //						R2		  R3			    Y0
@@ -177,9 +177,9 @@ min:
 		sub		x0,y0
 		move	y1,a1
 		move	y0,a0
-		move	X:(r0+1),y1				// y1  = правая громкость
-		move	X:(r0),y0				// y0  = левая громкость
-		do		x0,Exit					// нет! смешаем оба канала
+		move	X:(r0+1),y1				// y1  = right volume
+		move	X:(r0),y0				// y0  = left volume
+		do		x0,Exit					// no! mix bought channels
 		move	X:(r2)+,x0				// x0  = (sample)*LEV2ptr++
 		move	X:(r3+1),b			
 		move	X:(r3),b0				// b   = (s32sample)*dest
@@ -216,14 +216,14 @@ bigphase:
 *
 * void alSynRenderVoice( PVoice* v, size_t todo )
 *
-*	Отрендерить Семпл
+*	Render sample
 *
-*	v		полифонический голос
-*	dst		куда отрендерить
-*	todo	размер блока
+*	v		poly channel
+*	dst		target
+*	todo	size
 *
-* 	cash_1 	используется для подкачки из SDRAM
-*	cash_2	для оендеринга семпла
+* 	cash_1 	load from SDRAM
+*	cash_2	for sample rendering 
 *
 *******************************************************************************/
 
@@ -234,7 +234,7 @@ void alSynRenderVoice( PVoice* v, size_t todo )
 	asm
 	{
 	/*
-	 * 	ПРОЧИТАТЬ В КЕШ ( Посчитаем на сколько сместится счётчик )
+	 * 	Read to cache 
 	 */
 		move	v,r3    				// r3  = voice
 										// work + (U32)((U32)pith * (Int16)todo)
@@ -266,17 +266,17 @@ void alSynRenderVoice( PVoice* v, size_t todo )
 		move	b0,POSL					// 		pos = b
 		move	b1,POSH
 										//*********************************
-										// Вычислим число слов для кеширования
-		move	#2,x0					// сдвинуть на два бита
-		asrr	y0,x0,y0				// целое смещение / 4
-		inc		y0						// y0  = число блоков
+										// Count size of cached words
+		move	#2,x0					// x2
+		asrr	y0,x0,y0				// integer shift / 4
+		inc		y0						// y0  = blocks count
 		inc		y0
-		move	CASH_1,r2				// r2  = начало кеша
-		jsr		sdram_load_64			// ЗАГРУЗИМ БЛОК
+		move	CASH_1,r2				// r2  = cache start
+		jsr		sdram_load_64			// Load block
 	   /*
-		*	Теперь проинтерполируем блок в кеше
+		*	Interpolate block in the cache
 		*/
-		move	CASH_1,y0				// y0  = начало кеша
+		move	CASH_1,y0				// y0  = sart of cache
 		add		framepos,y0				// y0  = pos.int + CASH_1
 		move	y0,r2					// r2  = level_1
 		move	CASH_2,r1				// r4  = level_2
@@ -304,7 +304,7 @@ interpolation:
 
 /******************************************************************************
 *
-*	ПРЕОБРАЗОВАНИЕ БЛОКА 32Х БИТНЫХ ДАННЫХ В 16 БИТОВЫЕ
+*	Convert 32 bits data to 16 bits
 *
 *******************************************************************************/
 //                          R2            R3           Y0
@@ -331,17 +331,16 @@ EndDo:
 *
 *	void alSynAddChannel(ALSynth* s, PVoice* v, stereo32* dst, size_t todo)
 *
-*	ГЕНЕРАЦИЯ ОДНОГО КАНАЛА
+*	Render single channel
 *
-*	s		синтезатор
-*	v		голос
-*	dst		выходной буфер
-*	todo	размер в семплах
+*	s		synthesizer
+*	v		voice
+*	dst		input buffer
+*	todo	size in samples
 *
-*	Делает это за несколько	итераций если это необходимо. Например если до 
-*	конца семпла осталось меньше чем todo семплов. То сначала запросим необхо-
-*	димое количество а затем перейдя вначало петли запросим сколько ещё необ-
-*	ходимо.
+*   Could require several attempts. For example in case if there are less samples
+*   to the end of sample than todo samples. It will process existing then jump
+*   to the loop point
 *
 *******************************************************************************/
 
@@ -629,7 +628,7 @@ void alSynPanSlide( ALSynth * s )
 *
 *	void    SynSetPan(ALSynth *s, ALVoice *voice, ALPan pan)
 *
-*	Устанавливает панораму для голоса
+*	Set voice panning
 *
 *******************************************************************************/
 
@@ -671,7 +670,7 @@ void   alSynSetGain( ALSynth * s, ALVoice *v, Int16 vol)
 *
 *	SynSetPitch(ALSynth *s, ALVoice *voice, Int32 ratio)
 *
-*	Устанавливает питч (частоту звучания) для голоса
+*	Set voice pitch
 *
 *	Значение ratio = 0x10000 означает воспроизводить ноту как есть
 *			 ratio = 0x20000 означает воспроизводить ноту на октаву выше

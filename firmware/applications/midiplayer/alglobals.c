@@ -3,7 +3,8 @@
 #include "audiolib.h"
 #include "sdram.h"
 
-ALGlobals * alGlobals;				// Synthesizer
+// Global variables
+ALGlobals * alGlobals;				
  
 void    alInit(ALGlobals *glob, ALSynConfig *c)
 {

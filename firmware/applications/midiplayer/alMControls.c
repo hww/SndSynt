@@ -84,8 +84,8 @@ ALVoiceState * vs = seqp->vAllocList.next;;
 	    case AL_MIDI_FX_CTRL_7:           		//0x1B
 	    case AL_MIDI_FX_CTRL_8:           		//0x1C
 	    case AL_MIDI_FX_CTRL_9:           		//0x1D
-			break;    
-	*/  case AL_MIDI_SUSTAIN_CTRL:        		//0x40 keep sound of all released keys
+			break;   */  
+	    case AL_MIDI_SUSTAIN_CTRL:        		//0x40 keep sound of all released keys
 	    	seqp->chanState[chan].sustain = val;
 			while((vs = alSeqpFindVoiceChl( vs, chan )) != NULL)
 			{	if(vs->envPhase == AL_PHASE_SUSTAIN) alSeqpVoiceOff( seqp, vs );
@@ -130,89 +130,88 @@ ALVoiceState * vs = seqp->vAllocList.next;;
 
 void alContrDataEntryPointer( ALSeqPlayer * seqp, UInt16 chan, UInt16 data, UInt16 mask )
 {
-ALInstrument * ins = NULL;
-ALSound 	 * snd = NULL;
-ALKeyMap	 * kmap = NULL;
-UInt16		   data7f = data & 0x7f;
+	ALInstrument * ins = NULL;
+	ALSound 	 * snd = NULL;
+	ALKeyMap	 * kmap = NULL;
+	UInt16		   data7f = data & 0x7f;
 
-		if(nrpnNum == 0x3FFF) return;
+	if(nrpnNum == 0x3FFF) return;
 
-		if(insNum < seqp->bank->instCount)
-		{	ins = seqp->bank->instArray[insNum]; 
-			if(sndNum < ins->soundCount)
-			 	{	snd = ins->soundArray[sndNum]; 
-					kmap = snd->keyMap;
-				}
-		}
+	if(insNum < seqp->bank->instCount)
+	{	ins = seqp->bank->instArray[insNum]; 
+		if(sndNum < ins->soundCount)
+		 	{	snd = ins->soundArray[sndNum]; 
+				kmap = snd->keyMap;
+			}
+	}
 
-		switch(nrpnNum)
-		{
-	    case AL_INS_NUM: 
-	    	alDataEntry( &insNum, data7f, mask); 
-	    	alSeqpSetChlProgram(seqp, chan, insNum);
-	    	break;
-	    case AL_INS_VOL: 
-	    	if(mask != 0x7f)
-	    		ins->volume =  INT2FRAC(data7f); 
-	    	break;
-	    case AL_INS_PAN:
-	    	alDataEntry( &ins->pan, data7f, mask); 
-	    	break;
-	    case AL_INS_BEND_RANGE:
-	    	alDataEntry( &ins->bendRange, data, mask); 
-	    	alSeqpSetChlProgram(seqp, chan, insNum);
-	    	break;
-	    case AL_INS_PRIORITY:
-	    	alDataEntry( &ins->priority, data7f, mask); 
-	    	break;
-	    case AL_SND_NUM: 
-   	    	alDataEntry( &sndNum, data7f, mask); 
-	    	detune = 0;
-	    	break;
-	    case AL_SND_VOL:
-	    	if(mask != 0x7f)
-	    		snd->sampleVolume =  INT2FRAC(data7f); 
-	    	break;
-	    case AL_SND_PAN:
-	    	alDataEntry( &snd->samplePan, data7f, mask); 
-	    	break;
-	    case AL_SND_FADE:
-	    	alDataEntry( &snd->sampleFadeout, data, mask); 
-	    	break;
-	    case AL_SND_VIB_TYPE:
-	    	alDataEntry( &ins->vibType, data7f, mask); 
-	    	break;
-	    case AL_SND_VIB_DELAY:
-	    	alDataEntry( &ins->vibDelay, data, mask); 
-	    	break;
-	    case AL_SND_VIB_RATE:
-	    	alDataEntry( &ins->vibRate, data, mask); 
-	    	break;
-	    case AL_SND_VIB_DEPTH:
-	    	alDataEntry( &ins->vibDepth, data, mask); 
-	    	break;
-	    case AL_SND_KEY_MIN:
-	    	alDataEntry( &kmap->keyMin, data7f, mask); 
-	    	break;
-	    case AL_SND_KEY_MAX:
-	    	alDataEntry( &kmap->keyMax, data7f, mask); 
-	    	break;
-	    case AL_SND_VEL_MIN:
-	    	alDataEntry( &kmap->velocityMin, data7f, mask); 
-	    	break;
-	    case AL_SND_VEL_MAX:
-	    	alDataEntry( &kmap->velocityMax, data7f, mask); 
-	    	break;
-	    case AL_SND_DETUNE:
-	    	alDataEntry( &detune, data, mask); 
-			kmap->detune = detune - 200;
-	    	break;
-	    case AL_SND_KAY_BASE:
-	    	alDataEntry( &kmap->keyBase, data, mask); 
-	    	break;
-		}		
+	switch(nrpnNum)
+	{
+	case AL_INS_NUM: 
+		alDataEntry( &insNum, data7f, mask); 
+		alSeqpSetChlProgram(seqp, chan, insNum);
+		break;
+	case AL_INS_VOL: 
+		if(mask != 0x7f)
+			ins->volume =  INT2FRAC(data7f); 
+		break;
+	case AL_INS_PAN:
+		alDataEntry( &ins->pan, data7f, mask); 
+		break;
+	case AL_INS_BEND_RANGE:
+		alDataEntry( &ins->bendRange, data, mask); 
+		alSeqpSetChlProgram(seqp, chan, insNum);
+		break;
+	case AL_INS_PRIORITY:
+		alDataEntry( &ins->priority, data7f, mask); 
+		break;
+	case AL_SND_NUM: 
+   		alDataEntry( &sndNum, data7f, mask); 
+		detune = 0;
+		break;
+	case AL_SND_VOL:
+		if(mask != 0x7f)
+			snd->sampleVolume =  INT2FRAC(data7f); 
+		break;
+	case AL_SND_PAN:
+		alDataEntry( &snd->samplePan, data7f, mask); 
+		break;
+	case AL_SND_FADE:
+		alDataEntry( &snd->sampleFadeout, data, mask); 
+		break;
+	case AL_SND_VIB_TYPE:
+		alDataEntry( &ins->vibType, data7f, mask); 
+		break;
+	case AL_SND_VIB_DELAY:
+		alDataEntry( &ins->vibDelay, data, mask); 
+		break;
+	case AL_SND_VIB_RATE:
+		alDataEntry( &ins->vibRate, data, mask); 
+		break;
+	case AL_SND_VIB_DEPTH:
+		alDataEntry( &ins->vibDepth, data, mask); 
+		break;
+	case AL_SND_KEY_MIN:
+		alDataEntry( &kmap->keyMin, data7f, mask); 
+		break;
+	case AL_SND_KEY_MAX:
+		alDataEntry( &kmap->keyMax, data7f, mask); 
+		break;
+	case AL_SND_VEL_MIN:
+		alDataEntry( &kmap->velocityMin, data7f, mask); 
+		break;
+	case AL_SND_VEL_MAX:
+		alDataEntry( &kmap->velocityMax, data7f, mask); 
+		break;
+	case AL_SND_DETUNE:
+		alDataEntry( &detune, data, mask); 
+		kmap->detune = detune - 200;
+		break;
+	case AL_SND_KAY_BASE:
+		alDataEntry( &kmap->keyBase, data, mask); 
+		break;
+	}		
 } 
-
 
 void alDataEntry( UInt16 * ptr, UInt16 data, UInt16 mask )
 {

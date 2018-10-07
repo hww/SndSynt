@@ -145,7 +145,6 @@ void alBnkfNew(ALBankFile *ctl, Ptr32 tbl)
 UWord32 snd_load_bank( char * name, ALBankFile ** ctl, UInt32 addr )
 {
 	int 	     Fd;
-//	ALBankFile * ctl;
 	UWord32      fsize;
 	size_t       words;
 
@@ -161,7 +160,7 @@ UWord32 snd_load_bank( char * name, ALBankFile ** ctl, UInt32 addr )
 	if(words>0)
 	{
 		*ctl = malloc( words );
-		read(Fd,*ctl, words ); // Прочитали файл
+		read(Fd,*ctl, words ); // Read file
 		sdram_load( addr, (UInt16*)*ctl, words );
 	}
 	close(Fd);

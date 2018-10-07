@@ -8,15 +8,15 @@
 
 /*****************************************************************************
 *
-* 	Получение различных значений из SDRAM
+* 	Read SDRAM
 *
 *	unsigned char alSeqGet8(  UWord32 * addr )
 *	      UWord16 alSeqGet16( UWord32 * addr )
 *	      UWord32 alSeqGet16( UWord32 * addr )
 *
-*	addr		указатель на 32х битный адресс в DRAMM
+*	addr		address in DRAMM
 *
-*	Указатель сдвигается на размерность данных которые прочитываются
+*	pointer increments by size of data
 *
 *****************************************************************************/
 
@@ -44,16 +44,14 @@ UWord32 dword;
 
 /*****************************************************************************
 *
-* Загрузга МИДИ ФАЙЛА в SDRAM
+* Load MIDI file to SDRAM
 *
 *	UWord32 alSeqFileLoad( char * name, UInt32 addr )
 *
-*	name		имя файла
-*	addr		место в SDRAM
+*	name		file name
+*	addr		address in SDRAM
 *
-*	Возвращает длитну файла в словах
-*	Байты в SDRAM представленны в виде слов, каждый байт занимает одно 
-*	16 битовое слово
+*	return file size in words (16 bits)
 *
 *****************************************************************************/
 
@@ -67,28 +65,26 @@ UWord32 addr = base;
 
 	if((f->revision == 0x5331) && (f->seqCount>fnum))
 	{
-		addr+=(fnum<<3); 									 // Пропустить файлы
+		addr+=(fnum<<3); 									 
 
-	   	f->seqArray[0].offset = alSeqGet32( &addr ) + base;  // положение файла в SDRAM
-	   	f->seqArray[0].len 	  = alSeqGet32( &addr );  		 // размер файла в SDRAM
+	   	f->seqArray[0].offset = alSeqGet32( &addr ) + base;  
+	   	f->seqArray[0].len 	  = alSeqGet32( &addr );  		 
 	}
 	else
-	{	f->seqArray[0].offset = 0xFFFFFFFF;  	// положение файла в SDRAM
+	{	f->seqArray[0].offset = 0xFFFFFFFF;  	
 	}
 }
 
 /*****************************************************************************
 *
-* Загрузга МИДИ ФАЙЛА в SDRAM
+* Load MIDI file to SDRAM
 *
 *	UWord32 alSeqFileLoad( char * name, UInt32 addr )
 *
-*	name		имя файла
-*	addr		место в SDRAM
+*	name		file name
+*	addr		address in SDRAM
 *
-*	Возвращает длитну файла в словах
-*	Байты в SDRAM представленны в виде слов, каждый байт занимает одно 
-*	16 битовое слово
+*	return file size in words (16 bits)
 *
 *****************************************************************************/
 

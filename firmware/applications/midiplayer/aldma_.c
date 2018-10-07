@@ -40,9 +40,9 @@ void set_file(void);
 *
 * s32 dmaCallBack(s32 addr, s32 len, void *state)
 *
-*	addr	адрес источника
-*	len		размер
-*	state	указатель на состояние всех DMA
+*	addr	source address
+*	len		size
+*	state	state of DMAs
 *
 *******************************************************************************/
 
