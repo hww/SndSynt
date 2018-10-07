@@ -44,20 +44,19 @@ f32     alCents2Ratio(s32 cents)
 *
 * PARAMETERS
 *
-*   Note 		Нота от 0  до 95 (0 = C-0, 95 = B-7)
+*   Note 		tone from 0  to 95 (0 = C-0, 95 = B-7)
 *   finetune    Подстройка от -1200 до +1200 
-*			    -100 	 -1 полутон, 
-*				+100 	 +1 полутон,
-*				-1200	 -1 октава
-*				+1200 	 +1 октава
+*			    -100 	 -1 half tone, 
+*				+100 	 +1 half tone,
+*				-1200	 -1 octave
+*				+1200 	 +1 octave
 *
-*	Таблица РЕЙТОВ ratestable[] для девятой октавы, и при том что
-*   звук "ДО" в 5 той октаве имеет RATE равный 1.0 тоесть 32000гц
+*	ratestable[] for the octave 9, and "DO" at 5 octave has RATE 1.0 (aka 32000Hz)
 *
 *******************************************************************************/
 
-#define OCT_OF_RATE_TABLE 9					// Октава таблици RATEs
-#define BASE_NOTE (5*12)					// Нота озвучиваемая без передискретизации		
+#define OCT_OF_RATE_TABLE 9					// Rate table for octave 
+#define BASE_NOTE (5*12)					// Note without re-samplig
 
 UWord32 ratestable[] =
 {
@@ -179,10 +178,10 @@ void    alSeqpDelete(ALSeqPlayer *seqp)
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 seq	   МИДИ последовательность
+*	 seq	   MIDI sequence
 *
 * DESCRIPTION
-*     Возвращает и устанавливает миди последовательность в секвенсоре
+*    Set and return sequence 
 *     
 *******************************************************************************/
 
@@ -206,7 +205,7 @@ ALSeq  *alSeqpGetSeq(ALSeqPlayer *seqp)
 *    seqp      pointer to the sequence player.
 *
 * DESCRIPTION
-*     Возвращает и устанавливает секвенсор в состояние
+*     Set and return sequencer state
 *     
 *******************************************************************************/
 
@@ -292,7 +291,7 @@ void    alSeqpSetTempoX(ALSeqPlayer *seqp, Int16 xTempo)
 *    seqp      pointer to the sequence player.
 *
 * DESCRIPTION
-*     alSeqpGetTempo Возвращает темп равный длительность четверти ноты в МКС.
+*     alSeqpGetTempo return tempo of quoter of tick in MKS.
 *     
 *******************************************************************************/
 
@@ -399,7 +398,7 @@ Int16 	dword;
 		switch(cmd)
 		{
 		case AL_MIDI_NoteOn:
-			if(byte2>0)		// Если громкость 0 то это отпускание клавиши
+			if(byte2>0)		// volume 0 is release key
 			{
 				alSeqpKeyOn( seqp, chan, byte1, byte2 );
 				break;
@@ -414,7 +413,7 @@ Int16 	dword;
 			alSeqpSetChlProgram(seqp, chan, byte1);
 			break;
 		case AL_MIDI_PitchBendChange:
-			// Знеачение контроллера от 0 до 16383. При этом середина 8192
+			// value 0 - 16383. the mid position is 8192
 			dword = (byte1 + (byte2<<7)) - 8192;		
 			chanstate->pitchBend = ((Int32)(chanstate->bendRange) * dword) / 8192;
 			alSeqpChangePitch( seqp, chan);
@@ -431,81 +430,79 @@ Int16 	dword;
 *
 *	void     alSeqpSwitchEvent( ALSeqPlayer *seqp, ALEvent * event)
 *
-*	Обработка сообщений
+*	Event handler
 *
 *******************************************************************************/
 
 void     alSeqpSwitchEvent( ALSeqPlayer *seqp, ALEvent * event)
 {
-Int16			etype;
-ALMicroTime 	time;
-ALVoiceState 	*vs;
-			
-			etype = event->type;
-			
-			switch(etype)							// Если сообщение
-			{
-			case AL_SEQP_MIDI_EVT:
-				alSeqpPlayer( seqp );
-			case AL_SEQ_MIDI_EVT:
-				alSeqpSendMidi(seqp,    0,
-										event->msg.midi.status, 
-										event->msg.midi.byte1, 
-										event->msg.midi.byte2);
-				break;
-			case AL_SEQP_TEMPO_EVT:
-			case AL_TEMPO_EVT:
-				time =  ((UInt32)event->msg.tempo.byte1<<16) + 
-						((UInt16)event->msg.tempo.byte2<<8)  + 
-						((UInt16)event->msg.tempo.byte3);		
-				
-				alSeqpSetTempo(seqp, time);
-				if(etype==AL_SEQP_TEMPO_EVT)alSeqpPlayer( seqp );
-				break;
-			
-			case AL_SEQ_END_EVT:
-				alSeqpStop(seqp);
-					seqp->target->curPtr    = seqp->target->trackStart;	
-					seqp->target->lastTicks = 0;				
-					seqp->target->lastStatus= 0;
-				break;
+	Int16			etype;
+	ALMicroTime 	time;
+	ALVoiceState 	*vs;
+	
+	etype = event->type;
+	
+	switch(etype)							
+	{
+	case AL_SEQP_MIDI_EVT:
+		alSeqpPlayer( seqp );
+	case AL_SEQ_MIDI_EVT:
+		alSeqpSendMidi(seqp,    0,
+								event->msg.midi.status, 
+								event->msg.midi.byte1, 
+								event->msg.midi.byte2);
+		break;
+	case AL_SEQP_TEMPO_EVT:
+	case AL_TEMPO_EVT:
+		time =  ((UInt32)event->msg.tempo.byte1<<16) + 
+				((UInt16)event->msg.tempo.byte2<<8)  + 
+				((UInt16)event->msg.tempo.byte3);		
+		
+		alSeqpSetTempo(seqp, time);
+		if(etype==AL_SEQP_TEMPO_EVT)alSeqpPlayer( seqp );
+		break;
+	
+	case AL_SEQ_END_EVT:
+		alSeqpStop(seqp);
+			seqp->target->curPtr    = seqp->target->trackStart;	
+			seqp->target->lastTicks = 0;				
+			seqp->target->lastStatus= 0;
+		break;
 
-			case AL_SEQP_EVOL_EVT:
-				alSeqpEnvVolEvent( seqp, event );
-				break;
+	case AL_SEQP_EVOL_EVT:
+		alSeqpEnvVolEvent( seqp, event );
+		break;
 
-			case AL_SEQP_EPAN_EVT:
-				alSeqpEnvPanEvent( seqp, event );
-				break;
-			
-			case AL_NOTE_END_EVT:
-	//			vs = event->msg.note.voice;
-	//			if(vs->flags != 0)
-	//			{	seqp->stopOsc(vs->VibOscState);
-	//				vs->flags = 0;
-	//			}
-	//			alEvtqFlushVoice(&seqp->evtq, vs);
-	//			alSeqpFreeVoice( seqp, vs );
-				break;
-			
-			case AL_SEQP_PLAY_EVT:
-				alSeqpPlayer( seqp );
-				break;
+	case AL_SEQP_EPAN_EVT:
+		alSeqpEnvPanEvent( seqp, event );
+		break;
+	
+	case AL_NOTE_END_EVT:
+		//vs = event->msg.note.voice;
+		//if(vs->flags != 0)
+		//{	seqp->stopOsc(vs->VibOscState);
+		//	vs->flags = 0;
+		//}
+		//alEvtqFlushVoice(&seqp->evtq, vs);
+		//alSeqpFreeVoice( seqp, vs );
+		break;
+		
+	case AL_SEQP_PLAY_EVT:
+		alSeqpPlayer( seqp );
+		break;
 
-//			case AL_VIB_OSC_EVT:
-//				alSeqpVibOscEvent( seqp, event );
-			break;
+		//case AL_VIB_OSC_EVT:
+		//	alSeqpVibOscEvent( seqp, event );
+		//	break;
 							
-			case AL_SEQ_NOP_EVT:					// Сообщене КВАНТИЗАЦИИ используется
-													// аппаратным МИДИ устройством
-				alEvtqPostEvent( &seqp->evtq,  event, seqp->uspt * (seqp->target->division>>5));
-			
-				while(midiGetMsg(event) != 0)
-				{										// Пока Есть сообщение
-					alSeqpSendMidi(seqp, 0, event->msg.midi.status, event->msg.midi.byte1, event->msg.midi.byte2);
-				}
-				break;
-			}
+	case AL_SEQ_NOP_EVT:					
+		alEvtqPostEvent( &seqp->evtq,  event, seqp->uspt * (seqp->target->division>>5));
+		while(midiGetMsg(event) != 0)
+		{										
+			alSeqpSendMidi(seqp, 0, event->msg.midi.status, event->msg.midi.byte1, event->msg.midi.byte2);
+		}
+		break;
+	}
 }
 
 /******************************************************************************
@@ -531,7 +528,7 @@ ALSeqPlayer  * seqp = (ALSeqPlayer*) data;
 
 		if(seqp->evtq.eventCount>0)
 		{
-			// Взяли ближайшее сообщение и вернули время которое необходимо до него
+			// get closest in time event, and read it's time
 			seqp->nextDelta = alEvtqNextEvent( &seqp->evtq, &seqp->nextEvent ); 
 		}
 		else
@@ -554,7 +551,7 @@ ALSeqPlayer  * seqp = (ALSeqPlayer*) data;
 	do
 	{	alSeqpVibOscEvent( seqp, &seqp->fnextEvent );
 		// alSeqpSwitchEvent( seqp, &seqp->fnextEvent);
-		// Взяли ближайшее сообщение и вернули время которое необходимо до него
+		// get closest in time event, and read it's time
 		if(seqp->fevtq.eventCount != 0)
 			seqp->fnextDelta = alEvtqNextEvent( &seqp->fevtq, &seqp->fnextEvent ); 
 		else
@@ -693,35 +690,34 @@ ALVoiceState * vsold;
 ALSound		 * snd;
 Int16		   ok;
 
-	chanstate 	= &seqp->chanState[chan];					// Состояние канала
-	if((ins	= chanstate->instrument) == NULL) return;		// Инструмент канала
-	priority  	= ins->priority + chanstate->priority; 		// Приоритет звука
+	chanstate 	= &seqp->chanState[chan];					// channel state
+	if((ins	= chanstate->instrument) == NULL) return;		// channel's instrument
+	priority  	= ins->priority + chanstate->priority; 		// sound's priority
 	/*
-	 * 	Определим какой звук необходим для ноты и достаточна 
-	 * 	ли сила нажатия для него.
+	 * 	check sound for this keys and test if this force is enought to play
 	 */
 	if(chanstate->prog != 127) key+=seqp->relTone;
 	if((snd=alSeqpGetSound( ins, key, velocity ))==NULL) return;// Не нашли звук
 	/*
-	 * 	Возьмём один виртуальный канал. Сперва узнаем есть ли голос
-	 * 	в котором звучит таже самая нота. Если есть запустим Release
+	 * 	Get virtual channel. But before lets check if there is already this tone
+	 * 	In case if it is exist then start Release
 	 */
 	vs = seqp->vAllocList.next;
 	while((vs = alSeqpFindVoiceChlKey( vs, chan, key )) != NULL)
 	{	alSeqpVoiceOff( seqp, vs );
 		vs = vs->voice.node.next;
 	}
-	if((vs=alSeqpGetFreeVoice(seqp)) == NULL)  return;			// Свободный VoiceState не найден
-	ok = alSynAllocVoice(seqp->drvr, &vs->voice, priority );	// Подключим полифонию
+	if((vs=alSeqpGetFreeVoice(seqp)) == NULL)  return;			// free VoiceState was not found
+	ok = alSynAllocVoice(seqp->drvr, &vs->voice, priority );	// use polyphony
 	/*
-	 *	ОК к голосу приделан полифонический голос
+	 *	voice has poly-voice
 	 */
 	if(ok==1)
-	{	vs->instrument 	= ins;							// Инструмент
-		vs->sound 		= snd;							// Звук 
-		vs->channel 	= chan;							// МИДИ канал
-		vs->key 		= key;							// Номер клавиши
-		vs->velocity 	= velocity;						// Установим силу
+	{	vs->instrument 	= ins;							// set instrument
+		vs->sound 		= snd;							// set sound 
+		vs->channel 	= chan;							// set MIDI channel
+		vs->key 		= key;							// set key number
+		vs->velocity 	= velocity;						// set force
 		if(snd->wavetable->rate == MIXFREQ)
 			vs->voice.unityPitch = 0x8000;
 		else
@@ -729,21 +725,21 @@ Int16		   ok;
 		alSeqpStartEnvelope( seqp, vs );
 		alSeqpStartOsc( seqp, vs );
 		alSeqpSetPitch( seqp, vs );
-		alSynStartVoice( seqp->drvr, &vs->voice, snd->wavetable );// Установили волновую форму в синтезаторе
+		alSynStartVoice( seqp->drvr, &vs->voice, snd->wavetable ); // set waveform
 	}
-	else alSeqpFreeVoice( seqp, vs );					// Освободим виртуальный голос	
+	else alSeqpFreeVoice( seqp, vs );					// release virtual voice	
 }
 
 /******************************************************************************
 *
 *	void	alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
 *
-*	seqp		the player последовательностей
-*	chan		номер МИДИ канала
-*	key			клавиша
-*	velocity	сила нажатия
+*	seqp		the sequence player
+*	chan		MIDI channel
+*	key			key
+*	velocity	force of press/release
 *
-*	Останавливает озвучивание клавиши в канале.
+*	Stop key in channel
 *
 *******************************************************************************/
 
@@ -774,11 +770,10 @@ ALVoiceState * vs;
 *
 *	ALSound * alSeqpGetSound( ALInstrument ins, u8 key )
 *
-*	seqp		the player последовательностей
-*	key			клавиша
+*	seqp		the sequence player 
+*	key			key
 *
-*	Возвращает указатель на sound структуру ALSound. Определяет это по номеру
-*	клавиши нажатой на клавиатуре и по указателю на инструмент.
+*	Return structure ALSound, by given key number
 *
 *******************************************************************************/
 
@@ -788,11 +783,11 @@ int 	  n, max;
 ALSound * snd;
 ALKeyMap* kmap;
  
-	max = ins->soundCount;							// Число звуков в инструменте	
+	max = ins->soundCount;								
 	for(n=0; n<max ;n++)
 	{
-		snd 	= ins->soundArray[n];				// Звук
-		kmap	= snd->keyMap;						// Раскладка	
+		snd 	= ins->soundArray[n];				
+		kmap	= snd->keyMap;							
 		if(( kmap->keyMin <= key ) && ( kmap->keyMax >= key ) && 
 		   ( kmap->velocityMin <= vel ) && ( kmap->velocityMax >= vel )) return snd;
 	}
@@ -808,8 +803,8 @@ ALKeyMap* kmap;
 *	env			pointer to envelope's table 
 *	sustane		state SUSTANE if TRUE
 *
-*	Переходит в следующую фазу огибающей. Действует и на громкость и на панораму.
-*	Возвращает true если мы перешли и false стоим в одной точке
+*	Switch to next envelope phase. Modify volume and pan.
+*	returns true state was switched, and false if was not switched
 *
 *******************************************************************************/
 
@@ -819,14 +814,16 @@ ALMicroTime alSeqpEnvelope( ALVoiceState * vs, ALEnvState * state, ALEnvelopeTab
 bool step = true;
 	
 	if(sustain && ((env->type & AL_ENV_SUSTANE) != 0))
-	{ 	//	Если удержание клавиши, то мы в состоянии SUSTANE
+	{ 	
+		//	while hold key we SUSTANE
 		if(state->Phase >= env->sustaneEnd)
 		{ 	if(env->sustaneStart == env->sustaneEnd) step = false; 
 			else state->Phase = env->sustaneStart; 
 		}
 	}
 	else if((env->type & AL_ENV_LOOP) != 0)
-	{	// 	Мы не находимся в SUSTANE но есть режим LOOP
+	{	
+		// 	now in SUSTANE but there is LOOP
 		if(state->Phase >= env->loopEnd)
 		{ 	if(env->loopStart == env->loopEnd)
 			{	step = false;
@@ -836,7 +833,8 @@ bool step = true;
 		}
 	}
 	else
-	{	//	Просто огибающая не имеющая ни SUSTANE ни LOOP
+	{	
+		//	envelope without SUSTANE or LOOP
 		if(state->Phase >= (env->pointCount-1))
 		{ 	step = false;
 			vs->envPhase = AL_PHASE_RELEASE;
@@ -896,9 +894,8 @@ ALVoiceState * vsnext;
 *	seqp		the player
 *	vs			pointer to voice state
 *
-*	Устанавливает в голосе параметры огибающей, и переходит в следующую фазу.
-*	Так как эта функция вызывается по сообщению. То и она отправляет следующее
-*	сообщение до ближайшей точки огибающих.
+*	Set envelope parameters of voice and switch to next phase.
+* 	Called by event, and send event for next envelope point
 * 
 *******************************************************************************/
 
@@ -992,12 +989,12 @@ ALMicroTime time;
 *	seqp		the player
 *	vs			pointer to voice state
 *
-*	Устанавливает результирующую громкость. Учитывая целый ряд параметров
+*	Set final, main volume
 *
-*	vs->velocity						сила нажатия
-*	libvol								громкость звука и инструмента
-*	seqp->vol							громкость секвенсора
-*	seqp->chanState[vs->channel].vol	громкость МИДИ канала
+*	vs->velocity						press force
+*	libvol								sound and instrument volume
+*	seqp->vol							sequencer volume
+*	seqp->chanState[vs->channel].vol	MIDI channel volume
 *
 *******************************************************************************/
 
@@ -1011,7 +1008,7 @@ ALMicroTime t;
 	cvol = mult (cvol ,lvol);
 	cvol = mult (cvol , seqp->vol);
 	t = vs->envVolState.EndTime;
-	if(vs->envPhase == AL_PHASE_RELEASE) 	//	завершение "fadeout" звука 
+	if(vs->envPhase == AL_PHASE_RELEASE) 	//	"fadeout"  
 	{	if((vs->fadeTime <= vs->envVolState.EndTime) || (vs->envVolState.EndTime == 0))
 		{	vs->fadeVol   = 0; 
 			t = vs->fadeTime;
@@ -1046,7 +1043,7 @@ ALPan cpan, lpan, epan;
 *	vs			pointer to voice state
 *	chan		MIDI channel
 *
-*	Ищет голос у которого МИДИ канал такой как в переменной chan.
+*	Find voice by MIDI channel number
 *
 *******************************************************************************
 *
@@ -1055,7 +1052,7 @@ ALPan cpan, lpan, epan;
 *	vs			pointer to voice state
 *	chan		MIDI channel
 *
-*	Ищет голос, канал и нота которого такие как на входе функции.
+*	Find voice by MIDI channel and tone (NOTE)
 *
 *******************************************************************************/
 
@@ -1084,16 +1081,16 @@ ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
 *	seqp		the player
 *	vs			pointer to voice state
 *
-*	Устанавливает Pitch у канала.
+*	Set  channel's pitch.
 *
 *******************************************************************************
 *
 *	void alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel)
 *
 *	seqp		the player
-*	channel		миди канал
+*	channel		MIDI channel
 *
-*	Ищет голоса, канал которых равен channel, и устанавливает его Pitch.
+*	Find voices, by channel, and set it's Pitch.
 *
 *******************************************************************************/
 
@@ -1107,9 +1104,9 @@ float	   f;
 	pitch = kmap->detune + vs->vibrato + seqp->chanState[vs->channel].pitchBend;
  		 
 	key  += (BASE_NOTE - kmap->keyBase);
-	pitch = alGetLinearRate( key, pitch );			// Взяли Rate для ноты
+	pitch = alGetLinearRate( key, pitch );			
 	vs->pitch = pitch; 
-	alSynSetPitch( seqp->drvr, &vs->voice, pitch);	// Установим rate в синтезаторе
+	alSynSetPitch( seqp->drvr, &vs->voice, pitch);	
 }
 
 void alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel)
@@ -1132,17 +1129,16 @@ ALVoiceState * vs = seqp->vAllocList.next;
 *	seqp		the player
 *	vs			pointer to voice state
 *
-*	Запускает OSC канала. Ставит в очередь сообщение для него.
+*	Start OSC and put to the events queue.
 *
 *******************************************************************************
 *
 *	void	alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  )
 *
 *	seqp		the player
-*	event		сообщение
+*	event		event message
 *
-*	Сообщение OSC для вибраты обновляет переменную vibrato а затем
-*	изменяет pitch.
+*	Event OSC for vibrato will update the variable vibrato and then change pitch
 *
 *******************************************************************************/
 
