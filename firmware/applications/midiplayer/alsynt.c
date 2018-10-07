@@ -10,15 +10,15 @@
 #include "audiolib.h"
 #include "test.h"
 
-static void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo );
-static void alSynRenderVoice( PVoice* v, size_t todo );
+static void alSynMixVoice(PVoice* v, UInt32* dst, size_t todo);
+static void alSynRenderVoice(PVoice* v, size_t todo);
 static void alSynMix32To16(UInt16 *dste, UInt32 *srce, size_t todo);
 static void alSynAddChannel(ALSynth* s, PVoice* v, stereo32* dst, size_t todo);
 static void alSynPanSlide(ALSynth * s);
 static void alSynMixPanGain(PVoice *pv);
 
-static Int32 volTable[VOL_BUF_SIZE+1];	// Volumes tables 
-static Int32 panTable[VOL_BUF_SIZE+1];	// Volume conversion table
+static Int32 volTable[VOL_BUF_SIZE + 1];	// Volumes tables 
+static Int32 panTable[VOL_BUF_SIZE + 1];	// Volume conversion table
 UInt16 *cash_1;							// Cache of first level
 UInt16 *cash_2;							// Cache of second level
 
@@ -78,60 +78,60 @@ UInt16 *cash_2;							// Cache of second level
 *	y0 = left volume
 *	y1 = right volume
 *******************************************************************************/
-void alSynMakeVolumes( PVoice * v );
-void alSynMakeVolumes( PVoice * v )
+void alSynMakeVolumes(PVoice * v);
+void alSynMakeVolumes(PVoice * v)
 {
 	asm
-	{	move	v,r3    				// r3  	= voice
+	{ move	v,r3    					// r3  	= voice
 		move	#volTable,r2			// r2	= dst
-		move	#VOL_BUF_SIZE+1,x0		// x0 	= todo
+		move	#VOL_BUF_SIZE + 1,x0	// x0 	= todo
 		move	#2,N
 		move	CVOLH,a					// A 	= curVolume
 		move	CVOLL,a0
 		move	TVOLH,b					// B 	= targetVolume
-		move	TVOLL,b0		
+		move	TVOLL,b0
 		move	DVOLH,y1				// Y 	= deltaVolume
-		move	DVOLL,y0		
+		move	DVOLL,y0
 		tstw	y1
 		bgt		isplus					// Y 	positive
 		blt		isminus
-iszero:	//********************************************************
+iszero :	//********************************************************
 		do		x0,zeroend				// Y	negative
-		move	a,X:(r2+1)				// *dst++ = curVolume
-		move	a0,X:(r2)+N				
-zeroend:
-		jmp		plsend				
+		move	a,X : (r2 + 1)			// *dst++ = curVolume
+		move	a0,X : (r2)+N
+zeroend :
+		jmp		plsend
 
-isminus://********************************************************
+isminus ://********************************************************
 		do		x0,minend				// Y	negative
-		move	a,X:(r2+1)				// *dst++ = curVolume
-		move	a0,X:(r2)+N				
+		move	a,X : (r2 + 1)			// *dst++ = curVolume
+		move	a0,X : (r2)+N
 		add		y,a						// curVolume+=deltaVolume
 		cmp		b,a						// if(a<b) 
 		tlt		b,a						// 		a=b
-minend:	
-		jmp		plsend				
-		
-isplus:	//********************************************************
-		do		x0,plsend				 
-		move	a,X:(r2+1)				// *dst++ = curVolume
-		move	a0,X:(r2)+N
+minend :
+		jmp		plsend
+
+isplus :	//********************************************************
+		do		x0,plsend
+		move	a,X : (r2 + 1)			// *dst++ = curVolume
+		move	a0,X : (r2)+N
 		add		y,a						// curVolume+=deltaVolume
 		cmp		a,b						// if(a>b)
 		tlt		b,a						// 		a=b
-plsend:
-		move	#volTable+1,r2			// r2	= src
+plsend :
+		move	#volTable + 1,r2		// r2	= src
 		move	#panTable,r1			// r1	= dst
 		move	RVOL,y1					// 7FFF = rightchannel
 		move	LVOL,y0
-		move	#VOL_BUF_SIZE+1,x0		// x0 	= todo
+		move	#VOL_BUF_SIZE + 1,x0	// x0 	= todo
 		do		x0,panend
-		move	X:(r2)+N,x0
+		move	X : (r2)+N,x0
 		mpyr	y0,x0,a
 		mpyr	y1,x0,b
-		move	b,X:(r1+1)
-		move	a,X:(r1)+N
-panend:
+		move	b,X : (r1 + 1)
+		move	a,X : (r1)+N
+panend :
 	}
 }
 
@@ -150,11 +150,11 @@ panend:
 *
 *******************************************************************************/
 //						R2		  R3			    Y0
-void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo )
+void alSynMixVoice(PVoice* v, UInt32* dst, size_t todo)
 {
 	asm
 	{
-		move	#2,N					
+		move	#2,N
 		move	#0xFFFF,M01				// MODULO OFF
 		move	v,r3    				// r3  = voice
 		move	todo,y0					// y0  = todo 
@@ -165,48 +165,48 @@ void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo )
 		move	dst,r3					// r3  = dest
 		tstw	y1
 		beq		phase0
-loop:
+loop :
 		cmp		y0,y1
 		bgt		bigY1
 		move	y1,x0
 		bra		min
-bigY1:
+bigY1 :
 		move	y0,x0
-min:
+min :
 		sub		x0,y1
 		sub		x0,y0
 		move	y1,a1
 		move	y0,a0
-		move	X:(r0+1),y1				// y1  = right volume
-		move	X:(r0),y0				// y0  = left volume
+		move	X : (r0 + 1),y1			// y1  = right volume
+		move	X : (r0),y0				// y0  = left volume
 		do		x0,Exit					// no! mix bought channels
-		move	X:(r2)+,x0				// x0  = (sample)*LEV2ptr++
-		move	X:(r3+1),b			
-		move	X:(r3),b0				// b   = (s32sample)*dest
+		move	X : (r2)+,x0			// x0  = (sample)*LEV2ptr++
+		move	X : (r3 + 1),b
+		move	X : (r3),b0				// b   = (s32sample)*dest
 		mac 	x0,y0,b					// b  += (sample * leftvol)
-		move	b,X:(r3+1)	
-		move	b0,X:(r3)+n				
-		move	X:(r3+1),b				// b   = (s32sample)*dest
-		move	X:(r3),b0				// *dest++ = b				
+		move	b,X : (r3 + 1)
+		move	b0,X : (r3)+n
+		move	X : (r3 + 1),b			// b   = (s32sample)*dest
+		move	X : (r3),b0				// *dest++ = b				
 		mac		x0,y1,b					// b  += (sample * rightvol)
-		move	b,X:(r3+1)
-		move	b0,X:(r3)+n				// *dest++ = b
-Exit:	
+		move	b,X : (r3 + 1)
+		move	b0,X : (r3)+n			// *dest++ = b
+Exit :
 		move	a0,y0
 		move	a1,y1
 		tstw	y1
 		bne		bigphase				// фаза > 0
-phase0:
+phase0 :
 		move	#32,y1
-		lea		(r0)+N					// pptr++
-		lea		(r1)+N					// vptr++
-bigphase:		
+		lea(r0) + N						// pptr++
+		lea(r1) + N						// vptr++
+bigphase :
 		tstw	y0						// if(todo>0)
 		bgt		loop					//		goto loop;
 		move	v,r3
 		move	y1,PHASE
-		move	X:(r1+1),y1
-		move	X:(r1),y0
+		move	X : (r1 + 1),y1
+		move	X : (r1),y0
 		move	y1,CVOLH
 		move	y0,CVOLL
 	}
@@ -223,19 +223,19 @@ bigphase:
 *	todo	size
 *
 * 	cash_1 	load from SDRAM
-*	cash_2	for sample rendering 
+*	cash_2	for sample rendering
 *
 *******************************************************************************/
 
-void alSynRenderVoice( PVoice* v, size_t todo )
+void alSynRenderVoice(PVoice* v, size_t todo)
 {
 	UInt16 rendfpos;
 	UInt16 framepos;
 	asm
 	{
-	/*
-	 * 	Read to cache 
-	 */
+		/*
+		 * 	Read to cache
+		 */
 		move	v,r3    				// r3  = voice
 										// work + (U32)((U32)pith * (Int16)todo)
 		move	todo,x0					// 		x0  = todo
@@ -258,22 +258,22 @@ void alSynRenderVoice( PVoice* v, size_t todo )
 										// pos  = (pos & 0xFFFFFFFC) + (work>>16)
 		move	b1,y0					// y0   = sampleswork
 		move	b1,b0					//		b  = work>>=16
-		clr		b1						
+		clr		b1
 		move	POSH,a1					// 		a   = pos 
 		move	POSL,a0					// 
 		andc	#$FFFC,a0				// 		a &= 0xFFFFFFFC
 		add		a,b						//		b += a 
 		move	b0,POSL					// 		pos = b
 		move	b1,POSH
-										//*********************************
-										// Count size of cached words
+		//*********************************
+		// Count size of cached words
 		move	#2,x0					// x2
 		asrr	y0,x0,y0				// integer shift / 4
 		inc		y0						// y0  = blocks count
 		inc		y0
 		move	CASH_1,r2				// r2  = cache start
 		jsr		sdram_load_64			// Load block
-	   /*
+		/*
 		*	Interpolate block in the cache
 		*/
 		move	CASH_1,y0				// y0  = sart of cache
@@ -284,21 +284,21 @@ void alSynRenderVoice( PVoice* v, size_t todo )
 		move	PITCHF,y0				// y0  = increment.fr
 		move	PITCHI,N				// N   = increment.int
 		move	todo,x0
-		do		x0,interpolation		
-		move	X:(r2),x0				// x0  = (sample)(*level_1)
-		not		y1						// y1  = NOT(index.fr)
+		do		x0,interpolation
+		move	X : (r2),x0				// x0  = (sample)(*level_1)
+		not y1							// y1  = NOT(index.fr)
 		mpysu	x0,y1,b					// b   = (S16)sample * NOT(index.fr)
-		move	X:(r2+1),x0				// x0  = (sample)(*(level_1+1)) 
-		not		y1						// y1  = NOT(index.fr)
+		move	X : (r2 + 1),x0			// x0  = (sample)(*(level_1+1)) 
+		not y1							// y1  = NOT(index.fr)
 		macsu	x0,y1,b					// b  += (S16)sample * index.fr
 		asr		b
 		rnd		b
-		lea		(r2)+n					// level_1+=increment.int
+		lea(r2) + n						// level_1+=increment.int
 		add		y0,y1					// a1 += increment.fr
 		bcc		NoC						// if(CARY SET)
-		lea		(r2)+					// level_1++
-NoC:	move 	b,X:(r1)+				// *level_2++ = b	
-interpolation:								
+		lea(r2) +						// level_1++
+		NoC:	move 	b,X : (r1)+		// *level_2++ = b	
+	interpolation :
 	}
 }
 
@@ -311,17 +311,17 @@ interpolation:
 void alSynMix32To16(UInt16 *dste, UInt32 *srce, size_t todo)
 {
 	asm{
-			move	#2,n
-			do		y0,EndDo
-			move	X:(r3+1),a				// a = (sample32)(r3)		
-			move	X:(r3)+n,a0				// r3 to next sample
-			rnd		a						// round sample
-			move	a,X:(R2)+				// *dst++=saturate(a)
-			move	X:(r3+1),a
-			move	X:(r3)+n,a0
-			rnd		a
-			move	a,X:(R2)+
-EndDo:
+		move	#2,n
+		do		y0,EndDo
+		move	X : (r3 + 1),a			// a = (sample32)(r3)		
+		move	X : (r3)+n,a0			// r3 to next sample
+		rnd		a						// round sample
+		move	a,X : (R2)+				// *dst++=saturate(a)
+		move	X : (r3 + 1),a
+		move	X : (r3)+n,a0
+		rnd		a
+		move	a,X : (R2)+
+	EndDo :
 	}
 }
 
@@ -346,56 +346,59 @@ EndDo:
 
 void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 {
-    UInt32  end;
-    UInt16	done;
-    UInt32  estimate;
+	UInt32  end;
+	UInt16	done;
+	UInt32  estimate;
 
-    while(todo > 0)
-    {   
-    	// обновить 'current' позицию учитывая зацикливание, или
-        // остановить воспроизведение если достигли конца семпла
+	while (todo > 0)
+	{
+		// обновить 'current' позицию учитывая зацикливание, или
+		// остановить воспроизведение если достигли конца семпла
 
-		if(((pv->pos == pv->end) && (pv->fpos>0)) || (pv->pos > pv->end))
-		//if(pv->pos >= pv->end)
+		if (((pv->pos == pv->end) && (pv->fpos > 0)) || (pv->pos > pv->end))
+			//if(pv->pos >= pv->end)
 		{	// воспроизведение вперёд и текущая
 			// позиция достигла конца
-        	if((((ALVoice*)pv->vvoice)->state & AL_SF_LOOP) != 0) 
-        	{	// семпл зациклен
-        		pv->pos -= pv->endsub;
-           	}
-           	else
-           	{	
+			if ((((ALVoice*)pv->vvoice)->state & AL_SF_LOOP) != 0)
+			{	// семпл зациклен
+				pv->pos -= pv->endsub;
+			}
+			else
+			{
 				// семпл не зациклен
-               	// остановим воспроизведение
+				// остановим воспроизведение
 				alSynStopVoice(s, (ALVoice*)pv->vvoice);
 				//((ALVoice*)pv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);
-				return;      
+				return;
 			}
-       	} 
-       	
-		estimate = (((pv->end - pv->pos)<<16) - (UInt32)(UInt16)pv->fpos)  / pv->pitch + 1;        
+		}
+
+		estimate = (((pv->end - pv->pos) << 16) - (UInt32)(UInt16)pv->fpos) / pv->pitch + 1;
 		done = MIN(estimate, todo);
 
-        if(done==0)
-        {	alSynStopVoice(s, (ALVoice*)pv->vvoice);
-        	return;
-        }
+		if (done == 0)
+		{
+			alSynStopVoice(s, (ALVoice*)pv->vvoice);
+			return;
+		}
 
-	    alSynRenderVoice( pv, done );
-	    alSynMakeVolumes( pv );
-		alSynMixVoice( pv, dst, done );
+		alSynRenderVoice(pv, done);
+		alSynMakeVolumes(pv);
+		alSynMixVoice(pv, dst, done);
 
-		if(pv->addVolume != 0)						// Если стремимся к громкости
-		{	if(pv->tgtVolume == pv->curVolume)
-			{ 	pv->addVolume = 0;
+		if (pv->addVolume != 0)						// Если стремимся к громкости
+		{
+			if (pv->tgtVolume == pv->curVolume)
+			{
+				pv->addVolume = 0;
 				((ALVoice*)pv->vvoice)->state |= AL_SF_TARGET;
 			}
 		}
-		
-        todo -= done;
-        dst  += done;		// Так как dst указатель на 4 слова
-        					// +done выглядит реально как +done<<2
-    }
+
+		todo -= done;
+		dst += done;		// Так как dst указатель на 4 слова
+							// +done выглядит реально как +done<<2
+	}
 	return;
 }
 
@@ -410,64 +413,69 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 *	samples sample's count
 *
 *	Переменная todo в количествах семплов на один канал. Генерирует целый буфер
-*	размером todo. Нарезает его на фрагменты необходимые для секвенсора. 
+*	размером todo. Нарезает его на фрагменты необходимые для секвенсора.
 *	Например если для секвенсора необходимо N семплов то программа генерирует
-*	ch1[1..N], ch2[1..N], ... , chN[N]. Затем генерирует M семплов, где 
+*	ch1[1..N], ch2[1..N], ... , chN[N]. Затем генерирует M семплов, где
 *	M = todo-N. После генерации всего буфера программа генерирует спецэффекты.
 *
 *******************************************************************************/
 
 void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 {
-    UWord16   left, portion = 0, count;
-    void     *dst;
-    Int16     t;
-	PVoice   *pv,*nextpv;
+	UWord16   left, portion = 0, count;
+	void     *dst;
+	Int16     t;
+	PVoice   *pv, *nextpv;
 	ALMicroTime time;
 	UWord16   fxoutptr;
-	
-    while(samples>0)
-    {   
+
+	while (samples > 0)
+	{
 		// Initialize timers
-    	if(s->samplesLeft==0)
-        {   if(s->handler!=NULL)
-        	{	 s->callTime	= s->handler((ALSeqPlayer*) s->clientData);
-				 s->samplesLeft = (Int32)(s->callTime * 100)/((Int32)100000000 /MIXFREQ);
-        	}
-        	else s->samplesLeft = samples;
-        }
-        left = MIN(s->samplesLeft, samples);
-        
-        dst	    		= outBuf;
-        s->samplesLeft -= left;
-        samples    	   -= left;
+		if (s->samplesLeft == 0)
+		{
+			if (s->handler != NULL)
+			{
+				s->callTime = s->handler((ALSeqPlayer*)s->clientData);
+				s->samplesLeft = (Int32)(s->callTime * 100) / ((Int32)100000000 / MIXFREQ);
+			}
+			else s->samplesLeft = samples;
+		}
+		left = MIN(s->samplesLeft, samples);
 
-        outBuf = (void*)((UWord16)outBuf + SAMPLES2WORDS(left));
+		dst = outBuf;
+		s->samplesLeft -= left;
+		samples -= left;
 
-        while(left>0)
-        {  	portion = MIN(left, MIX_BUF_SIZE);
+		outBuf = (void*)((UWord16)outBuf + SAMPLES2WORDS(left));
 
-			/* 
+		while (left > 0)
+		{
+			portion = MIN(left, MIX_BUF_SIZE);
+
+			/*
 			 *	Обнулили слов в количестве = семплов * 4
 			 * 	Из за стерео и 32 х битного разрмера
-             */
-            memset(s->mix_buf, 0, portion<<2);
+			 */
+			memset(s->mix_buf, 0, portion << 2);
 
-			pv = (PVoice*)s->pAllocList.next;            	
-         	while( pv != NULL)
-           	{   nextpv=(PVoice*)pv->node.next;
-           		if((((ALVoice*)pv->vvoice)->state & AL_SF_ACTIVE) != 0)
-                {   alSynAddChannel(s, pv, s->mix_buf, portion);
-            	}
-				pv=nextpv;
-       		}
+			pv = (PVoice*)s->pAllocList.next;
+			while (pv != NULL)
+			{
+				nextpv = (PVoice*)pv->node.next;
+				if ((((ALVoice*)pv->vvoice)->state & AL_SF_ACTIVE) != 0)
+				{
+					alSynAddChannel(s, pv, s->mix_buf, portion);
+				}
+				pv = nextpv;
+			}
 			// на выход идёт то что в буфере MIX
-            alSynMix32To16( dst, s->mix_buf, portion);
+			alSynMix32To16(dst, s->mix_buf, portion);
 
-            dst   = (stereo16*)((UWord16)dst+SAMPLES2WORDS(portion));
-            left -= portion;
-        }
-    }
+			dst = (stereo16*)((UWord16)dst + SAMPLES2WORDS(portion));
+			left -= portion;
+		}
+	}
 }
 
 /******************************************************************************
@@ -476,18 +484,18 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 *
 *******************************************************************************/
 
-void alSynUpdate( ALSynth* s )
+void alSynUpdate(ALSynth* s)
 {
-Int16 * ptr; 
-long delta=0;
+	Int16 * ptr;
+	long delta = 0;
 
 	ptr = fcodecWaitBuf();							// current buffer
-	alAudioFrame( s, (stereo16*)ptr, FRAME_SIZE);	
-	alSynPanSlide( s );
-	if(s->fcallTime == 0)return;
+	alAudioFrame(s, (stereo16*)ptr, FRAME_SIZE);
+	alSynPanSlide(s);
+	if (s->fcallTime == 0)return;
 	alMicroTimeSub(&s->fcallTime, FRAME_TIME_US);
-	if(s->fcallTime == 0)
-		s->fcallTime	= s->fhandler((ALSeqPlayer*) s->clientData);
+	if (s->fcallTime == 0)
+		s->fcallTime = s->fhandler((ALSeqPlayer*)s->clientData);
 }
 
 /******************************************************************************
@@ -496,35 +504,35 @@ long delta=0;
 *
 *******************************************************************************/
 
-bool alSynNew( ALSynth *s , ALSynConfig *cfg)
+bool alSynNew(ALSynth *s, ALSynConfig *cfg)
 {
-UInt16 n, *ptr;
-		
+	UInt16 n, *ptr;
+
 	fcodecOpen();
 	s->numPVoices = cfg->maxPVoices;
-	s->pvoice = (PVoice*) memCallocIM(s->numPVoices, sizeof(PVoice));
-	if( s->pvoice == NULL ) goto error; 
-	
-	memset(s->pvoice, 0,  s->numPVoices * sizeof(ALVoice));
-	
-	for( n = 0; n<s->numPVoices; n++)
+	s->pvoice = (PVoice*)memCallocIM(s->numPVoices, sizeof(PVoice));
+	if (s->pvoice == NULL) goto error;
+
+	memset(s->pvoice, 0, s->numPVoices * sizeof(ALVoice));
+
+	for (n = 0; n < s->numPVoices; n++)
 		alLink(&s->pvoice[n].node, &s->pFreeList);
-		
-	cash_1 	= (UInt16*) malloc( CASH_L1_SIZE * sizeof(UInt16));		
-	if( cash_1  == NULL ) goto error; 
 
-	cash_2 	= (UInt16*) malloc( CASH_L2_SIZE * sizeof(UInt16));
-	if( cash_2  == NULL ) goto error; 
+	cash_1 = (UInt16*)malloc(CASH_L1_SIZE * sizeof(UInt16));
+	if (cash_1 == NULL) goto error;
 
-	s->mix_buf	= (stereo32*) malloc( MIX_BUF_SIZE * sizeof(stereo32));			
-	if( s->mix_buf == NULL ) goto error; 
+	cash_2 = (UInt16*)malloc(CASH_L2_SIZE * sizeof(UInt16));
+	if (cash_2 == NULL) goto error;
 
-	s->fcallTime 	= 0;
-	s->samplesLeft 	= 0;	
-	s->handler 		= NULL;
-	s->fhandler		= NULL;
+	s->mix_buf = (stereo32*)malloc(MIX_BUF_SIZE * sizeof(stereo32));
+	if (s->mix_buf == NULL) goto error;
+
+	s->fcallTime = 0;
+	s->samplesLeft = 0;
+	s->handler = NULL;
+	s->fhandler = NULL;
 	return true;
-error:	
+error:
 	alSynDelete(s);
 	return false;
 }
@@ -535,12 +543,12 @@ error:
 *
 *******************************************************************************/
 
-void alSynDelete( ALSynth * s )
+void alSynDelete(ALSynth * s)
 {
-	if(s->pvoice !=NULL)free(s->pvoice);
-	if(    cash_1!=NULL)free(cash_1);
-	if(    cash_2!=NULL)free(cash_2);
-	if(s->mix_buf!=NULL)free(s->mix_buf);
+	if (s->pvoice != NULL)free(s->pvoice);
+	if (cash_1 != NULL)free(cash_1);
+	if (cash_2 != NULL)free(cash_2);
+	if (s->mix_buf != NULL)free(s->mix_buf);
 }
 
 /******************************************************************************
@@ -551,7 +559,7 @@ void alSynDelete( ALSynth * s )
 
 void alSynAddPlayer(ALSynth *s, void *client)
 {
-	s->clientData=client;
+	s->clientData = client;
 }
 
 /******************************************************************************
@@ -563,29 +571,31 @@ void alSynAddPlayer(ALSynth *s, void *client)
 *	sVinfo* voice		channel's structure
 *	ALMicroTime time	time to reach target volume
 *	UInt16 vol			target volume
-*						0 - 7FFF 
+*						0 - 7FFF
 *
 *******************************************************************************/
 
-void   alSynSetVol( ALSynth * s, ALVoice *v, Int16 volume, ALMicroTime time)
+void   alSynSetVol(ALSynth * s, ALVoice *v, Int16 volume, ALMicroTime time)
 {
-PVoice * pv = v->pvoice;
+	PVoice * pv = v->pvoice;
 
-	pv->tgtVolume = (Int32)volume<<16;
+	pv->tgtVolume = (Int32)volume << 16;
 	pv->curVolume &= 0x7FFF0000;
 	pv->phaseVolume = 32;
-	if(volume == 0) v->state |=  AL_SF_ZERO;
+	if (volume == 0) v->state |= AL_SF_ZERO;
 	else 			v->state &= ~AL_SF_ZERO;
-	
-	if(time<1000)
-	{	pv->addVolume=0;
+
+	if (time < 1000)
+	{
+		pv->addVolume = 0;
 		pv->curVolume = pv->tgtVolume;
-		v->state |=  AL_SF_TARGET;
-	}	
-	else 
-	{	pv->addVolume = (pv->tgtVolume - pv->curVolume)/(time / 1000);
+		v->state |= AL_SF_TARGET;
+	}
+	else
+	{
+		pv->addVolume = (pv->tgtVolume - pv->curVolume) / (time / 1000);
 		v->state &= ~AL_SF_TARGET;
-	}	
+	}
 }
 
 /******************************************************************************
@@ -594,30 +604,36 @@ PVoice * pv = v->pvoice;
 *
 *******************************************************************************/
 
-void alSynPanSlide( ALSynth * s )
+void alSynPanSlide(ALSynth * s)
 {
 	PVoice   *pv;
-				
-		pv = (PVoice*)s->pAllocList.next;            	
-	    while(pv!=NULL)
-	    {	if(((((ALVoice*)pv->vvoice)->state & AL_SF_ACTIVE) != 0) && (pv->addPan !=0))
-			{	pv->curPan += pv->addPan;
-				if(pv->addPan>0) 
-				{	if(((UInt16)pv->curPan >= (UInt16)pv->tgtPan))
-					{	pv->curPan = pv->tgtPan;
-						pv->addPan = 0;
-					}
+
+	pv = (PVoice*)s->pAllocList.next;
+	while (pv != NULL)
+	{
+		if (((((ALVoice*)pv->vvoice)->state & AL_SF_ACTIVE) != 0) && (pv->addPan != 0))
+		{
+			pv->curPan += pv->addPan;
+			if (pv->addPan > 0)
+			{
+				if (((UInt16)pv->curPan >= (UInt16)pv->tgtPan))
+				{
+					pv->curPan = pv->tgtPan;
+					pv->addPan = 0;
 				}
-				else 
-				{ 	if(pv->curPan <= pv->tgtPan)
-					{	pv->curPan = pv->tgtPan;
-						pv->addPan = 0;
-					}
+			}
+			else
+			{
+				if (pv->curPan <= pv->tgtPan)
+				{
+					pv->curPan = pv->tgtPan;
+					pv->addPan = 0;
 				}
-				alSynMixPanGain(pv);
-			}	
-			pv = (PVoice*)pv->node.next;
+			}
+			alSynMixPanGain(pv);
 		}
+		pv = (PVoice*)pv->node.next;
+	}
 }
 
 /******************************************************************************
@@ -628,35 +644,37 @@ void alSynPanSlide( ALSynth * s )
 *
 *******************************************************************************/
 
-void   alSynMixPanGain( PVoice *pv)
+void   alSynMixPanGain(PVoice *pv)
 {
-Frac16 rpan, lpan;
-	rpan = pv->curPan>>8;			// 0  .. 40 .. 7F
+	Frac16 rpan, lpan;
+	rpan = pv->curPan >> 8;			// 0  .. 40 .. 7F
 	lpan = 0x80 - rpan;				// 80 .. 40 .. 1
-	if(lpan > 0x7f) lpan = 0x7f;
-	rpan *= (0x7FFF/0x7F);
-	lpan *= (0x7FFF/0x7F);
+	if (lpan > 0x7f) lpan = 0x7f;
+	rpan *= (0x7FFF / 0x7F);
+	lpan *= (0x7FFF / 0x7F);
 	pv->rvol = mult_r(pv->gain, rpan);
 	pv->lvol = mult_r(pv->gain, lpan);
 }
 
-void   alSynSetPan( ALSynth * s, ALVoice *v, ALPan pan, ALMicroTime time)
+void   alSynSetPan(ALSynth * s, ALVoice *v, ALPan pan, ALMicroTime time)
 {
-PVoice * pv = v->pvoice;
-	
+	PVoice * pv = v->pvoice;
+
 	pan <<= 8;
 	pv->tgtPan = pan;
-	if(time<FRAME_TIME_US)
-	{	pv->addPan = 0;
+	if (time < FRAME_TIME_US)
+	{
+		pv->addPan = 0;
 		pv->curPan = pan;
-	}	
+	}
 	else
-	{	pv->addPan  = (pan - pv->curPan)/(time / FRAME_TIME_US);
+	{
+		pv->addPan = (pan - pv->curPan) / (time / FRAME_TIME_US);
 	}
 	alSynMixPanGain(pv);
 }
 
-void   alSynSetGain( ALSynth * s, ALVoice *v, Int16 vol)
+void   alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol)
 {
 	v->pvoice->gain = vol;
 	alSynMixPanGain(v->pvoice);
@@ -676,12 +694,12 @@ void   alSynSetGain( ALSynth * s, ALVoice *v, Int16 vol)
 *
 *******************************************************************************/
 
-void    alSynSetPitch( ALSynth * s, ALVoice *v, Int32 ratio)
+void    alSynSetPitch(ALSynth * s, ALVoice *v, Int32 ratio)
 {
-		ratio = L_negate(L_mult_ls(ratio,v->unityPitch));
-		if(ratio>0x20000) v->pvoice->pitch = 0x20000;
-		else if(ratio==0) v->pvoice->pitch = 1;
-		else v->pvoice->pitch=ratio; 
+	ratio = L_negate(L_mult_ls(ratio, v->unityPitch));
+	if (ratio > 0x20000) v->pvoice->pitch = 0x20000;
+	else if (ratio == 0) v->pvoice->pitch = 1;
+	else v->pvoice->pitch = ratio;
 }
 
 /******************************************************************************
@@ -689,12 +707,12 @@ void    alSynSetPitch( ALSynth * s, ALVoice *v, Int32 ratio)
 *	void    SynSetFXMix(ALSynth *s, ALVoice *voice, Int16 fxmix)
 *
 *	Set FX volume for channel
-*	If value is equal to MIX_VOL_MAX then output only FX 
+*	If value is equal to MIX_VOL_MAX then output only FX
 *	If value less than MIX_VOL_MIN then out only clean sound
 *
 *******************************************************************************/
 
-void    alSynSetFXMix( ALSynth * s, ALVoice *v, Int16 fxmix)
+void    alSynSetFXMix(ALSynth * s, ALVoice *v, Int16 fxmix)
 {
 	//v->pvoice->fxmix=fxmix;
 }
@@ -709,7 +727,7 @@ void    alSynSetFXMix( ALSynth * s, ALVoice *v, Int16 fxmix)
 
 void    alSynSetPriority(ALSynth * s, ALVoice *v, Int16 priority)
 {
-	v->priority=priority;
+	v->priority = priority;
 }
 
 /******************************************************************************
@@ -722,7 +740,7 @@ void    alSynSetPriority(ALSynth * s, ALVoice *v, Int16 priority)
 *
 *******************************************************************************/
 
-Int16     alSynGetPriority( ALSynth * s, ALVoice *v )
+Int16     alSynGetPriority(ALSynth * s, ALVoice *v)
 {
 	return v->priority;
 }
@@ -735,22 +753,24 @@ Int16     alSynGetPriority( ALSynth * s, ALVoice *v )
 *
 *******************************************************************************/
 
-void    alSynStartVoice( ALSynth * s, ALVoice *voice, ALWaveTable *w )
+void    alSynStartVoice(ALSynth * s, ALVoice *voice, ALWaveTable *w)
 {
 	PVoice    * pv = voice->pvoice;
 
-	voice->wavetable = w;	
-	voice->state    |= (w->ltype & AL_SF_LOOP); // parameters
-	voice->state    |= AL_SF_ACTIVE;
-	pv->pos		     = w->base;   				// sample start
- 
-	if((voice->state & AL_SF_LOOP) != 0)
-    {	pv->end 	= w->end + w->base;     	// end of loop
-    	pv->endsub 	= (w->end- w->start)+1;		// subtract at end +1
-		pv->count   = w->count;
+	voice->wavetable = w;
+	voice->state |= (w->ltype & AL_SF_LOOP); // parameters
+	voice->state |= AL_SF_ACTIVE;
+	pv->pos = w->base;   				// sample start
+
+	if ((voice->state & AL_SF_LOOP) != 0)
+	{
+		pv->end = w->end + w->base;     	// end of loop
+		pv->endsub = (w->end - w->start) + 1;		// subtract at end +1
+		pv->count = w->count;
 	}
 	else
-	{	pv->end	= w->base + w->len - 2;    		// sample's end
+	{
+		pv->end = w->base + w->len - 2;    		// sample's end
 	}
 }
 
@@ -764,15 +784,15 @@ void    alSynStartVoice( ALSynth * s, ALVoice *voice, ALWaveTable *w )
 *
 *******************************************************************************/
 
-void    alSynStartVoiceParams(  ALSynth * s, ALVoice *v, ALWaveTable *w,
-                              Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
-                              ALMicroTime t)
+void    alSynStartVoiceParams(ALSynth * s, ALVoice *v, ALWaveTable *w,
+	Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
+	ALMicroTime t)
 {
-   alSynStartVoice( s, v, w);		// start stample
-	 alSynSetFXMix( s, v, fxmix);	// FX
-	 alSynSetPitch( s, v, pitch);	// tone
-	   alSynSetPan( s, v, pan, t);	// pan
-	   alSynSetVol( s, v, vol, t);	// volume	
+	alSynStartVoice(s, v, w);		// start stample
+	alSynSetFXMix(s, v, fxmix);	// FX
+	alSynSetPitch(s, v, pitch);	// tone
+	alSynSetPan(s, v, pan, t);	// pan
+	alSynSetVol(s, v, vol, t);	// volume	
 }
 
 void alSynStopVoice(ALSynth *drvr, ALVoice *voice)
@@ -790,50 +810,54 @@ void alSynStopVoice(ALSynth *drvr, ALVoice *voice)
 *	НО! возвращает 0 если это не произошло
 *	Алгоритм поиска таков.
 *	1. Сперва смотрим свободный голос во pFreeList
-*	2. Потом  смотрим сомнительный голос в pLameList. В этот лист попадают 
-*      голоса автомномно достигшие громкости 0. 
+*	2. Потом  смотрим сомнительный голос в pLameList. В этот лист попадают
+*      голоса автомномно достигшие громкости 0.
 *   3. Ищем самый низкоприоритетный голос в pAllocList и если его приоритет
 *      ниже или равен запрашиваемому то он вполне подходит.
 *
 *******************************************************************************/
 
-Int16   alSynAllocVoice( ALSynth *s, ALVoice *v, UInt16 priority )
+Int16   alSynAllocVoice(ALSynth *s, ALVoice *v, UInt16 priority)
 {
-Int32	  minvol= 0x7FFFFFFF;
-PVoice  * pv;
-PVoice  * newpv = NULL;
+	Int32	  minvol = 0x7FFFFFFF;
+	PVoice  * pv;
+	PVoice  * newpv = NULL;
 
-	if( s->pFreeList.next != NULL )
-	{	newpv = s->pFreeList.next;						// привязали к голосу один полифонический голос
+	if (s->pFreeList.next != NULL)
+	{
+		newpv = s->pFreeList.next;						// привязали к голосу один полифонический голос
 		alUnlink(newpv);								// отвязали от списка свободных
-		alLink( &newpv->node, &s->pAllocList);			// привязали к списку размещённых
+		alLink(&newpv->node, &s->pAllocList);			// привязали к списку размещённых
 		goto good;
 	}
 
-	if( s->pLameList.next != NULL )
-	{	newpv = s->pLameList.next;						// привязали к голосу один полифонический голос
+	if (s->pLameList.next != NULL)
+	{
+		newpv = s->pLameList.next;						// привязали к голосу один полифонический голос
 		alUnlink(newpv);								// отвязали от списка сомнительных
-		alLink( &newpv->node, &s->pAllocList);			// привязали к списку размещённых
+		alLink(&newpv->node, &s->pAllocList);			// привязали к списку размещённых
 		goto good;
 	}
 	/*
 	 *	find voice with lover priority and volume
 	 */
 	pv = s->pAllocList.next;
-	while(pv != NULL)
-	{	if((((ALVoice*)pv->vvoice)->priority <= priority) 
-	    && (pv->curVolume < minvol))
-		{	minvol = pv->curVolume;
-			newpv  = pv;
-		}	
-		pv = pv->node.next;								
+	while (pv != NULL)
+	{
+		if ((((ALVoice*)pv->vvoice)->priority <= priority)
+			&& (pv->curVolume < minvol))
+		{
+			minvol = pv->curVolume;
+			newpv = pv;
+		}
+		pv = pv->node.next;
 	}
-	
-	if(newpv!=NULL)	
-	{ 	
-		((ALVoice*)newpv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);	
-		((ALVoice*)newpv->vvoice)->pvoice = NULL;				
-		goto good;										
+
+	if (newpv != NULL)
+	{
+		((ALVoice*)newpv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);
+		((ALVoice*)newpv->vvoice)->pvoice = NULL;
+		goto good;
 	}
 	return 0;
 
