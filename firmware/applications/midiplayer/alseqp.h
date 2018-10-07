@@ -1,31 +1,31 @@
-// Обработчик сексенсора и его основные компоненты
+// Sequencer
 
-ALMicroTime	    	alSeqpHandler( void * data );
-ALMicroTime			alSeqpFrameHandler( void * data );
-void			alSeqpEnvTimers( ALSeqPlayer * seqp, ALMicroTime delta );
+ALMicroTime	alSeqpHandler( void * data );
+ALMicroTime	alSeqpFrameHandler( void * data );
+void		alSeqpEnvTimers( ALSeqPlayer * seqp, ALMicroTime delta );
 void 		alSeqpPlayer( ALSeqPlayer * seqp );
 
-// Утилиты
+// Utilities
 
 ALSound * 	alSeqpGetSound( ALInstrument * ins, u8 key, u8 vel );
 UInt32 		alGetLinearRate(UWord16 note, Int16 finetune);
 
-// Обработка Миди событий
+// Midi events 
 
-void			alSeqpVoiceOff( ALSeqPlayer * seqp, ALVoiceState * vs );
-void	    	alSeqpKeyOn( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity );
-void			alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity );
+void		alSeqpVoiceOff( ALSeqPlayer * seqp, ALVoiceState * vs );
+void	    alSeqpKeyOn( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity );
+void		alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity );
 
-// Установка параметров голоса
+// Voice parameters setters
 
 void 		alSeqpSetPitch( ALSeqPlayer * seqp, ALVoiceState * vs);
 void 		alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel);
-void			alSeqpStartEnvelope( ALSeqPlayer * seqp, ALVoiceState * vs );
-void			alSeqpStartOsc( ALSeqPlayer * seqp,  ALVoiceState * vs );
+void		alSeqpStartEnvelope( ALSeqPlayer * seqp, ALVoiceState * vs );
+void		alSeqpStartOsc( ALSeqPlayer * seqp,  ALVoiceState * vs );
 void 		alSeqpVolMix( ALSeqPlayer * seqp, ALVoiceState *vs );
 void 		alSeqpPanMix( ALSeqPlayer * seqp, ALVoiceState *vs );
 
-// Подбор подходящего голоса и освобождение голосов
+// Find best voice 
 
 ALVoiceState * alSeqpGetFreeVoice( ALSeqPlayer * seqp );
 ALVoiceState * alSeqpFindVoiceChl( ALVoiceState * vs, UWord16 chan );
@@ -34,9 +34,9 @@ void     	alSeqpFreeVoice( ALSeqPlayer * seqp, ALVoiceState * voice );
 bool 		alSeqpCheckVoice( ALSeqPlayer * seqp, ALVoiceState * voice );
 void 		alSeqpFlushEventsOfVoice( ALSeqPlayer * seqp, ALVoiceState * vs );
 
-// обработчики сообщений
+// Event dispatcher
 
 void     	alSeqpSwitchEvent( ALSeqPlayer * seqp, ALEvent * event);
-ALMicroTime 	alSeqpEnvVolEvent( ALSeqPlayer * seqp, ALEvent * event );
-ALMicroTime 	alSeqpEnvPanEvent( ALSeqPlayer * seqp, ALEvent * event );
+ALMicroTime alSeqpEnvVolEvent( ALSeqPlayer * seqp, ALEvent * event );
+ALMicroTime alSeqpEnvPanEvent( ALSeqPlayer * seqp, ALEvent * event );
 ALMicroTime	alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  );
