@@ -9,7 +9,7 @@
 *
 *	void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
 *
-*	создаёт список сообщений в очереди
+*	Create list of events in the queue
 *
 *******************************************************************************/
 
@@ -20,12 +20,12 @@ void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
 	evtq->allocList.prev = NULL;
 	evtq->freeList.next  = NULL;
 	evtq->freeList.prev  = NULL;
-	evtq->eventCount 	 = 0;							// Установили число сообщений
+	evtq->eventCount 	 = 0;							
 
 	while(itemCount>0)
 	{
 		itemCount--;
-		alLink(&items[itemCount].node, &evtq->freeList);// Связали в список свободных
+		alLink(&items[itemCount].node, &evtq->freeList);
 	}
 }
 
@@ -33,23 +33,20 @@ void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
 *
 *	ALMicroTime     alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt)
 *
-*	Возвращает время до самого ближайшего сообщения. При этом само сообщение 
-*   копирует по указателю. Найти сообщение не трудно, достаточно взять самое
-* 	первое. Но его дельта тайм отнимается от всех дельтатайм в очереди. А само
-*	найденное сообщение из очереди удаляется. 
+*   Return closest in time event. And copy this event to given pointer
 *
 *******************************************************************************/
 //	A								      R2             R3
 ALMicroTime alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt)
 {
-ALEventListItem * item = evtq->allocList.next;	// Первое сообщение
+ALEventListItem * item = evtq->allocList.next;	
 ALEventListItem * idxi;
 
 	if(item != NULL)
 	{
-		memcpy( evt, &item->evt, sizeof(ALEvent));  // Скопировали сообщение
-		alUnlink( &item->node );					// Удалили сообщение
-		alLink( &item->node, &evtq->freeList);		// Поставли в очередь свободных
+		memcpy( evt, &item->evt, sizeof(ALEvent));  
+		alUnlink( &item->node );					
+		alLink( &item->node, &evtq->freeList);		
 		evtq->eventCount--;
 	
 		idxi = evtq->allocList.next;	
@@ -58,7 +55,7 @@ ALEventListItem * idxi;
 			idxi->delta -= item->delta;
 			idxi 		 = idxi->node.next;
 		}
-		return item->delta;							// Время до этого сообщения
+		return item->delta;							
 	}
 	return 0;		
 }
@@ -67,40 +64,37 @@ ALEventListItem * idxi;
 *
 *	void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
 *
-*	Поставить сообщение в очередь. Программа найдёт и поставит сообщение
-*	в очередь в порядке его исполнения. Таким образом самое первое сообщение
-*	в очереди есть самое первое во времени.
+*	Add event to the queue
 *
 *******************************************************************************/
 
 void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
 {
-ALEventListItem * item  = evtq->freeList.next;	// Первое свободное сообщение;
-ALEventListItem * fitem = evtq->allocList.next;	// Позиция для поиска
+    ALEventListItem * item  = evtq->freeList.next;	
+    ALEventListItem * fitem = evtq->allocList.next;	
 	
 	if(delta<0) assert(!"delta has wrong sign");
 	
 	if(item !=NULL)
 	{
-		item->delta = delta;						// Время до его исполнения
-		memcpy(&item->evt, evt, sizeof(ALEvent));	// Само его сообщение
+		item->delta = delta;						
+		memcpy(&item->evt, evt, sizeof(ALEvent));	е
 		
 		if(fitem == NULL)
-		{	// Ни одного сообщения нет вот и поставим одно
-			alUnlink(&item->node);						// убрали из свободных
-			alLink(&item->node, &evtq->allocList);		// поставили в занятые
+		{	
+			alUnlink(&item->node);						
+			alLink(&item->node, &evtq->allocList);		
 		}
 		else
 		{
-			// теперь найем сообщение время которого >= заданного времени
 			while((fitem->node.next != NULL) && (fitem->delta<delta))
 			{
 				fitem = fitem->node.next;
 			}
 			if(fitem->delta>delta) fitem = fitem->node.prev;
 			
-			alUnlink(&item->node);						// убрали из свободных
-			alLink(&item->node, &fitem->node);			// поставили в занятые
+			alUnlink(&item->node);						// delete free
+			alLink(&item->node, &fitem->node);			// add to used
 		}
 		evtq->eventCount++;
 	}
@@ -119,7 +113,7 @@ void alSeqpPostEvent( ALSeqPlayer * seqp,  ALEvent *evt, ALMicroTime delta)
 *
 *	void  	alEvtqFlush(ALEventQueue *evtq)
 *
-*	Очищает буфер сообщений
+*	Clear events
 *
 *******************************************************************************/
 
@@ -143,7 +137,7 @@ ALEventListItem * evtitem;
 *
 *	alEvtqFlushType(ALEventQueue *evtq, s16 type)
 *
-*	Очищает буфер сообщений только от сообщений типа заданного переменной type
+*	Clear events of type
 *
 *******************************************************************************/
 
@@ -168,7 +162,7 @@ ALEventListItem * next;
 *
 *	alEvtqFlushVoice(ALEventQueue *evtq, ALVoiceState * vs)
 *
-*	Очищает буфер сообщений только от сообщений для канала vs
+*	Clear events for given channel
 *
 *******************************************************************************/
 

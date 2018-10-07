@@ -13,68 +13,68 @@ UInt16      gFrameCt;
 *
 *	UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 *
-*	addr	адрес источника
-*	len		размер
-*	state	указатель на состояние всех DMA
+*	addr	source address
+*	len		size
+*	state	pointer to the state of all DMAs
 *
 *******************************************************************************/
 
 UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 {
-    void        *freeBuffer;			// куда сливать будем
-    UInt16       delta;					// слово внутри фрейма
-    DMABuffer   *dmaPtr,*lastDmaPtr;	// указатели на DMA
-    UInt32       addrEnd,buffEnd;		// концы блоков
+    void        *freeBuffer;			// target
+    UInt16       delta;					// index in the frame
+    DMABuffer   *dmaPtr,*lastDmaPtr;	// pointers to DMA
+    UInt32       addrEnd,buffEnd;		// ends of blocks
 
 
     lastDmaPtr = 0;
     dmaPtr = dmaState.firstUsed;
-    addrEnd = addr+len;										// конец запрашиваемого блока
+    addrEnd = addr+len;										
  
-    while(dmaPtr)  // Ищем буфер который уже подготовлен
-    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;	// конец буфера
-        if(dmaPtr->startAddr > addr) 						// since buffers are ordered
-            break;                   						// abort if past possible 
+    while(dmaPtr)  // find prepaired buffer
+    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;	
+        if(dmaPtr->startAddr > addr) 						
+            break;                   						
 
-        else if(addrEnd <= buffEnd) 						// Да, один найден
+        else if(addrEnd <= buffEnd) 						
         {
-            dmaPtr->lastFrame = gFrameCt; 					// пометили его использовали 
-            freeBuffer = dmaPtr->ptr + addr - dmaPtr->startAddr; // где в памяти место первого байта
-            return (int) freeBuffer;						// требуемой информации
+            dmaPtr->lastFrame = gFrameCt; 					
+            freeBuffer = dmaPtr->ptr + addr - dmaPtr->startAddr; байта
+            return (int) freeBuffer;						
         }
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
 	/*
-     * 	Не нашли ни одного буфера, берём свободный буфер 
+     * 	Buffer is not found lets take free one
      */
     dmaPtr 				= dmaState.firstFree;				
     dmaState.firstFree 	= (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
 	/*
-     * 	Добавим его в лист использованных
+     * 	Add it to used list
      */
-    if(lastDmaPtr != NULL) 							// нормально
+    if(lastDmaPtr != NULL) 							
     {	alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
     }
-    else if(dmaState.firstUsed != NULL)				// впишем в начало листа занятых
+    else if(dmaState.firstUsed != NULL)				
     {   lastDmaPtr = dmaState.firstUsed;
         dmaState.firstUsed 		= dmaPtr;
         dmaPtr->node.next 		= (ALLink*)lastDmaPtr;
         dmaPtr->node.prev 		= 0;
         lastDmaPtr->node.prev 	= (ALLink*)dmaPtr;
     }
-    else 											// нет занятых, это будет первый
+    else 											
     {   dmaState.firstUsed 	= dmaPtr;
         dmaPtr->node.next 	= 0;
         dmaPtr->node.prev 	= 0;
     }
     
-    freeBuffer = dmaPtr->ptr;						// куда сгружать
-    delta = addr & 0x3;								// байт во фрейме
-    addr -= delta;									// к началу фрейма	
+    freeBuffer = dmaPtr->ptr;						
+    delta = addr & 0x3;								
+    addr -= delta;									
     dmaPtr->startAddr = addr;						
-    dmaPtr->lastFrame = gFrameCt;  					// пометили
+    dmaPtr->lastFrame = gFrameCt;  					
  
  	START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH>>2);
 
@@ -85,8 +85,8 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 *
 *	ALDMAproc dmaNew(DMAState **state)
 *
-*	state	указатель на указатель на состояние каналов DMA
-*	return	адрес процедуры DMA callback
+*	state	state of all DMAs
+*	return	address of DMA callback
 *	
 *******************************************************************************/
 
