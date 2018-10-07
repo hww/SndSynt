@@ -1,11 +1,5 @@
 /*****************************************************************************
 *
-* Motorola Inc.
-* (c) Copyright 2000 Motorola, Inc.
-* ALL RIGHTS RESERVED.
-*
-******************************************************************************
-*
 * File Name:         appconst.h
 *
 * Description:       Description of Application constant for appconst.c file

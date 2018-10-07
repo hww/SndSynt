@@ -7,12 +7,12 @@ void   	speakerUpdate(ALSeqPlayer * seqp);
 void 	speakWords(const UInt16 * ptr);
 void 	speakCreate();
 void 	speakDigit(  UInt16  val );
-
-extern bool   teacherMode;	// Teacher mode on/off
+// Teacher mode on/off
+extern bool   teacherMode;	
 void ControlCreate(ALSeqPlayer * seqp);
 void EnterCase( ALSeqPlayer * seqp, UInt16 key );
-
-#define WORDS_INS 125	// Instrument with voice over phrases
+// Instrument with voice over phrases
+#define WORDS_INS 125	
 #define MIN_TEMPO_US   (1000000L/(150*4))
 #define MAX_TEMPO_US   (1000000L/(20*4))
 #define DELTA_TEMPO_US (1000000L/(20*4))

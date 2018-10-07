@@ -6,30 +6,30 @@
 #include "mem.h" 
 
 
-#define KBD_CHANEL 0				// Канал МИДИ клавиатуры
+#define KBD_CHANEL 0				// midi channel of keyboard
 
 void AltCase( ALSeqPlayer * seqp, Int16 key );
 extern const tHelpList HelpList[];
 
-UInt16 		kbdMode,kbdModeOld;		// Режим клавиатуры
-bool   		teacherMode;			// Режим учителя вкл-выкл
-UInt16 		volume;					// Громкость по умолчанию
-UInt16  	fileNum,demoNum;		// Номер пьесы
-ALSeq		seq,bgseq;				// ЭТО СЕКВЕНЦИЯ
+UInt16 		kbdMode,kbdModeOld;		// keyboard mode
+bool   		teacherMode;			// teacher mode on/off
+UInt16 		volume;					// default volume
+UInt16  	fileNum,demoNum;		// sequence number
+ALSeq		seq,bgseq;				// sequence
 ALSeqMarker begMarker, 
 			oneMarker, 
-			twoMarker;				// ЭТО МАРКЕРЫ	
-UInt16		voices;					// Голоса
-bool		isMarkers;				// Есть ли маркеры
-bool		demoMode;				// Режим Демо пьесы
-int			prog;					// номер инструмента
+			twoMarker;				// markers
+UInt16		voices;					// all voices
+bool		isMarkers;				// contains markers
+bool		demoMode;				// demo sequence
+int			prog;					// instrument number
 
-const Int16 volTable[] =			// Это масив громкостей
+const Int16 volTable[] =			// volumes
 {	0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF 	};
 
 /******************************************************************************
 *
-*	Установка дисплея в новый режим клавиатуры
+*	Display for the keyboard
 *
 *******************************************************************************/
 const UInt16 modeLeds[] =

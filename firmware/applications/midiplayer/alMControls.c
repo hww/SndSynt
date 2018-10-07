@@ -46,7 +46,7 @@ static void alDataEntry( UInt16 * ptr, UInt16 data, UInt16 mask );
 *
 *	void alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val )
 *
-*	Обработка сообщений типа смена положения контроллера "ControlChange"
+*	Event "ControlChange"
 *
 *******************************************************************************/
 
@@ -56,15 +56,15 @@ ALVoiceState * vs = seqp->vAllocList.next;;
 
 	switch(contr)
 	{
-	    case AL_MIDI_VOLUME_CTRL:        		//0x07 громкость всех звуков в канале
-	    case AL_MIDI_EXPRESSION:          		//0x0B выразительность
+	    case AL_MIDI_VOLUME_CTRL:        		//0x07 volume of all sounds in channel
+	    case AL_MIDI_EXPRESSION:          		//0x0B expression level
 	       	alSeqpSetChlVol(seqp, chan, val); 
 			while((vs = alSeqpFindVoiceChl( vs, chan )) != NULL)
 			{	alSeqpVolMix( seqp, vs );
 				vs = vs->voice.node.next;
 	    	}
 	    	break;
-	    case AL_MIDI_PAN_CTRL:            		//0x0A панорама всех звуков в канале
+	    case AL_MIDI_PAN_CTRL:            		//0x0A pan of all sounds in channel
 	    	alSeqpSetChlPan(seqp, chan, val); 
 			while((vs = alSeqpFindVoiceChl( vs, chan )) != NULL)
 			{	alSeqpPanMix( seqp, vs );
@@ -85,17 +85,17 @@ ALVoiceState * vs = seqp->vAllocList.next;;
 	    case AL_MIDI_FX_CTRL_8:           		//0x1C
 	    case AL_MIDI_FX_CTRL_9:           		//0x1D
 			break;    
-	*/  case AL_MIDI_SUSTAIN_CTRL:        		//0x40 удержание звучания всех отпущенных нот
+	*/  case AL_MIDI_SUSTAIN_CTRL:        		//0x40 keep sound of all released keys
 	    	seqp->chanState[chan].sustain = val;
 			while((vs = alSeqpFindVoiceChl( vs, chan )) != NULL)
 			{	if(vs->envPhase == AL_PHASE_SUSTAIN) alSeqpVoiceOff( seqp, vs );
 				vs = vs->voice.node.next;
 			}
 	    	break;
-	    case AL_MIDI_FX1_CTRL:            		//0x5B глубина внешних эффектов
+	    case AL_MIDI_FX1_CTRL:            		//0x5B FX value
 	    	alSeqpSetChlFXMix(seqp, chan, val); 
 	    	break;
-	    case AL_MIDI_FX3_CTRL:            		//0x5D глубина хорового эффекта
+	    case AL_MIDI_FX3_CTRL:            		//0x5D Chorus value
 			break;
 		case AL_MIDI_ALL_NOTES_OFF:
 			while(vs != NULL)

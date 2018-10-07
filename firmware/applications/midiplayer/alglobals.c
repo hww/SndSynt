@@ -3,12 +3,12 @@
 #include "audiolib.h"
 #include "sdram.h"
 
-ALGlobals * alGlobals;				// Указатель на синтезатор, он обязательно глобальный
+ALGlobals * alGlobals;				// Synthesizer
  
 void    alInit(ALGlobals *glob, ALSynConfig *c)
 {
-	sdram_init();					// Иниуиализация SDRAM
-	alGlobals = glob;				// Глобальный указатель на синтезатор
+	sdram_init();					// initializing SDRAM
+	alGlobals = glob;				// Synthesizer
 	alSynNew(&alGlobals->drvr, c);
 }
 

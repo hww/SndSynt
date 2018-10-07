@@ -10,11 +10,11 @@
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 prog	   номер инструмента
+*	 chan	   midi channel
+*	 prog	   instrument number
 *
 * DESCRIPTION
-*     Возвращает и устанавливает инструмент в канале
+*     Return and set instrument in the channel
 *     
 *******************************************************************************/
 
@@ -43,11 +43,11 @@ s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 fxmix	   уровень FX
+*	 chan	   midi channel
+*	 fxmix	   level FX
 *
 * DESCRIPTION
-*     Возвращает и устанавливает уровень FX в канале
+*     Return and set FV level in the channel
 *     
 *******************************************************************************/
 
@@ -68,11 +68,11 @@ u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 vol	   громкость
+*	 chan	   midi channel
+*	 vol	   volume
 *
 * DESCRIPTION
-*     Возвращает и устанавливает громкость в канале
+*     Return and set channel volume
 *     
 *******************************************************************************/
 
@@ -93,11 +93,11 @@ u8		alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 pan	   панорама
+*	 chan	   midi channel
+*	 pan	   panorama
 *
 * DESCRIPTION
-*     Возвращает и устанавливает панораму в канале
+*    Return and set the channel panorama
 *     
 *******************************************************************************/
 
@@ -118,11 +118,11 @@ ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
 *
 * PARAMETERS
 *    seqp      pointer to the sequence player.
-*	 chan	   миди канал
-*	 priority  приоритет канала
+*	 chan	   midi channel
+*	 priority  channel priority
 *
 * DESCRIPTION
-*     Возвращает и устанавливает приоритет вканале
+*    Return and set the channel priority
 *     
 *******************************************************************************/
 

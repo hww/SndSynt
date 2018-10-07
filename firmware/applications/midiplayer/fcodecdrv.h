@@ -1,11 +1,5 @@
 /*******************************************************************************
 *
-* Motorola Inc.
-* (c) Copyright 2001 Motorola, Inc.
-* ALL RIGHTS RESERVED.
-*
-********************************************************************************
-*
 * FILE NAME:   codecdrv.h
 *
 * DESCRIPTION: header file for the Crystal CS4218 16-bit Stereo Audio

@@ -56,20 +56,20 @@ UInt16 poly;
 
 void main (void)
 {
-UWord32			size, drama = DRAM_FREE_ADDR;
-UWord32			ctl_src;
-size_t			ctl_size;
-ALSeqPlayer 	seqp;				// Sequence player
-ALSeqpConfig 	seqcnf;				// Seq. player configure
-ALBankFile	*	bankfile;			// Configuration file
-ALSynConfig 	syncfg;				// Synthesizer configuration
-int				n;
-Int16			key;				// Number of button
+	UWord32			size, drama = DRAM_FREE_ADDR;
+	UWord32			ctl_src;
+	size_t			ctl_size;
+	ALSeqPlayer 	seqp;				// Sequence player
+	ALSeqpConfig 	seqcnf;				// Seq. player configure
+	ALBankFile	*	bankfile;			// Configuration file
+	ALSynConfig 	syncfg;				// Synthesizer configuration
+	int				n;
+	Int16			key;				// Number of button
 
 #define SECTION_COUNT 4
 #define SECTION_SIZE  2
 
-UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
+	UInt16	params[SECTION_COUNT*SECTION_SIZE+2] = {
 
      4,   250 ms,
 	 // output    coef  
