@@ -7,7 +7,6 @@
 *
 *******************************************************************************/
 
-
 #ifndef __FCODECDRV_H
 #define __FCODECDRV_H
 
@@ -15,11 +14,11 @@
 #include "arch.h"
 
 #ifndef SDK_LIBRARY
-	#include "configdefines.h"
+#include "configdefines.h"
 
-	#ifndef INCLUDE_FCODEC
-		#error INCLUDE_FCODEC must be defined in appconfig.h to initialize the Codec Library
-	#endif
+#ifndef INCLUDE_FCODEC
+#error INCLUDE_FCODEC must be defined in appconfig.h to initialize the Codec Library
+#endif
 #endif
 
 #include "io.h"
@@ -34,7 +33,7 @@ extern "C" {
 
 /* THE FOLLOWING LABELS CAN BE USED IN appconfig.h TO CONFIGURE THE CODEC.
    config.h CONTAINS THE DEFAULT SETTINGS FOR THE CODEC. */
-   
+
 #define CODEC_INTERRUPT_MASKED         0x0000
 #define CODEC_INTERRUPT_UNMASKED       0x0800
 
@@ -50,13 +49,13 @@ extern "C" {
 #define CODEC_RIGHT_INPUT_LINE_1       0x0000
 #define CODEC_RIGHT_INPUT_LINE_2       0x0100
 
-EXPORT void 	fcodecOpen(void);
-EXPORT void     fcodecClose(void);
-EXPORT Int16 *  fcodecWaitBuf(void);
-EXPORT void 	fcodecStereoISR(void);
-EXPORT void 	fcodecSendCfg( UWord16 data);
+	EXPORT void 	fcodecOpen(void);
+	EXPORT void     fcodecClose(void);
+	EXPORT Int16 *  fcodecWaitBuf(void);
+	EXPORT void 	fcodecStereoISR(void);
+	EXPORT void 	fcodecSendCfg(UWord16 data);
 
-EXPORT UWord16 fsimple_ssiInitialize(arch_sSSI * pInitialState);
+	EXPORT UWord16 fsimple_ssiInitialize(arch_sSSI * pInitialState);
 
 #ifdef __cplusplus
 }

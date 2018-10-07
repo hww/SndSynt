@@ -1,16 +1,18 @@
 #include "port.h"
 #include "audiolib.h"
 
-void   	MainCase(ALSeqPlayer * seqp, Int16 key);	
-void   	HelpCase(ALSeqPlayer * seqp, Int16 key);	
+void   	MainCase(ALSeqPlayer * seqp, Int16 key);
+void   	HelpCase(ALSeqPlayer * seqp, Int16 key);
 void   	speakerUpdate(ALSeqPlayer * seqp);
 void 	speakWords(const UInt16 * ptr);
 void 	speakCreate();
-void 	speakDigit(  UInt16  val );
+void 	speakDigit(UInt16  val);
+
 // Teacher mode on/off
-extern bool   teacherMode;	
+extern bool   teacherMode;
 void ControlCreate(ALSeqPlayer * seqp);
-void EnterCase( ALSeqPlayer * seqp, UInt16 key );
+void EnterCase(ALSeqPlayer * seqp, UInt16 key);
+
 // Instrument with voice over phrases
 #define WORDS_INS 125	
 #define MIN_TEMPO_US   (1000000L/(150*4))
@@ -19,9 +21,10 @@ void EnterCase( ALSeqPlayer * seqp, UInt16 key );
 #define INS_MIN 76
 #define INS_MAX 102
 
-// Режимы клавиатуры
+// Menu mode
 typedef enum
-{	KBD_MODE_UNDEFINED = 0,
+{
+	KBD_MODE_UNDEFINED = 0,
 	KBD_MODE_ANY,
 	KBD_MODE_HELP,
 	KBD_MODE_TONE,
@@ -32,9 +35,9 @@ typedef enum
 } eKbdMode;
 
 // Phrases in bank
-
 typedef enum
-{	WORD_EOF			= 0,
+{
+	WORD_EOF = 0,
 	WORD_HELP,
 	WORD_VOLUME,
 	WORD_TEMP,
@@ -69,7 +72,8 @@ typedef enum
 } eWords;
 
 typedef struct
-{	UInt16	mode;			// Keyboard mode
+{
+	UInt16	mode;			// Keyboard mode
 	UInt16  key;			// Key pressed
 	UInt16	word[4];		// Help phrase (0 terminated)
 } tHelpList;

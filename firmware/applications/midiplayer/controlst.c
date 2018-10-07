@@ -1,13 +1,13 @@
 #include "controls.h"
 #include "terminal.h"
 
-/******************************************************************************
+/******************************************************************************a
 *
 *	Help narration text
 *
 *******************************************************************************/
 
-const tHelpList HelpList[]=
+const tHelpList HelpList[] =
 {	// Mode: any
 	{KBD_MODE_ANY,KEY_HELP,		{WORD_HELP,0,0,0}},
 	{KBD_MODE_ANY,KEY_M1,  		{WORD_TEMP,WORD_TONE,0,0}},
@@ -57,33 +57,33 @@ const tHelpList HelpList[]=
 const UInt16 * toSpeak;
 UInt16 wordIdx;
 
-void speakerUpdate( ALSeqPlayer * seqp)
+void speakerUpdate(ALSeqPlayer * seqp)
 {
-ALSound * snd;
+	ALSound * snd;
 
-	if((toSpeak == NULL) || ((speaker.state & AL_SF_ACTIVE) != 0)) return;
-	snd = seqp->bank->instArray[125]->soundArray[(*toSpeak++)+1];
-	if(wordIdx == 4)
-	{	alSynFreeVoice( seqp->drvr, &speaker);
+	if ((toSpeak == NULL) || ((speaker.state & AL_SF_ACTIVE) != 0)) return;
+	snd = seqp->bank->instArray[125]->soundArray[(*toSpeak++) + 1];
+	if (wordIdx == 4)
+	{
+		alSynFreeVoice(seqp->drvr, &speaker);
 		toSpeak = NULL;
 		return;
 	}
 
-	if(wordIdx == 0)
-	{	alSynAllocVoice( seqp->drvr, &speaker, 10 );
-		if(snd->wavetable->rate == MIXFREQ)
+	if (wordIdx == 0)
+	{
+		alSynAllocVoice(seqp->drvr, &speaker, 10);
+		if (snd->wavetable->rate == MIXFREQ)
 			speaker.unityPitch = 0x8000;
 		else
-			speaker.unityPitch = div_s(negate(snd->wavetable->rate),MIXFREQ);
+			speaker.unityPitch = div_s(negate(snd->wavetable->rate), MIXFREQ);
 	}
-	
-	alSynStartVoiceParams(  seqp->drvr, &speaker, snd->wavetable,
-                              0x10000L, 0x7fff, 0x40, 0, 0);
+
+	alSynStartVoiceParams(seqp->drvr, &speaker, snd->wavetable,
+		0x10000L, 0x7fff, 0x40, 0, 0);
 	wordIdx++;
 }
 
-void speakWords(  ALSeqPlayer * seqp, UInt16 * ptr )
+void speakWords(ALSeqPlayer * seqp, UInt16 * ptr)
 {
-
-
 }

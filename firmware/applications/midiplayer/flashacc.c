@@ -12,17 +12,18 @@
 
 void SaveToFlash()
 {
-int Flash;
-Int16 * membuf;
-UInt32  addr=0;
+	int Flash;
+	Int16 * membuf;
+	UInt32  addr = 0;
 
 	membuf = malloc(BUFFER_SIZE);
-		
-	Flash = open(BSP_DEVICE_NAME_SERIAL_DATAFLASH_0, 0, NULL );
 
-	while(addr<FLASH_MAX_ADDR)
-	{	sdram_save( addr, membuf, BUFFER_SIZE );
-		write(Flash, membuf, BUFFER_SIZE );
+	Flash = open(BSP_DEVICE_NAME_SERIAL_DATAFLASH_0, 0, NULL);
+
+	while (addr < FLASH_MAX_ADDR)
+	{
+		sdram_save(addr, membuf, BUFFER_SIZE);
+		write(Flash, membuf, BUFFER_SIZE);
 		addr += BUFFER_SIZE;
 	}
 	close(Flash);
@@ -31,17 +32,18 @@ UInt32  addr=0;
 
 void LoadFromFlash()
 {
-int Flash;
-Int16 * membuf;
-UInt32  addr=0;
+	int Flash;
+	Int16 * membuf;
+	UInt32  addr = 0;
 
 	membuf = malloc(BUFFER_SIZE);
-		
-	Flash = open(BSP_DEVICE_NAME_SERIAL_DATAFLASH_0, 0, NULL );
 
-	while(addr<FLASH_MAX_ADDR)
-	{	read(Flash, membuf, BUFFER_SIZE );
-		sdram_load(addr, membuf, BUFFER_SIZE );
+	Flash = open(BSP_DEVICE_NAME_SERIAL_DATAFLASH_0, 0, NULL);
+
+	while (addr < FLASH_MAX_ADDR)
+	{
+		read(Flash, membuf, BUFFER_SIZE);
+		sdram_load(addr, membuf, BUFFER_SIZE);
 		addr += BUFFER_SIZE;
 	}
 	close(Flash);

@@ -1,6 +1,9 @@
+#ifndef _HELPTXTX_H
+#define _HELPTXTX_H
+
 typedef enum
 {
-	WORD_HELP		= 60,
+	WORD_HELP = 60,
 	WORD_VOLUME,
 	WORD_TEMP,
 	WORD_TONE,
@@ -32,3 +35,5 @@ typedef enum
 	WORD_SOUND_VARIANT,
 	WORD_NET
 } eWords;
+
+#endif
