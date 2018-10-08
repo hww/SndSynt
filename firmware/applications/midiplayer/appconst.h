@@ -9,7 +9,7 @@
  *
  * Description:       Description of Application constant for appconst.c file
  *
- * Modules Included:  
+ * Modules Included:
  ****************************************************************************/
 
 #ifndef __APPCONST_H

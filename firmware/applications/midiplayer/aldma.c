@@ -18,71 +18,71 @@ UInt16      gFrameCt;
 
 /*****************************************************************************
  *
- *	UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
+ *  UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
  *
- *	addr	source address
- *	len		size
- *	state	pointer to the state of all DMAs
+ *  addr    source address
+ *  len     size
+ *  state   pointer to the state of all DMAs
  *
  *****************************************************************************/
 
 UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 {
-    void        *freeBuffer;			// target
-    UInt16       delta;					// index in the frame
-    DMABuffer   *dmaPtr,*lastDmaPtr;	// pointers to DMA
-    UInt32       addrEnd,buffEnd;		// ends of blocks
+    void        *freeBuffer;            // target
+    UInt16       delta;                 // index in the frame
+    DMABuffer   *dmaPtr,*lastDmaPtr;    // pointers to DMA
+    UInt32       addrEnd,buffEnd;       // ends of blocks
 
 
     lastDmaPtr = 0;
     dmaPtr = dmaState.firstUsed;
-    addrEnd = addr+len;										
- 
-    while(dmaPtr)  // find prepaired buffer
-    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;	
-        if(dmaPtr->startAddr > addr) 						
-            break;                   						
+    addrEnd = addr+len;
 
-        else if(addrEnd <= buffEnd) 						
+    while(dmaPtr)  // find prepaired buffer
+    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;
+        if(dmaPtr->startAddr > addr)
+            break;
+
+        else if(addrEnd <= buffEnd)
         {
-            dmaPtr->lastFrame = gFrameCt; 					
+            dmaPtr->lastFrame = gFrameCt;
             freeBuffer = dmaPtr->ptr + addr - dmaPtr->startAddr; байта
-            return (int) freeBuffer;						
+            return (int) freeBuffer;
         }
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
     /*
-     * 	Buffer is not found lets take free one
+     *  Buffer is not found lets take free one
      */
-    dmaPtr 				= dmaState.firstFree;				
-    dmaState.firstFree 	= (DMABuffer*)dmaPtr->node.next;
+    dmaPtr              = dmaState.firstFree;
+    dmaState.firstFree  = (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
     /*
-     * 	Add it to used list
+     *  Add it to used list
      */
-    if(lastDmaPtr != NULL) 							
-    {	alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
+    if(lastDmaPtr != NULL)
+    {   alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
     }
-    else if(dmaState.firstUsed != NULL)				
+    else if(dmaState.firstUsed != NULL)
     {   lastDmaPtr = dmaState.firstUsed;
-        dmaState.firstUsed 		= dmaPtr;
-        dmaPtr->node.next 		= (ALLink*)lastDmaPtr;
-        dmaPtr->node.prev 		= 0;
-        lastDmaPtr->node.prev 	= (ALLink*)dmaPtr;
+        dmaState.firstUsed      = dmaPtr;
+        dmaPtr->node.next       = (ALLink*)lastDmaPtr;
+        dmaPtr->node.prev       = 0;
+        lastDmaPtr->node.prev   = (ALLink*)dmaPtr;
     }
-    else 											
-    {   dmaState.firstUsed 	= dmaPtr;
-        dmaPtr->node.next 	= 0;
-        dmaPtr->node.prev 	= 0;
+    else
+    {   dmaState.firstUsed  = dmaPtr;
+        dmaPtr->node.next   = 0;
+        dmaPtr->node.prev   = 0;
     }
-    
-    freeBuffer = dmaPtr->ptr;						
-    delta = addr & 0x3;								
-    addr -= delta;									
-    dmaPtr->startAddr = addr;						
-    dmaPtr->lastFrame = gFrameCt;  					
- 
+
+    freeBuffer = dmaPtr->ptr;
+    delta = addr & 0x3;
+    addr -= delta;
+    dmaPtr->startAddr = addr;
+    dmaPtr->lastFrame = gFrameCt;
+
     START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH>>2);
 
     return (UInt16) freeBuffer + delta;
@@ -90,19 +90,19 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 
 /*****************************************************************************
  *
- *	ALDMAproc dmaNew(DMAState **state)
+ *  ALDMAproc dmaNew(DMAState **state)
  *
- *	state	state of all DMAs
- *	return	address of DMA callback
- *	
+ *  state   state of all DMAs
+ *  return  address of DMA callback
+ *
  *****************************************************************************/
 
 ALDMAproc dmaNew(DMAState **state)
 {
     UInt16  i;
-    
+
     gFrameCt = 0;
-    
+
     if(!dmaState.initialized)  /* only do this once */
     {
         dmaState.firstFree = &dmaBuffs[0];
@@ -122,9 +122,9 @@ ALDMAproc dmaNew(DMAState **state)
 
 /*****************************************************************************
  *
- * 	void CleanDMABuffs(void)
+ *  void CleanDMABuffs(void)
  *
- *	Clear all DMA buffers
+ *  Clear all DMA buffers
  *
  *****************************************************************************/
 
@@ -134,8 +134,8 @@ void CleanDMABuffs(void)
     gFrameCt++;
     dmaPtr = dmaState.firstUsed;
     while(dmaPtr)
-    {	
-		nextPtr = (DMABuffer*)dmaPtr->node.next;
+    {
+        nextPtr = (DMABuffer*)dmaPtr->node.next;
         /* Can change this value.  Should be at least one.  */
         /* Larger values mean more buffers needed, but fewer DMA's */
         if(dmaPtr->lastFrame + 2  < gFrameCt) /* remove from used list */

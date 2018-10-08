@@ -55,11 +55,11 @@ extern "C" {
 #define CODEC_RIGHT_INPUT_LINE_1       0x0000
 #define CODEC_RIGHT_INPUT_LINE_2       0x0100
 
-    EXPORT void 	fcodecOpen(void);
+    EXPORT void     fcodecOpen(void);
     EXPORT void     fcodecClose(void);
     EXPORT Int16 *  fcodecWaitBuf(void);
-    EXPORT void 	fcodecStereoISR(void);
-    EXPORT void 	fcodecSendCfg(UWord16 data);
+    EXPORT void     fcodecStereoISR(void);
+    EXPORT void     fcodecSendCfg(UWord16 data);
 
     EXPORT UWord16 fsimple_ssiInitialize(arch_sSSI * pInitialState);
 

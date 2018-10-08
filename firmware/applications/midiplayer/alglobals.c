@@ -11,12 +11,12 @@
 #include "sdram.h"
 
 // Global variables
-ALGlobals * alGlobals;				
- 
+ALGlobals * alGlobals;
+
 void    alInit(ALGlobals *glob, ALSynConfig *c)
 {
-    sdram_init();					// initializing SDRAM
-    alGlobals = glob;				// Synthesizer
+    sdram_init();                   // initializing SDRAM
+    alGlobals = glob;               // Synthesizer
     alSynNew(&alGlobals->drvr, c);
 }
 

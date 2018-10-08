@@ -12,7 +12,7 @@
 #include "sdram.h"
 #include "serialdataflash.h"
 #include "flashacc.h"
-#include "mem.h" 
+#include "mem.h"
 
 #define BUFFER_SIZE 528
 #define FLASH_MAX_ADDR 0x20ffff

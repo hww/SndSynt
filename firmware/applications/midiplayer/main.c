@@ -9,7 +9,7 @@
 #include "audiolib.h"
 #include "stdio.h"
 #include "sdram.h"
-#include "mem.h" 
+#include "mem.h"
 #include "terminal.h"
 #include "fcodec.h"
 #include "fcntl.h"
@@ -20,23 +20,23 @@
 //#define PC_MODE
 //#define SAVE_TO_FLASH
 
-ALGlobals global;		// Synthesizer
-ALSeqDir midiBank;		// Sequences
+ALGlobals global;       // Synthesizer
+ALSeqDir midiBank;      // Sequences
 ALSeqDir bgBank;
 ALSeqDir demoBank;
 ALSeqDir gameLevel[5];
 
 #define DRAM_FREE_ADDR      0
-#define DRAM_CTL_ADDR       0x0020fff0u 
-#define DRAM_CTL_SIZE_ADDR  0x0020fff2u 
-#define DRAM_TBL_ADDR       0x0020fff4u 
-#define DRAM_MIDI_ADDR      0x0020fff6u 
-#define DRAM_BG_ADDR        0x0020fff8u 
-#define DRAM_DEMO_ADDR      0x0020fffAu 
+#define DRAM_CTL_ADDR       0x0020fff0u
+#define DRAM_CTL_SIZE_ADDR  0x0020fff2u
+#define DRAM_TBL_ADDR       0x0020fff4u
+#define DRAM_MIDI_ADDR      0x0020fff6u
+#define DRAM_BG_ADDR        0x0020fff8u
+#define DRAM_DEMO_ADDR      0x0020fffAu
 
 
-UInt16	get_cfg(void);
-UInt16	get_cfg(void)
+UInt16  get_cfg(void);
+UInt16  get_cfg(void)
 {
 #ifdef PC_MODE
     int Fd;
@@ -61,39 +61,39 @@ UInt16	get_cfg(void)
 
 void main(void)
 {
-    UWord32			size, drama = DRAM_FREE_ADDR;
-    UWord32			ctl_src;
-    size_t			ctl_size;
-    ALSeqPlayer 	seqp;				// Sequence player
-    ALSeqpConfig 	seqcnf;				// Seq. player configure
-    ALBankFile	*	bankfile;			// Configuration file
-    ALSynConfig 	syncfg;				// Synthesizer configuration
-    int				n;
-    Int16			key;				// Number of button
+    UWord32         size, drama = DRAM_FREE_ADDR;
+    UWord32         ctl_src;
+    size_t          ctl_size;
+    ALSeqPlayer     seqp;               // Sequence player
+    ALSeqpConfig    seqcnf;             // Seq. player configure
+    ALBankFile  *   bankfile;           // Configuration file
+    ALSynConfig     syncfg;             // Synthesizer configuration
+    int             n;
+    Int16           key;                // Number of button
 
 #define SECTION_COUNT 4
 #define SECTION_SIZE  2
 
-    UInt16	params[SECTION_COUNT*SECTION_SIZE + 2] = {
+    UInt16  params[SECTION_COUNT*SECTION_SIZE + 2] = {
 
      4,   250 ms,
-     // output    coef  
+     // output    coef
      240 ms,   0x1000,
      200 ms,   0x500,
      139 ms,   0x100,
       78 ms,   0x100
     };
 
-    // **************** Terminal *******************	
+    // **************** Terminal *******************
     terminalOpen();
     terminalSetAnimate(&stdAnimePP);
 
-    // ************** Synthesizer ******************	
+    // ************** Synthesizer ******************
     syncfg.maxPVoices = get_cfg();
     syncfg.params = &params;
     alInit(&global, &syncfg);
 
-    // *************** Sequencer *******************	
+    // *************** Sequencer *******************
     createAllOsc();
 
     seqcnf.maxVoices = MAX_VOICES;

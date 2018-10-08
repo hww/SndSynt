@@ -31,8 +31,8 @@
 #include "iprdrv.h"
 #include "audiolib.h"
 
-// To temporary close SSI uncoment next line
-//#define __SSIDRV_H 
+// To temporary close SSI uncomment next line
+//#define __SSIDRV_H
 #define TX_CONTROL_BITS        16
 #define CODECDRV_CCS   gpioPin(D,2)
 #define CODECDRV_CDIN  gpioPin(D,1)
@@ -92,11 +92,11 @@ UWord16 fsimple_ssiInitialize(arch_sSSI * pSsiInitialState)
  *              codecDevCreate() function.
  *
  *****************************************************************************
- * PARAMETERS:	pName - Name of device
+ * PARAMETERS:  pName - Name of device
  *               OFlags - Information used for configuring the device
  *               pParams - Open parameters for the codec device (codec_sParams type)
  *
- * RETURN:		CODEC device descriptor if open is successful.
+ * RETURN:      CODEC device descriptor if open is successful.
  *               -1 value if open failed.
  *
  * SIDE EFFECTS:   This function assumes the parameters passed in are
@@ -146,8 +146,8 @@ void fcodecOpen(void)
 
     memset((void*)dma_buf_1, 0, FRAME_BUF_SIZE << 1);
 
-    //	archInstallFastISR(&(pArchInterrupts -> SSITransmitDataException), fcodecStereoISR);
-    //	archInstallFastISR(&(pArchInterrupts -> SSITransmitData), fcodecStereoISR);	
+    //  archInstallFastISR(&(pArchInterrupts -> SSITransmitDataException), fcodecStereoISR);
+    //  archInstallFastISR(&(pArchInterrupts -> SSITransmitData), fcodecStereoISR);
 
     EnableFCodec();
 }
@@ -162,9 +162,9 @@ void fcodecOpen(void)
  * DESCRIPTION: This function does nothing.
  *
  *****************************************************************************
- * PARAMETERS:	FileDesc - Handle assigned to the codec device
+ * PARAMETERS:  FileDesc - Handle assigned to the codec device
  *
- * RETURN:		0
+ * RETURN:      0
  *
  * SIDE EFFECTS:
  *
@@ -204,29 +204,29 @@ void fcodecSendCfg(UWord16 data)
     GpioCodec = open(BSP_DEVICE_NAME_GPIO_D, 0);
 
     /* Initialize clock */
-    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);  				/* CLOCK LOW */
-    ioctl(GpioCodec, GPIO_SET, CODECDRV_CCS);     				/* ML HIGHT */
+    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);                /* CLOCK LOW */
+    ioctl(GpioCodec, GPIO_SET, CODECDRV_CCS);                   /* ML HIGHT */
     archDelay(10);
 
     /* CLOCK IN THE TRANSMIT CONTROL BITS */
     for (i = TX_CONTROL_BITS - 1; i >= 0; i--)
     {
-        ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);  			/* CLOCK LOW */
+        ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);            /* CLOCK LOW */
 
         if (((data >> i) & 0x0001) != 0)
-            ioctl(GpioCodec, GPIO_SET, CODECDRV_CDIN);  		/* DATA = 1 */
+            ioctl(GpioCodec, GPIO_SET, CODECDRV_CDIN);          /* DATA = 1 */
         else
-            ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CDIN);  		/* DATA = 0 */
+            ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CDIN);        /* DATA = 0 */
 
-        archDelay(10);											/* DELAY FOR TIMING REQUIREMENTS */
-        ioctl(GpioCodec, GPIO_SET, CODECDRV_CCLK);  			/* CLOCK HIGH */
-        archDelay(10);											/* DELAY FOR TIMING REQUIREMENTS */
+        archDelay(10);                                          /* DELAY FOR TIMING REQUIREMENTS */
+        ioctl(GpioCodec, GPIO_SET, CODECDRV_CCLK);              /* CLOCK HIGH */
+        archDelay(10);                                          /* DELAY FOR TIMING REQUIREMENTS */
     }
-    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCS);  				/* ML LOW */
-    archDelay(10);												/* DELAY FOR TIMING REQUIREMENTS */
-    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);  				/* CLOCK LOW */
-    archDelay(10);												/* DELAY FOR TIMING REQUIREMENTS */
-    ioctl(GpioCodec, GPIO_SET, CODECDRV_CCS);    				/* ML HIG */
+    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCS);                 /* ML LOW */
+    archDelay(10);                                              /* DELAY FOR TIMING REQUIREMENTS */
+    ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);                /* CLOCK LOW */
+    archDelay(10);                                              /* DELAY FOR TIMING REQUIREMENTS */
+    ioctl(GpioCodec, GPIO_SET, CODECDRV_CCS);                   /* ML HIG */
 }
 
 
@@ -272,37 +272,37 @@ Int16 *  fcodecWaitBuf(void)
 
 void fcodecStereoISR(void)
 {
-    // Called if fifo has 6 or more empty records 
+    // Called if fifo has 6 or more empty records
     {
-        push	r0
-            push	x0
-            push	m01
-            move	dma_modulo, m01
-            move	dma_pos, r0
-            move	X : 0x1000 + arch_sIO.Ssi.ControlStatusReg, x0
-            move	X : (r0)+, x0
-            move	x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move	X : (r0)+, x0
-            move	x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move	X : (r0)+, x0
-            move	x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move	X : (r0)+, x0
-            move	x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+        push    r0
+            push    x0
+            push    m01
+            move    dma_modulo, m01
+            move    dma_pos, r0
+            move    X : 0x1000 + arch_sIO.Ssi.ControlStatusReg, x0
+            move    X : (r0)+, x0
+            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+            move    X : (r0)+, x0
+            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+            move    X : (r0)+, x0
+            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+            move    X : (r0)+, x0
+            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
 #ifdef SIX_TIMES_ISR
-            move	X:(r0)+,x0
-            move	x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
-            move	X:(r0)+,x0
-            move	x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
+            move    X:(r0)+,x0
+            move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
+            move    X:(r0)+,x0
+            move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
 #endif
-            move	r0, dma_pos
-            pop		m01
-            pop		x0
-            pop		r0
+            move    r0, dma_pos
+            pop     m01
+            pop     x0
+            pop     r0
             rti
     }
 }
 
-void	fcodecMute(bool mute)
+void    fcodecMute(bool mute)
 {
     int  GpioCodec;
     GpioCodec = open(BSP_DEVICE_NAME_GPIO_D, 0);

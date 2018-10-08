@@ -30,8 +30,8 @@ void snd_idx_wave( ALWaveTable* Wave )
 {
     UWord16 *ptr;
     if(( Wave->flags & AL_INDEXED) == 0)
-    {	Wave->base>>=1;							
-        Wave->len>>=1;							
+    {   Wave->base>>=1;
+        Wave->len>>=1;
         Wave->flags |= AL_INDEXED;
     }
 }
@@ -45,17 +45,17 @@ void snd_idx_wave( ALWaveTable* Wave )
 void snd_idx_sound( ALSound* Sound )
 {
     UWord16 *ptr;
-    int	n;
+    int n;
     if(( Sound->flags & AL_INDEXED) == 0)
-    {	
+    {
         Sound->sampleVolume = INT2FRAC(Sound->sampleVolume);
-        ptr = (UWord16*)Sound;	
+        ptr = (UWord16*)Sound;
         for(n = 0; n < 4 ; n++)
         {
             if(*ptr != NULL) *ptr +=ctl_org; // Update pointers (indexing)
-            ptr++; 
+            ptr++;
         }
-        snd_idx_wave( Sound->wavetable );	
+        snd_idx_wave( Sound->wavetable );
         Sound->flags |= AL_INDEXED;
     }
 }
@@ -70,17 +70,17 @@ void snd_idx_inst( ALInstrument* Inst  )
 {
     UWord16 *ptr;
     size_t   nSound = (size_t)Inst->soundCount;
-    ptr = (UWord16*)Inst->soundArray;	
-    if((Inst->flags & AL_INDEXED) == 0)			
-    {	
+    ptr = (UWord16*)Inst->soundArray;
+    if((Inst->flags & AL_INDEXED) == 0)
+    {
         Inst->volume = INT2FRAC(Inst->volume);
         while (nSound != 0)
-        {	
-            (*ptr)+=ctl_org;				// Update pointers (indexing)
-            snd_idx_sound( (ALSound*)*ptr); 		
+        {
+            (*ptr)+=ctl_org;                // Update pointers (indexing)
+            snd_idx_sound( (ALSound*)*ptr);
             ptr++;
-            nSound--;						
-        } 
+            nSound--;
+        }
         Inst->flags |= AL_INDEXED;
     }
 }
@@ -95,19 +95,19 @@ void snd_idx_bank( ALBank *bank )
 {
     UWord16 *ptr;
     size_t   nInst = (size_t)bank->instCount;
-    if((bank->flags & AL_INDEXED) == 0)			
-    {	
-        ptr = (UWord16*)&bank->percussion;	
-        if(*ptr !=0 ) nInst++;						
-        else ptr++;									
+    if((bank->flags & AL_INDEXED) == 0)
+    {
+        ptr = (UWord16*)&bank->percussion;
+        if(*ptr !=0 ) nInst++;
+        else ptr++;
         while (nInst != 0)
-        {	if(*ptr!=NULL)
-            {	*ptr += ctl_org;					
-                snd_idx_inst((ALInstrument*) *ptr); 	
+        {   if(*ptr!=NULL)
+            {   *ptr += ctl_org;
+                snd_idx_inst((ALInstrument*) *ptr);
             }
             ptr++;
-            nInst--;								
-        } 
+            nInst--;
+        }
         bank->flags |= AL_INDEXED;
     }
 }
@@ -126,14 +126,14 @@ void alBnkfNew(ALBankFile *ctl, Ptr32 tbl)
     tbl_org = (UWord32)tbl;
     if( nBanks > 0)
     {
-        ptr = (UWord16*)ctl->bankArray;	
+        ptr = (UWord16*)ctl->bankArray;
 
         do
         {
-            *ptr=*ptr+ctl_org;				
-            snd_idx_bank( (ALBank*)*ptr );	
-            ptr++;							
-            nBanks--;						
+            *ptr=*ptr+ctl_org;
+            snd_idx_bank( (ALBank*)*ptr );
+            ptr++;
+            nBanks--;
         } while (nBanks != 0);
     }
 }
@@ -146,16 +146,16 @@ void alBnkfNew(ALBankFile *ctl, Ptr32 tbl)
 
 UWord32 snd_load_bank( char * name, ALBankFile ** ctl, UInt32 addr )
 {
-    int 	     Fd;
+    int          Fd;
     UWord32      fsize;
     size_t       words;
     Fd = open(name, O_RDONLY);
-    if(Fd == 0) 
+    if(Fd == 0)
         return 0;
     ioctl(Fd, FILE_IO_GET_SIZE, fsize );
     words=fsize>>1;
-    ioctl(Fd, FILE_IO_DATAFORMAT_RAW,NULL); 
-    
+    ioctl(Fd, FILE_IO_DATAFORMAT_RAW,NULL);
+
     if(words>0)
     {
         *ctl = malloc( words );
@@ -163,7 +163,7 @@ UWord32 snd_load_bank( char * name, ALBankFile ** ctl, UInt32 addr )
         sdram_load( addr, (UInt16*)*ctl, words );
     }
     close(Fd);
-    
+
     return words;
 }
 
@@ -171,12 +171,12 @@ UWord32 snd_load_bank( char * name, ALBankFile ** ctl, UInt32 addr )
  *
  * Loading samples
  *
- *	UWord32 snd_load_tbl( char * name, UInt32 addr )
+ *  UWord32 snd_load_tbl( char * name, UInt32 addr )
  *
- *	name 		file name
- *	addr			target address
- *	
- *	return size of file
+ *  name        file name
+ *  addr            target address
+ *
+ *  return size of file
  *
  *****************************************************************************/
 
@@ -185,13 +185,13 @@ UWord32 snd_load_tbl( char * name, UInt32 addr )
     int Fd;
     UInt32 nWords, fsize;
     Fd = open(name, O_RDONLY);
-    if(Fd == 0) 
+    if(Fd == 0)
         return 0;
     ioctl(Fd, FILE_IO_GET_SIZE, fsize );
     nWords = fsize>>1;
-    if(nWords==0) 
+    if(nWords==0)
         return 0;
-    ioctl(Fd, FILE_IO_DATAFORMAT_RAW,NULL); 
+    ioctl(Fd, FILE_IO_DATAFORMAT_RAW,NULL);
     sdram_load_file( Fd, addr, nWords );
     close(Fd);
     return nWords;

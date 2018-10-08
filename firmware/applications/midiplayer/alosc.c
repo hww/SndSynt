@@ -15,21 +15,21 @@
  * voice. But if tremelo and vibrato not used on all instruments will
  * need less.
  */
-#define  OSC_STATE_COUNT   MAX_VOICES 
+#define  OSC_STATE_COUNT   MAX_VOICES
 oscData  *freeOscStateList;
 oscData  oscStates[OSC_STATE_COUNT];
 
 /*****************************************************************************
  *
- *	ALMicroTime initOsc(void **oscState, f32 *initVal,  u8 oscType,
+ *  ALMicroTime initOsc(void **oscState, f32 *initVal,  u8 oscType,
  *                         u8   oscRate,   u8  oscDepth, u8 oscDelay)
  *
- *	oscState	pointer to OSC
- *	initVal		start value
- *	oscType		vibrato type
- *	oscRate		vibrato frequency
- *	oscDepth	vibrato depth
- *	oscDelay	vibrato delay
+ *  oscState    pointer to OSC
+ *  initVal     start value
+ *  oscType     vibrato type
+ *  oscRate     vibrato frequency
+ *  oscDepth    vibrato depth
+ *  oscDelay    vibrato delay
  *
  *****************************************************************************/
 
@@ -38,7 +38,7 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
 {
     oscData         *statePtr;
     ALMicroTime     deltaTime = 0;
-    Int16			frames = oscRate / (FRAME_TIME_US/1000);
+    Int16           frames = oscRate / (FRAME_TIME_US/1000);
 
     if(freeOscStateList)  /* yes there are oscStates available */
     {
@@ -55,8 +55,8 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
             case VIBRATO_SIN:
                 statePtr->data.vsin.depthcents = oscDepth;
                 statePtr->curCount = 0;
-                statePtr->maxCount = 4+frames; 	    // values 4-259
-                *initVal = 0; 						// start pitch 
+                statePtr->maxCount = 4+frames;      // values 4-259
+                *initVal = 0;                       // start pitch
                 break;
 
             case VIBRATO_SQR:
@@ -71,19 +71,19 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
                     *initVal = statePtr->data.vsqr.hiRatio;
                 }
                 break;
-                    
+
             case VIBRATO_DSC_SAW:
                 {
                     Int16     cents;
-                    statePtr->maxCount = frames+1; // values 1-256 
+                    statePtr->maxCount = frames+1; // values 1-256
                     statePtr->curCount = statePtr->maxCount;
                     cents = oscDepth;
-                    statePtr->data.vdsaw.hicents 	= cents;
+                    statePtr->data.vdsaw.hicents    = cents;
                     statePtr->data.vdsaw.centsrange = 2 * cents;
                     *initVal = statePtr->data.vdsaw.hicents;
                 }
                 break;
-                
+
             case VIBRATO_ASC_SAW:
                 {
                     Int16     cents;
@@ -98,24 +98,24 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
 
         }
     }
-	/* if there are no oscStates, return zero, but if
-	oscState was available, return delay in usecs */
-    return(deltaTime); 
+    /* if there are no oscStates, return zero, but if
+    oscState was available, return delay in usecs */
+    return(deltaTime);
 }
 
 /*****************************************************************************
  *
- *	ALMicroTime updateOsc(void *oscState, f32 *updateVal)
+ *  ALMicroTime updateOsc(void *oscState, f32 *updateVal)
  *
- *	oscState	pointer to OSC
- *	updateVal	pointer to target value (modified by OSC)
+ *  oscState    pointer to OSC
+ *  updateVal   pointer to target value (modified by OSC)
  *
  *****************************************************************************/
 
 ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
 {
     Frac32           tmp32;
-    Frac16			 tmp16;
+    Frac16           tmp16;
     oscData         *statePtr = (oscData*)oscState;
     ALMicroTime     deltaTime = FRAME_TIME_US; // callback every
 
@@ -129,15 +129,15 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
             if(statePtr->curCount >= statePtr->maxCount)
                 statePtr->curCount = 0;
             tmp16  = div_s(statePtr->curCount , statePtr->maxCount)<<1;
- 
+
             if(tmp16 == 0x4000)tmp16 = 0xc000;
-            else if(tmp16 == 0xC000)tmp16 = 0x4000; 
+            else if(tmp16 == 0xC000)tmp16 = 0x4000;
 
             tmp16  = tfr16SinPIx (tmp16);
             tmp16  = mult(statePtr->data.vsin.depthcents, tmp16);
             *updateVal = tmp16;
             break;
-            
+
         case VIBRATO_SQR:
             if(statePtr->stateFlags == OSC_HIGH)
             {
@@ -161,7 +161,7 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
             tmp16 = statePtr->data.vdsaw.hicents - tmp16;
             *updateVal = tmp16;
             break;
-            
+
         case VIBRATO_ASC_SAW:
             statePtr->curCount++;
             if(statePtr->curCount > statePtr->maxCount)
@@ -172,15 +172,15 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
             *updateVal = tmp16;
             break;
     }
-    
+
     return(deltaTime);
 }
 
 /*****************************************************************************
  *
- *	void stopOsc(void *oscState)
+ *  void stopOsc(void *oscState)
  *
- *	oscState	pointer to OSC structure
+ *  oscState    pointer to OSC structure
  *
  *****************************************************************************/
 

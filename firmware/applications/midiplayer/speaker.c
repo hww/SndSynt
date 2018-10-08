@@ -11,21 +11,21 @@
 
 /*****************************************************************************
  *
- *	The sequence of narration for voice over
+ *  The sequence of narration for voice over
  *
  *****************************************************************************/
 
 const tHelpList HelpList[]=
 {
     // In any case
-    {KBD_MODE_ANY,KEY_HELP,		{WORD_HELP,0,0,0}},
-    {KBD_MODE_ANY,KEY_M1,  		{WORD_TEMP,WORD_TONE,0,0}},
-    {KBD_MODE_ANY,KEY_M2,  		{WORD_SELECT,WORD_FILES,0,0}},
-    {KBD_MODE_ANY,KEY_M3,  		{WORD_SELECT,WORD_INS,0,0}},
-    {KBD_MODE_ANY,KEY_M4,  		{WORD_VARIANT,WORD_SOUND_VARIANT,0,0}},
-    {KBD_MODE_ANY,KEY_M5,  		{WORD_SELECT,WORD_GAME,0}},
-    {KBD_MODE_ANY,KEY_NEXT,		{WORD_REPEAT,0,0,0}},
-    {KBD_MODE_ANY,KEY_PREV,		{WORD_REPEAT,WORD_TWO,0,0}},
+    {KBD_MODE_ANY,KEY_HELP,     {WORD_HELP,0,0,0}},
+    {KBD_MODE_ANY,KEY_M1,       {WORD_TEMP,WORD_TONE,0,0}},
+    {KBD_MODE_ANY,KEY_M2,       {WORD_SELECT,WORD_FILES,0,0}},
+    {KBD_MODE_ANY,KEY_M3,       {WORD_SELECT,WORD_INS,0,0}},
+    {KBD_MODE_ANY,KEY_M4,       {WORD_VARIANT,WORD_SOUND_VARIANT,0,0}},
+    {KBD_MODE_ANY,KEY_M5,       {WORD_SELECT,WORD_GAME,0}},
+    {KBD_MODE_ANY,KEY_NEXT,     {WORD_REPEAT,0,0,0}},
+    {KBD_MODE_ANY,KEY_PREV,     {WORD_REPEAT,WORD_TWO,0,0}},
     // Modes tone, tempo
     {KBD_MODE_TONE,KEY_PLAY,    {WORD_START,WORD_FILES,0,0}},
     {KBD_MODE_TONE,KEY_STOP,    {WORD_STOP,WORD_FILES,0,0}},
@@ -55,30 +55,30 @@ const tHelpList HelpList[]=
     {KBD_MODE_GAME,KEY_PLUS_1,  {WORD_VARIANT,WORD_GAME,WORD_PLUS,0}},
     {KBD_MODE_GAME,KEY_MINUS_1, {WORD_VARIANT,WORD_GAME,WORD_MINUS,0}},
     // Last line
-    {KBD_MODE_UNDEFINED,0, 		{0,0,0,0}}
+    {KBD_MODE_UNDEFINED,0,      {0,0,0,0}}
 };
 
-static ALVoice 	speaker;				// Voice channel
-static Int16 	wordIdx;				// Number of sounded words
-static UInt16	speakList[4];			// List of words to say
-    
+static ALVoice  speaker;                // Voice channel
+static Int16    wordIdx;                // Number of sounded words
+static UInt16   speakList[4];           // List of words to say
+
 /*****************************************************************************
  *
- *	Help on the key
+ *  Help on the key
  *
  *****************************************************************************/
 
 void speakerUpdate( ALSeqPlayer * seqp)
 {
     ALSound *   snd;
-    int			ok;
+    int         ok;
     // Wait request
     if(wordIdx == -1) return;
     // Wait previous word
     if((speaker.state & AL_SF_ACTIVE) != 0) return;
     // In case if all 4 words finished
     if((wordIdx == 4) || (speakList[wordIdx] == WORD_EOF))
-    {	wordIdx = -1;
+    {   wordIdx = -1;
         return;
     }
     // Chose sound word to play
@@ -95,7 +95,7 @@ void speakerUpdate( ALSeqPlayer * seqp)
         alSynSetGain( seqp->drvr, &speaker, 0x7fff);
         alSynStartVoiceParams(  seqp->drvr, &speaker, snd->wavetable,
                                   0x10000L, 0x7fff, 0x40, 0, 0);
-        wordIdx++;							
+        wordIdx++;
     }
 }
 
@@ -103,8 +103,8 @@ void speakWords(  const UInt16 * ptr )
 {
     int n;
     if(wordIdx == -1)
-    {	for(n = 0; n<4 ;n++) speakList[n] =	*ptr++;
-        wordIdx = 0;	
+    {   for(n = 0; n<4 ;n++) speakList[n] = *ptr++;
+        wordIdx = 0;
         speaker.state = 0;
     }
 }
@@ -114,9 +114,9 @@ void speakDigit(  UInt16  val )
 {
     int n;
     if(wordIdx == -1)
-    {	for(n = 0; n<4 ;n++) speakList[n] =	0;
+    {   for(n = 0; n<4 ;n++) speakList[n] = 0;
         speakList[0]= val + WORD_ZERO;
-        wordIdx = 0;	
+        wordIdx = 0;
         speaker.state = 0;
     }
 }

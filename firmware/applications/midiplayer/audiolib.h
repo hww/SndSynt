@@ -17,8 +17,8 @@
 extern "C" {
 #endif
 
-#define DI 	archDisableInt() 
-#define EI	archEnableInt() 
+#define DI  archDisableInt()
+#define EI  archEnableInt()
 
 /*****************************************************************************
  * Data types
@@ -37,32 +37,32 @@ typedef UInt32 Ptr32;
  * Settings and definitions
  *****************************************************************************/
 
-#define PCHANELS 16							// Polyphony
-#define MAX_VOICES 32						// Virtual voices
-#define MAX_EVENTS 96						// Max events
-#define MAX_CHANNELS 16						// Max MIDI channels
-#define MIX_BUF_SIZE 640					// buffer of samples mixer 10 ms
-#define VOL_BUF_SIZE MIX_BUF_SIZE/32		// fadeout buffer 4 mks
-#define CASH_L2_SIZE MIX_BUF_SIZE			// sample's renderer buffer 10 ms
-#define CASH_L1_SIZE (CASH_L2_SIZE << 1)	// sample's cache buffer
-#define MIXFREQ 32000						// Sample frequency
-#define FRAME_TIME_US  20000				// Time uS for single frame
+#define PCHANELS 16                         // Polyphony
+#define MAX_VOICES 32                       // Virtual voices
+#define MAX_EVENTS 96                       // Max events
+#define MAX_CHANNELS 16                     // Max MIDI channels
+#define MIX_BUF_SIZE 640                    // buffer of samples mixer 10 ms
+#define VOL_BUF_SIZE MIX_BUF_SIZE/32        // fadeout buffer 4 mks
+#define CASH_L2_SIZE MIX_BUF_SIZE           // sample's renderer buffer 10 ms
+#define CASH_L1_SIZE (CASH_L2_SIZE << 1)    // sample's cache buffer
+#define MIXFREQ 32000                       // Sample frequency
+#define FRAME_TIME_US  20000                // Time uS for single frame
 #define FRAME_SIZE (MIXFREQ/1000*(FRAME_TIME_US/1000)) // Size of file in samples
-#define FRAME_BUF_SIZE (FRAME_SIZE << 1)	// Size of all frames in samples
-#define	FX_ADDR  0xC000						// Buffer start FX
-#define	FX_MODULO (0xFFFF-FX_ADDR)			// For MODULO
-#define	FX_SIZE  (FX_MODULO + 1)			// Buffer size for FX
-#define FX_SCALE (0x7FFF/0x7F)				// Volume scale FX
-#define PAN_SCALE ((0x7FFF)/0x7F)			// Volume scale
-#define MAX_PRIORITY    127					// Max priority
-#define INT2FRAC(x) (x * (0x7FFF/0x7F))		// Scale 0..127 to 0..32767
-#define ms *(((Int32)MIXFREQ/500) & ~0x1)	// Convert ms to stereo16
+#define FRAME_BUF_SIZE (FRAME_SIZE << 1)    // Size of all frames in samples
+#define FX_ADDR  0xC000                     // Buffer start FX
+#define FX_MODULO (0xFFFF-FX_ADDR)          // For MODULO
+#define FX_SIZE  (FX_MODULO + 1)            // Buffer size for FX
+#define FX_SCALE (0x7FFF/0x7F)              // Volume scale FX
+#define PAN_SCALE ((0x7FFF)/0x7F)           // Volume scale
+#define MAX_PRIORITY    127                 // Max priority
+#define INT2FRAC(x) (x * (0x7FFF/0x7F))     // Scale 0..127 to 0..32767
+#define ms *(((Int32)MIXFREQ/500) & ~0x1)   // Convert ms to stereo16
 #define FX_OUT_MAX_POINTERS 4
-#define ENVELOPE_TIME_US  20000				// time uS on the single envelope unit
-#define VOLUME_PRIORITY						// priority of volume 
+#define ENVELOPE_TIME_US  20000             // time uS on the single envelope unit
+#define VOLUME_PRIORITY                     // priority of volume
 #undef  DMAS_ON
-#define NBUFFERS       		16				// Number of DMAs	
-#define MAX_BUFFER_LENGTH 	1024			// DMA buffer size
+#define NBUFFERS            16              // Number of DMAs
+#define MAX_BUFFER_LENGTH   1024            // DMA buffer size
 
 #include "alLinker.h"
 
@@ -73,9 +73,9 @@ typedef UInt32 Ptr32;
 typedef struct
 {
     ALLink      node;
-    UInt32      startAddr;			// redubg pointer
-    UInt16      lastFrame;			// last access time
-    UInt16      *ptr;				// buffer pointer
+    UInt32      startAddr;          // redubg pointer
+    UInt16      lastFrame;          // last access time
+    UInt16      *ptr;               // buffer pointer
 } DMABuffer;
 
 typedef struct
@@ -88,47 +88,47 @@ typedef struct
 
 #define START_DMA(addr,dst,size) sdram_load_64( (UInt32)addr, (UWord16*) dst, (size_t) size)
 
-UInt16 		dmaCallBack(UInt32 addr, UInt16 len, void *state);
-typedef 	UInt16(*ALDMAproc)(UInt32 addr, UInt16 len, void *state);
-typedef 	ALDMAproc(*ALDMANew)(void *state);
-ALDMAproc 	dmaNew(DMAState ** state);
-void 		CleanDMABuffs(void);
+UInt16      dmaCallBack(UInt32 addr, UInt16 len, void *state);
+typedef     UInt16(*ALDMAproc)(UInt32 addr, UInt16 len, void *state);
+typedef     ALDMAproc(*ALDMANew)(void *state);
+ALDMAproc   dmaNew(DMAState ** state);
+void        CleanDMABuffs(void);
 
 
 /***********************************************************************
  * Sample's flags
  ***********************************************************************/
 
-#define AL_SF_LOOP      0x0001	// Sample has loop
-#define AL_SF_FADEOUT   0x0002	// Sample has fadeout
-#define AL_SF_ACTIVE    0x0010	// Sample is active
-#define AL_SF_ALOCATED  0x0020	// Sample is polyphonic
-#define AL_SF_ZERO  	0x0040	// Sample has volume 0
-#define AL_SF_TARGET  	0x0080	// Sample has defined volume
+#define AL_SF_LOOP      0x0001  // Sample has loop
+#define AL_SF_FADEOUT   0x0002  // Sample has fadeout
+#define AL_SF_ACTIVE    0x0010  // Sample is active
+#define AL_SF_ALOCATED  0x0020  // Sample is polyphonic
+#define AL_SF_ZERO      0x0040  // Sample has volume 0
+#define AL_SF_TARGET    0x0080  // Sample has defined volume
 
 /***********************************************************************
  * Sound flags
  ***********************************************************************/
 
-#define AL_ENV_SUSTANE 	0x0100	// Envelope with sustain
-#define AL_ENV_LOOP    	0x0200	// Envelope with loop
-#define AL_ENV_VOL   	0x0400	// Has volume envelope
-#define AL_ENV_PAN   	0x0800	// Has pan envelope
-#define AL_INDEXED		0x8000	// Record is indexed
+#define AL_ENV_SUSTANE  0x0100  // Envelope with sustain
+#define AL_ENV_LOOP     0x0200  // Envelope with loop
+#define AL_ENV_VOL      0x0400  // Has volume envelope
+#define AL_ENV_PAN      0x0800  // Has pan envelope
+#define AL_INDEXED      0x8000  // Record is indexed
 
 /***********************************************************************
  * MIN MAX DEFINES
  ***********************************************************************/
 
-#define MIX_VOL_MAX		0x7F
-#define PAN_CENTER   	0x40
-#define PAN_LEFT     	0
-#define PAN_RIGHT    	0x7F
-#define VOL_FULL     	0x7F
-#define KEY_MIN      	0
-#define KEY_MAX      	127
-#define DEFAULT_FXMIX	0
-#define SUSTAIN      	127
+#define MIX_VOL_MAX     0x7F
+#define PAN_CENTER      0x40
+#define PAN_LEFT        0
+#define PAN_RIGHT       0x7F
+#define VOL_FULL        0x7F
+#define KEY_MIN         0
+#define KEY_MAX         127
+#define DEFAULT_FXMIX   0
+#define SUSTAIN         127
 
  /***********************************************************************
   * FX Stuff
@@ -151,18 +151,18 @@ typedef void    *ALFxRef;
 
 #define AL_MAX_MICROTIME 999999999L
 
-typedef  Int16	ALMiliTime;
+typedef  Int16  ALMiliTime;
 typedef  Int32  ALMicroTime;
 
-void		alMicroTimeSub(ALMicroTime * time, ALMicroTime delta);
-void		alMicroTimeAdd(ALMicroTime * time, ALMicroTime delta);
+void        alMicroTimeSub(ALMicroTime * time, ALMicroTime delta);
+void        alMicroTimeAdd(ALMicroTime * time, ALMicroTime delta);
 ALMicroTime alMiliToMicro(ALMiliTime time);
 
 /***********************************************************************
  * ADPCM State
  ***********************************************************************/
 
-#define ADPCMVSIZE		8
+#define ADPCMVSIZE      8
 #define ADPCMFSIZE      16
 
 typedef short ADPCM_STATE[ADPCMFSIZE];
@@ -174,13 +174,13 @@ typedef  Int16  ALPan;
  ***********************************************************************/
 
 typedef struct {
-    Int16 	left;
-    Int16	right;
+    Int16   left;
+    Int16   right;
 } stereo16;
 
 typedef struct {
-    Int32 	left;
-    Int32	right;
+    Int32   left;
+    Int32   right;
 } stereo32;
 
 /***********************************************************************
@@ -209,25 +209,25 @@ typedef struct ALWaveTable_s {
     UInt32      len;            /* length of data in bytes      */
     UInt16      type;           /* compression type             */
     UInt16      flags;          /* offset/address flags         */
-    UInt16		rate;
-    UInt16		ltype;
-    UInt32		start;
-    UInt32		end;
-    UInt32		count;
+    UInt16      rate;
+    UInt16      ltype;
+    UInt32      start;
+    UInt32      end;
+    UInt32      count;
 } ALWaveTable;
 
 typedef struct {
-    u16			type;
-    u16			sustaneStart;
-    u16			sustaneEnd;
-    u16			loopStart;
-    u16			loopEnd;
-    u16			pointCount;
+    u16         type;
+    u16         sustaneStart;
+    u16         sustaneEnd;
+    u16         loopStart;
+    u16         loopEnd;
+    u16         pointCount;
     struct
     {
-        u16			val;
-        ALMiliTime	time;
-    }			pointArray[1];
+        u16         val;
+        ALMiliTime  time;
+    }           pointArray[1];
 } ALEnvelopeTable;
 
 typedef struct ALSound_s {
@@ -237,7 +237,7 @@ typedef struct ALSound_s {
     ALWaveTable *wavetable;     /* offset to wavetable struct           */
     ALPan       samplePan;
     UInt16      sampleVolume;
-    ALMiliTime	sampleFadeout;
+    ALMiliTime  sampleFadeout;
     UInt16      flags;
 } ALSound;
 
@@ -263,8 +263,8 @@ typedef struct ALBank_s {
 } ALBank;
 
 typedef struct {                /* Note: sizeof won't be correct        */
-    UWord32		ctl_size;
-    UWord32		tbl_size;
+    UWord32     ctl_size;
+    UWord32     tbl_size;
     Int16       revision;       /* format revision of this file         */
     Int16       bankCount;      /* number of banks                      */
     ALBank      *bankArray[1];  /* ARRAY of bank offsets                */
@@ -285,34 +285,34 @@ UWord32 snd_load_tbl(char * name, UInt32 addr);
 
 typedef struct PVoice_s
 {
-    ALLink  node;		 		// link
-    void   *vvoice;				// virtual voice pointer
-    UInt32	pos;	            // current position in the sample
-    UInt16 	fpos;				// fraction par of position in the sample
-    UInt32 	end;  	            // end of loop
-    UInt32 	endsub;             // subtract at the end
-    UInt32	count;				// Loop's count
-    UInt32  pitch;				// fixed point increment
-    Int32	curVolume;			// current volume
-    Int32	tgtVolume;			// target volume
-    Int32	addVolume;    		// volume increment
-    Int16	phaseVolume;		// position in the 32х samples buffer
-    Int16 	curPan;             // current pan 
-    Int16 	tgtPan;             // target pan 
-    Int16 	addPan;             // pan increment 
-    Int16	gain;				// volume scale
-    Int16	lvol;				// left volume
-    Int16	rvol;				// right volume
+    ALLink  node;               // link
+    void   *vvoice;             // virtual voice pointer
+    UInt32  pos;                // current position in the sample
+    UInt16  fpos;               // fraction par of position in the sample
+    UInt32  end;                // end of loop
+    UInt32  endsub;             // subtract at the end
+    UInt32  count;              // Loop's count
+    UInt32  pitch;              // fixed point increment
+    Int32   curVolume;          // current volume
+    Int32   tgtVolume;          // target volume
+    Int32   addVolume;          // volume increment
+    Int16   phaseVolume;        // position in the 32х samples buffer
+    Int16   curPan;             // current pan
+    Int16   tgtPan;             // target pan
+    Int16   addPan;             // pan increment
+    Int16   gain;               // volume scale
+    Int16   lvol;               // left volume
+    Int16   rvol;               // right volume
 } PVoice;
 
 typedef struct Voice_s
 {
-    ALLink           node;		// link
-    PVoice  		*pvoice;	// polyphony voice
-    ALWaveTable 	*wavetable; // waveform parameters
-    UInt16 			state;   	// (loop/one-shot)(release)
-    UInt16 	        priority;	// sample's priority
-    Frac16			unityPitch;	// ratio Waverate/MIXFREQ
+    ALLink           node;      // link
+    PVoice          *pvoice;    // polyphony voice
+    ALWaveTable     *wavetable; // waveform parameters
+    UInt16          state;      // (loop/one-shot)(release)
+    UInt16          priority;   // sample's priority
+    Frac16          unityPitch; // ratio Waverate/MIXFREQ
 } ALVoice;
 
 /*****************************************************************************
@@ -338,22 +338,22 @@ typedef struct
     ALLink      pFreeList;      // free polyphony-voices
     ALLink      pAllocList;     // used polyphony-voices
     ALLink      pLameList;      // lame polyphony-voices (maybe to delete)
-    void       *clientData;   	// player's data
+    void       *clientData;     // player's data
     ALVoiceHandler handler;     // player's procedure
-    ALMicroTime callTime;    	// mks before call
+    ALMicroTime callTime;       // mks before call
     UInt32      samplesLeft;    // sample's count before call
-    ALVoiceHandler fhandler;    // procedure pointer FRAME_TIME_US    
-    ALMicroTime fcallTime;   	// mks before call f handler
-    UInt16      numPVoices;		// number of polyphony-voices
-    PVoice     *pvoice;			// voices list
-    stereo32   *mix_buf;		// mixer buffer
+    ALVoiceHandler fhandler;    // procedure pointer FRAME_TIME_US
+    ALMicroTime fcallTime;      // mks before call f handler
+    UInt16      numPVoices;     // number of polyphony-voices
+    PVoice     *pvoice;         // voices list
+    stereo32   *mix_buf;        // mixer buffer
 } ALSynth;
 
-void 	alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples);
-void 	alSynUpdate(ALSynth* s);
-bool 	alSynNew(ALSynth *s, ALSynConfig *cfg);
-void 	alSynDelete(ALSynth * s);
-void 	alSynAddPlayer(ALSynth *s, void *client);
+void    alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples);
+void    alSynUpdate(ALSynth* s);
+bool    alSynNew(ALSynth *s, ALSynConfig *cfg);
+void    alSynDelete(ALSynth * s);
+void    alSynAddPlayer(ALSynth *s, void *client);
 void    alSynSetVol(ALSynth * synth, ALVoice *voice, Int16 vol, ALMicroTime time);
 void    alSynStartVoice(ALSynth * synth, ALVoice *voice, ALWaveTable *w);
 void    alSynSetPan(ALSynth * synth, ALVoice *voice, ALPan pan, ALMicroTime time);
@@ -364,11 +364,11 @@ Int16   alSynGetPriority(ALSynth * synth, ALVoice *voice);
 void    alSynStartVoiceParams(ALSynth * synth, ALVoice *voice, ALWaveTable *w,
     Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
     ALMicroTime t);
-void 	alSynStopVoice(ALSynth *drvr, ALVoice *voice);
+void    alSynStopVoice(ALSynth *drvr, ALVoice *voice);
 
 Int16   alSynAllocVoice(ALSynth *s, ALVoice *v, UInt16 priority);
 void    alSynFreeVoice(ALSynth *s, ALVoice *voice);
-void   	alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol);
+void    alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol);
 
 /*****************************************************************************
  *
@@ -406,8 +406,8 @@ typedef struct {                /* Note: size of won't be correct       */
 
 typedef struct
 {
-    UInt32 		drama;
-    ALSeqFile 	seqFile;
+    UInt32      drama;
+    ALSeqFile   seqFile;
 } ALSeqDir;
 
 void    alSeqFileNew(ALSeqFile *f, Ptr32 base, UInt16 fnum);
@@ -436,32 +436,32 @@ UWord32 alSeqFileLoad(char * name, UInt32 addr);
   */
 enum ALMsg {
     AL_SEQ_NOP_EVT,
-    AL_SEQ_REF_EVT,			// Reference to a pending event in the sequence.
-    AL_SEQ_MIDI_EVT,		// midi event	
-    AL_SEQP_MIDI_EVT,		// midi event to stop sequencer
-    AL_TEMPO_EVT,			// change tempo
-    AL_SEQP_TEMPO_EVT,		// change tempo
-    AL_SEQ_END_EVT,			// end of sequence
-    AL_NOTE_END_EVT,		// end of sound, voice is free
-    AL_SEQP_EVOL_EVT,		// volume of envelope
-    AL_SEQP_EPAN_EVT,		// pan of envelope
+    AL_SEQ_REF_EVT,         // Reference to a pending event in the sequence.
+    AL_SEQ_MIDI_EVT,        // midi event
+    AL_SEQP_MIDI_EVT,       // midi event to stop sequencer
+    AL_TEMPO_EVT,           // change tempo
+    AL_SEQP_TEMPO_EVT,      // change tempo
+    AL_SEQ_END_EVT,         // end of sequence
+    AL_NOTE_END_EVT,        // end of sound, voice is free
+    AL_SEQP_EVOL_EVT,       // volume of envelope
+    AL_SEQP_EPAN_EVT,       // pan of envelope
     AL_SEQP_META_EVT,
-    AL_SEQP_PROG_EVT,		// change instrument
+    AL_SEQP_PROG_EVT,       // change instrument
     AL_SEQP_API_EVT,
-    AL_SEQP_VOL_EVT,		// event main volume
+    AL_SEQP_VOL_EVT,        // event main volume
     AL_SEQP_LOOP_EVT,
-    AL_SEQP_PRIORITY_EVT,	// change priority
+    AL_SEQP_PRIORITY_EVT,   // change priority
     AL_SEQP_SEQ_EVT,
-    AL_SEQP_BANK_EVT,		// change bank
-    AL_SEQP_PLAY_EVT,		// play
-    AL_SEQP_STOP_EVT,		// stop
-    AL_SEQP_STOPPING_EVT,	// stop (FADEOUT)
-    AL_TRACK_END,			// end of track
+    AL_SEQP_BANK_EVT,       // change bank
+    AL_SEQP_PLAY_EVT,       // play
+    AL_SEQP_STOP_EVT,       // stop
+    AL_SEQP_STOPPING_EVT,   // stop (FADEOUT)
+    AL_TRACK_END,           // end of track
     AL_CSP_LOOPSTART,
     AL_CSP_LOOPEND,
     AL_CSP_NOTEOFF_EVT,
-    AL_TREM_OSC_EVT,		// event TREMOLO OSC
-    AL_VIB_OSC_EVT			// event VIBTRATO OSC
+    AL_TREM_OSC_EVT,        // event TREMOLO OSC
+    AL_VIB_OSC_EVT          // event VIBTRATO OSC
 };
 
 /*
@@ -554,12 +554,12 @@ enum AL_MIDImeta {
 typedef struct {
     Ptr32       curPtr;         /* ptr to the next event */
     s32         lastTicks;      /* sequence clock ticks (used by alSeqSetLoc) */
-    s32	       	curTicks;		/* sequence clock ticks of next event (used by loop end test) */
+    s32         curTicks;       /* sequence clock ticks of next event (used by loop end test) */
     s16         lastStatus;     /* the last status msg */
 } ALSeqMarker;
 
 typedef struct {
-    s32         ticks;    		/* MIDI, Tempo and End events must start with ticks */
+    s32         ticks;          /* MIDI, Tempo and End events must start with ticks */
     u8          status;
     u8          byte1;
     u8          byte2;
@@ -604,16 +604,16 @@ typedef struct {
 } ALSeqpLoopEvent;
 
 typedef struct {
-    u8			chan;
-    u8			priority;
+    u8          chan;
+    u8          priority;
 } ALSeqpPriorityEvent;
 
 typedef struct {
-    void		*seq;	// pointer to a seq (could be an ALSeq or an ALCSeq). 
+    void        *seq;   // pointer to a seq (could be an ALSeq or an ALCSeq).
 } ALSeqpSeqEvent;
 
 typedef struct {
-    ALBank		*bank;
+    ALBank      *bank;
 } ALSeqpBankEvent;
 
 typedef struct {
@@ -621,19 +621,19 @@ typedef struct {
 } ALOscEvent;
 
 typedef struct {
-    s16                 	type;
+    s16                     type;
     union {
-        ALMIDIEvent     	midi;
-        ALTempoEvent    	tempo;
-        ALEndEvent      	end;
-        ALNoteEvent     	note;
-        ALVolumeEvent   	vol;
-        ALSeqpLoopEvent 	loop;
-        ALSeqpVolEvent  	spvol;
-        ALSeqpPriorityEvent	sppriority;
-        ALSeqpSeqEvent		spseq;
-        ALSeqpBankEvent		spbank;
-        ALOscEvent      	osc;
+        ALMIDIEvent         midi;
+        ALTempoEvent        tempo;
+        ALEndEvent          end;
+        ALNoteEvent         note;
+        ALVolumeEvent       vol;
+        ALSeqpLoopEvent     loop;
+        ALSeqpVolEvent      spvol;
+        ALSeqpPriorityEvent sppriority;
+        ALSeqpSeqEvent      spseq;
+        ALSeqpBankEvent     spbank;
+        ALOscEvent          osc;
     } msg;
 } ALEvent;
 
@@ -652,39 +652,39 @@ typedef struct {
 void            alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount);
 ALMicroTime     alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt);
 void            alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta);
-void        	alEvtqFlush(ALEventQueue *evtq);
-void        	alEvtqFlushType(ALEventQueue *evtq, s16 type);
-void			alEvtqFlushVoice(ALEventQueue *evtq, void * vs);
+void            alEvtqFlush(ALEventQueue *evtq);
+void            alEvtqFlushType(ALEventQueue *evtq, s16 type);
+void            alEvtqFlushVoice(ALEventQueue *evtq, void * vs);
 
 #define AL_PHASE_NOTEOFF        0
 #define AL_PHASE_NOTEON         1
 #define AL_PHASE_SUSTAIN        2
 #define AL_PHASE_RELEASE        3
-#define AL_ENV_OFF 				0
-#define AL_ENV_ON  				1
-#define AL_ENV_HOLD 			2
+#define AL_ENV_OFF              0
+#define AL_ENV_ON               1
+#define AL_ENV_HOLD             2
 
 typedef struct ALEnvState_s {
-    ALMicroTime EndTime;     	// time of envelope segment end ABSOLUTE
-    u16         Val;         	// current envelope gain        
-    u16         Phase;       	// SUSTANE
+    ALMicroTime EndTime;        // time of envelope segment end ABSOLUTE
+    u16         Val;            // current envelope gain
+    u16         Phase;          // SUSTANE
 } ALEnvState;
 
 typedef struct ALVoiceState_s {
     ALVoice     voice;
-    ALSound     *sound;			// Sound pointer
+    ALSound     *sound;         // Sound pointer
     ALInstrument*instrument;    // Instrument pointer
-    s32         pitch;       	// Pitch state        
-    s32         vibrato;     	// Vibrato state
-    u16         envPhase;    	// AL_PHASE_SUSTAIN, AL_PHASE_RELEASE, AL_PHASE_SUSTREL 
-    ALMicroTime	fadeTime;		// Time RELEASE
-    u16			fadeVol;		// Volume of sound
-    ALEnvState	envVolState;	// State of volume envelope
-    ALEnvState  envPanState;	// State of pan envelope
-    u8          channel;        // channel assignment          
-    u8          key;            // note on key number          
-    u8          velocity;       // note on velocity            
-    void		*VibOscState;	// vibrato OSC
+    s32         pitch;          // Pitch state
+    s32         vibrato;        // Vibrato state
+    u16         envPhase;       // AL_PHASE_SUSTAIN, AL_PHASE_RELEASE, AL_PHASE_SUSTREL
+    ALMicroTime fadeTime;       // Time RELEASE
+    u16         fadeVol;        // Volume of sound
+    ALEnvState  envVolState;    // State of volume envelope
+    ALEnvState  envPanState;    // State of pan envelope
+    u8          channel;        // channel assignment
+    u8          key;            // note on key number
+    u8          velocity;       // note on velocity
+    void        *VibOscState;   // vibrato OSC
     u8          flags;          // vibrato enabled?
 } ALVoiceState;
 
@@ -693,7 +693,7 @@ typedef struct ALVoiceState_s {
 
 typedef struct {
     ALInstrument        *instrument;    /* instrument assigned to this chan */
-    s16					prog;		    /* program number                   */
+    s16                 prog;           /* program number                   */
     s16                 bendRange;      /* pitch bend range in cents        */
     ALFxId              fxId;           /* type of fx assigned to this chan */
     ALPan               pan;            /* overall pan for this chan        */
@@ -707,7 +707,7 @@ typedef struct {
 typedef struct ALSeq_s {
     Ptr32       base;                   /* ptr to start of sequence file   */
     Ptr32       trackStart;             /* ptr to first MIDI event         */
-    Ptr32       curPtr;                	/* ptr to next event to read       */
+    Ptr32       curPtr;                 /* ptr to next event to read       */
     s32         lastTicks;              /* MIDI ticks for(ДО) last event   */
     s32         len;                    /* length of sequence in bytes     */
     f32         qnpt;                   /* qrter notes / tick (1/division) */
@@ -744,9 +744,9 @@ typedef struct {
     s32                 state;
     u16                 chanMask;       /* active channels                  */
     s16                 vol;            /* overall sequence volume          */
-    s16					relTone;		/* Относительная нота */
-    s16					xTempo;			/* множитель темпа */
-    s32					Tempo;			/* темп в микросекундах */
+    s16                 relTone;        /* Относительная нота */
+    s16                 xTempo;         /* множитель темпа */
+    s32                 Tempo;          /* темп в микросекундах */
     u8                  maxChannels;    /* number of MIDI channels          */
     u8                  debugFlags;     /* control which error get reported */
     ALEvent             nextEvent;
@@ -757,16 +757,16 @@ typedef struct {
     ALEventListItem    *feventItems;
     ALEventQueue        fevtq;
     ALMicroTime         frameTime;
-    ALChanState        *chanState;		/* 16 channels for MIDI             */
+    ALChanState        *chanState;      /* 16 channels for MIDI             */
     ALVoiceState       *vvoices;
-    ALLink        	    vAllocList;		/* list of allocated voice state structs */
-    ALLink        	    vFreeList;		/* list of free voice state structs */
+    ALLink              vAllocList;     /* list of allocated voice state structs */
+    ALLink              vFreeList;      /* list of free voice state structs */
     ALOscInit           initOsc;
     ALOscUpdate         updateOsc;
     ALOscStop           stopOsc;
     ALSeqMarker         *loopStart;
     ALSeqMarker         *loopEnd;
-    s32                 loopCount;			/* -1 = loop forever, 0 = no loop   */
+    s32                 loopCount;          /* -1 = loop forever, 0 = no loop   */
 } ALSeqPlayer;
 
 /*
@@ -793,12 +793,12 @@ void    alSeqpSetSeq(ALSeqPlayer *seqp, ALSeq *seq);
 ALSeq   *alSeqpGetSeq(ALSeqPlayer *seqp);
 void    alSeqpPlay(ALSeqPlayer *seqp);
 void    alSeqpStop(ALSeqPlayer *seqp);
-s32		alSeqpGetState(ALSeqPlayer *seqp);
+s32     alSeqpGetState(ALSeqPlayer *seqp);
 void    alSeqpSetBank(ALSeqPlayer *seqp, ALBank *b);
 void    alSeqpSetTempo(ALSeqPlayer *seqp, s32 tempo);
 void    alSeqpSetTempoX(ALSeqPlayer *seqp, Int16 xTempo);
 s32     alSeqpGetTempo(ALSeqPlayer *seqp);
-s16     alSeqpGetVol(ALSeqPlayer *seqp);		/* Master volume control */
+s16     alSeqpGetVol(ALSeqPlayer *seqp);        /* Master volume control */
 void    alSeqpSetVol(ALSeqPlayer *seqp, s16 vol);
 void    alSeqpLoop(ALSeqPlayer *seqp, ALSeqMarker *start, ALSeqMarker *end, s32 count);
 
@@ -806,22 +806,22 @@ void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog);
 s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan);
 void    alSeqpSetChlFXMix(ALSeqPlayer *seqp, u8 chan, u8 fxmix);
 u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan);
-void	alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol);
-u8		alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan);
+void    alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol);
+u8      alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan);
 void    alSeqpSetChlPan(ALSeqPlayer *seqp, u8 chan, ALPan pan);
 ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan);
 void    alSeqpSetChlPriority(ALSeqPlayer *seqp, u8 chan, u8 priority);
 u8      alSeqpGetChlPriority(ALSeqPlayer *seqp, u8 chan);
 void    alSeqpSendMidi(ALSeqPlayer *seqp, s32 ticks, u8 status, u8 byte1, u8 byte2);
-void 	alSeqpEnvPhase(ALSeqPlayer * seqp, ALVoiceState * vs);
+void    alSeqpEnvPhase(ALSeqPlayer * seqp, ALVoiceState * vs);
 
 /***********************************************************************
  * Hardware MIDI stuff
  ***********************************************************************/
 
-void	midiOpen(void);
-void 	midiClose(void);
-int		midiGetMsg(ALEvent * evt);
+void    midiOpen(void);
+void    midiClose(void);
+int     midiGetMsg(ALEvent * evt);
 
 /***********************************************************************
  * OSC stuff
@@ -831,7 +831,7 @@ int		midiGetMsg(ALEvent * evt);
 #define  VIBRATO_SQR        2
 #define  VIBRATO_DSC_SAW    3
 #define  VIBRATO_ASC_SAW    4
-#define  VIBRATO_MASK		7        
+#define  VIBRATO_MASK       7
 
 #define  OSC_HIGH   0
 #define  OSC_LOW    1

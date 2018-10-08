@@ -8,12 +8,12 @@
 #include "port.h"
 #include "audiolib.h"
 
-void   	MainCase(ALSeqPlayer * seqp, Int16 key);
-void   	HelpCase(ALSeqPlayer * seqp, Int16 key);
-void   	speakerUpdate(ALSeqPlayer * seqp);
-void 	speakWords(const UInt16 * ptr);
-void 	speakCreate();
-void 	speakDigit(UInt16  val);
+void    MainCase(ALSeqPlayer * seqp, Int16 key);
+void    HelpCase(ALSeqPlayer * seqp, Int16 key);
+void    speakerUpdate(ALSeqPlayer * seqp);
+void    speakWords(const UInt16 * ptr);
+void    speakCreate();
+void    speakDigit(UInt16  val);
 
 // Teacher mode on/off
 extern bool   teacherMode;
@@ -21,7 +21,7 @@ void ControlCreate(ALSeqPlayer * seqp);
 void EnterCase(ALSeqPlayer * seqp, UInt16 key);
 
 // Instrument with voice over phrases
-#define WORDS_INS 125	
+#define WORDS_INS 125
 #define MIN_TEMPO_US   (1000000L/(150*4))
 #define MAX_TEMPO_US   (1000000L/(20*4))
 #define DELTA_TEMPO_US (1000000L/(20*4))
@@ -80,8 +80,8 @@ typedef enum
 
 typedef struct
 {
-    UInt16	mode;			// Keyboard mode
-    UInt16  key;			// Key pressed
-    UInt16	word[4];		// Help phrase (0 terminated)
+    UInt16  mode;           // Keyboard mode
+    UInt16  key;            // Key pressed
+    UInt16  word[4];        // Help phrase (0 terminated)
 } tHelpList;
 

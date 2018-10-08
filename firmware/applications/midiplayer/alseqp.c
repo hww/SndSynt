@@ -47,29 +47,29 @@ f32     alCents2Ratio(s32 cents)
 
 /*****************************************************************************
  *
- *	UWord16 alGetLinearRate(UWord16 note, Int16 finetune)
+ *  UWord16 alGetLinearRate(UWord16 note, Int16 finetune)
  *
  * PARAMETERS
  *
- *   Note 		tone from 0  to 95 (0 = C-0, 95 = B-7)
+ *   Note       tone from 0  to 95 (0 = C-0, 95 = B-7)
  *   finetune    Подстройка от -1200 до +1200
- *			    -100 	 -1 half tone,
- *				+100 	 +1 half tone,
- *				-1200	 -1 octave
- *				+1200 	 +1 octave
+ *              -100     -1 half tone,
+ *              +100     +1 half tone,
+ *              -1200    -1 octave
+ *              +1200    +1 octave
  *
- *	ratestable[] for the octave 9, and "DO" at 5 octave has RATE 1.0 (aka 32000Hz)
+ *  ratestable[] for the octave 9, and "DO" at 5 octave has RATE 1.0 (aka 32000Hz)
  *
  *****************************************************************************/
 
-#define OCT_OF_RATE_TABLE 9					// Rate table for octave 
-#define BASE_NOTE (5*12)					// Note without re-samplig
+#define OCT_OF_RATE_TABLE 9                 // Rate table for octave
+#define BASE_NOTE (5*12)                    // Note without re-samplig
 
 UWord32 ratestable[] =
 {
-    1048576L,	1110928L,	1176987L,	1246974L,
-    1321123L,	1399681L,	1482910L,	1571089L,
-    1664511L,	1763488L,	1868350L,	1979448L, 2097152L,
+    1048576L,   1110928L,   1176987L,   1246974L,
+    1321123L,   1399681L,   1482910L,   1571089L,
+    1664511L,   1763488L,   1868350L,   1979448L, 2097152L,
 };
 
 UInt32 alGetLinearRate(UWord16 note, Int16 finetune)
@@ -78,13 +78,13 @@ UInt32 alGetLinearRate(UWord16 note, Int16 finetune)
     UInt16  n, o;
     UInt16  ftnotes, ftpercents;
 
-    finetune += 1200;				// positive 0..2400
-    ftnotes = finetune / 100;		// offset 0..24
-    ftpercents = finetune % 100;	// percent  0..99
-    note = note - 12 + ftnotes;		// shift note
-    n = note % 12;					// note in octave
-    o = note / 12;					// octave
-    rate = ratestable[n];			// get RATE
+    finetune += 1200;               // positive 0..2400
+    ftnotes = finetune / 100;       // offset 0..24
+    ftpercents = finetune % 100;    // percent  0..99
+    note = note - 12 + ftnotes;     // shift note
+    n = note % 12;                  // note in octave
+    o = note / 12;                  // octave
+    rate = ratestable[n];           // get RATE
 
     if (ftpercents != 0)
     {
@@ -117,16 +117,16 @@ void    alSeqpNew(ALSeqPlayer *seqp, ALSeqpConfig *config)
     seqp->nextEvent.type = AL_SEQ_NOP_EVT;
     seqp->curTime = 0;
     seqp->nextDelta = 0;
-    seqp->initOsc = config->initOsc;								// OSCs of envelopes
+    seqp->initOsc = config->initOsc;                                // OSCs of envelopes
     seqp->updateOsc = config->updateOsc;
     seqp->stopOsc = config->stopOsc;
     seqp->debugFlags = config->debugFlags;
     max = config->maxChannels;
     seqp->maxChannels = max;
-    seqp->chanState = calloc(max, sizeof(ALChanState));				// memory for channels	
+    seqp->chanState = calloc(max, sizeof(ALChanState));             // memory for channels
 
     max = config->maxVoices;
-    seqp->vvoices = calloc(max, sizeof(ALVoiceState));				// memory for voices
+    seqp->vvoices = calloc(max, sizeof(ALVoiceState));              // memory for voices
 
     seqp->vAllocList.next = NULL;
     seqp->vAllocList.prev = NULL;
@@ -135,35 +135,35 @@ void    alSeqpNew(ALSeqPlayer *seqp, ALSeqpConfig *config)
 
     for (n = 0; n < max; n++)
     {
-        alLink(&seqp->vvoices[n].voice.node, &seqp->vFreeList);	 	// free list
+        alLink(&seqp->vvoices[n].voice.node, &seqp->vFreeList);     // free list
     }
 
-    seqp->chanMask = 0xFFFF;										// all chanels inactive
+    seqp->chanMask = 0xFFFF;                                        // all chanels inactive
 
     max = config->maxEvents;
-    seqp->eventItems = calloc(max, sizeof(ALEventListItem));		// for messages 
+    seqp->eventItems = calloc(max, sizeof(ALEventListItem));        // for messages
     alEvtqNew(&seqp->evtq, seqp->eventItems, max);
-    seqp->feventItems = calloc(max, sizeof(ALEventListItem));		// for free messages	
+    seqp->feventItems = calloc(max, sizeof(ALEventListItem));       // for free messages
     alEvtqNew(&seqp->fevtq, seqp->feventItems, max);
 
-    seqp->drvr = &alGlobals->drvr;									// synthesizer
-    seqp->drvr->handler = &alSeqpHandler;							// player
-    seqp->drvr->clientData = (void*)seqp;							// sequencer
-    seqp->drvr->fhandler = &alSeqpFrameHandler;						// player
+    seqp->drvr = &alGlobals->drvr;                                  // synthesizer
+    seqp->drvr->handler = &alSeqpHandler;                           // player
+    seqp->drvr->clientData = (void*)seqp;                           // sequencer
+    seqp->drvr->fhandler = &alSeqpFrameHandler;                     // player
     seqp->xTempo = 0;
     seqp->relTone = 0;
-    midiOpen();														// open MIDI
+    midiOpen();                                                     // open MIDI
 }
 
 /*****************************************************************************
  *
- *	void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
- *	s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
+ *  s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   MIDI channel
- *	 prog	   Instrument number
+ *   chan      MIDI channel
+ *   prog      Instrument number
  *
  * DESCRIPTION
  *     Return and set instrument in the channel
@@ -172,20 +172,20 @@ void    alSeqpNew(ALSeqPlayer *seqp, ALSeqpConfig *config)
 
 void    alSeqpDelete(ALSeqPlayer *seqp)
 {
-    free(seqp->chanState);		// memory for channels	
-    free(seqp->vvoices); 		// memory for voices
-    free(seqp->eventItems); 	// memory for events
+    free(seqp->chanState);      // memory for channels
+    free(seqp->vvoices);        // memory for voices
+    free(seqp->eventItems);     // memory for events
     midiClose();
 }
 
 /*****************************************************************************
  *
- *	void    alSeqpSetSeq(ALSeqPlayer *seqp, ALSeq *seq)
- *	ALSeq  *alSeqpGetSeq(ALSeqPlayer *seqp)
+ *  void    alSeqpSetSeq(ALSeqPlayer *seqp, ALSeq *seq)
+ *  ALSeq  *alSeqpGetSeq(ALSeqPlayer *seqp)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 seq	   MIDI sequence
+ *   seq       MIDI sequence
  *
  * DESCRIPTION
  *    Set and return sequence
@@ -204,9 +204,9 @@ ALSeq  *alSeqpGetSeq(ALSeqPlayer *seqp)
 
 /*****************************************************************************
  *
- *	void    alSeqpPlay(ALSeqPlayer *seqp)
- *	void    alSeqpStop(ALSeqPlayer *seqp)
- *	s32		alSeqpGetState(ALSeqPlayer *seqp)
+ *  void    alSeqpPlay(ALSeqPlayer *seqp)
+ *  void    alSeqpStop(ALSeqPlayer *seqp)
+ *  s32     alSeqpGetState(ALSeqPlayer *seqp)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
@@ -238,7 +238,7 @@ void    alSeqpStop(ALSeqPlayer *seqp)
     alEvtqFlushType(&seqp->evtq, AL_SEQP_MIDI_EVT);
     alEvtqFlushType(&seqp->evtq, AL_SEQP_TEMPO_EVT);
 }
-s32		alSeqpGetState(ALSeqPlayer *seqp) { return seqp->state; }
+s32     alSeqpGetState(ALSeqPlayer *seqp) { return seqp->state; }
 
 /*****************************************************************************
  *
@@ -259,7 +259,7 @@ void    alSeqpSetBank(ALSeqPlayer *seqp, ALBank *b) { seqp->bank = b; }
 
 /*****************************************************************************
  *
- *	void alSeqpSetTempo(ALSeqPlayer *seqp, s32 tempo);
+ *  void alSeqpSetTempo(ALSeqPlayer *seqp, s32 tempo);
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
@@ -275,14 +275,14 @@ void    alSeqpSetBank(ALSeqPlayer *seqp, ALBank *b) { seqp->bank = b; }
 void    alSeqpSetTempo(ALSeqPlayer *seqp, s32 tempo)
 {
     Int16 x = seqp->xTempo;
-    s32	  diff = tempo >> 2;
+    s32   diff = tempo >> 2;
 
     seqp->Tempo = tempo;
 
     while (x > 0) { tempo -= diff; x--; }
     while (x < 0) { tempo += diff; x++; }
 
-    seqp->uspt = tempo / seqp->target->division;		// Зачемто установили значение в секвенсоре
+    seqp->uspt = tempo / seqp->target->division;        // Зачемто установили значение в секвенсоре
 }
 
 void    alSeqpSetTempoX(ALSeqPlayer *seqp, Int16 xTempo)
@@ -293,7 +293,7 @@ void    alSeqpSetTempoX(ALSeqPlayer *seqp, Int16 xTempo)
 
 /*****************************************************************************
  *
- *	s32     alSeqpGetTempo(ALSeqPlayer *seqp);
+ *  s32     alSeqpGetTempo(ALSeqPlayer *seqp);
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
@@ -310,12 +310,12 @@ s32     alSeqpGetTempo(ALSeqPlayer *seqp)
 
 /*****************************************************************************
  *
- *	s16     alSeqpGetVol(ALSeqPlayer *seqp)
- *	void    alSeqpSetVol(ALSeqPlayer *seqp, s16 vol)
+ *  s16     alSeqpGetVol(ALSeqPlayer *seqp)
+ *  void    alSeqpSetVol(ALSeqPlayer *seqp, s16 vol)
  *
  * PARAMETERS
  *    seqp    pointer to the sequence player.
- *	 vol	    volume, with 0x7fff is max
+ *   vol        volume, with 0x7fff is max
  *
  * DESCRIPTION
  *     Get or set volume of sequence player
@@ -327,13 +327,13 @@ void    alSeqpSetVol(ALSeqPlayer *seqp, s16 vol) { seqp->vol = vol; }
 
 /*****************************************************************************
  *
- *	void    alSeqpLoop(ALSeqPlayer *seqp, ALSeqMarker *start, ALSeqMarker *end, s32 count)
+ *  void    alSeqpLoop(ALSeqPlayer *seqp, ALSeqMarker *start, ALSeqMarker *end, s32 count)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 start	 loop start
- *	 end		 loop end
- *	 count	 repeats count
+ *   start   loop start
+ *   end         loop end
+ *   count   repeats count
  *
  * DESCRIPTION
  *     Set loop at the sequence player
@@ -384,14 +384,14 @@ void    alSeqpSendMidi(ALSeqPlayer *seqp, s32 ticks, u8 status, u8 byte1, u8 byt
     UInt16  chan;
     UInt16  cmd;
     ALChanState * chanstate;
-    Int16 	dword;
+    Int16   dword;
 
     cmd = status & AL_MIDI_StatusMask;
     chan = status & AL_MIDI_ChannelMask;
     if ((seqp->chanMask & (1 << chan)) == 0) return;
 
     if (ticks > 0)
-    {	// если сообщение откладывается на время тикс
+    {   // если сообщение откладывается на время тикс
         event.type = AL_SEQ_MIDI_EVT;
         event.msg.midi.ticks = 0;
         event.msg.midi.status = status;
@@ -406,7 +406,7 @@ void    alSeqpSendMidi(ALSeqPlayer *seqp, s32 ticks, u8 status, u8 byte1, u8 byt
         switch (cmd)
         {
         case AL_MIDI_NoteOn:
-            if (byte2 > 0)		// volume 0 is release key
+            if (byte2 > 0)      // volume 0 is release key
             {
                 alSeqpKeyOn(seqp, chan, byte1, byte2);
                 break;
@@ -436,17 +436,17 @@ void    alSeqpSendMidi(ALSeqPlayer *seqp, s32 ticks, u8 status, u8 byte1, u8 byt
 
 /*****************************************************************************
  *
- *	void     alSeqpSwitchEvent( ALSeqPlayer *seqp, ALEvent * event)
+ *  void     alSeqpSwitchEvent( ALSeqPlayer *seqp, ALEvent * event)
  *
- *	Event handler
+ *  Event handler
  *
  *****************************************************************************/
 
 void     alSeqpSwitchEvent(ALSeqPlayer *seqp, ALEvent * event)
 {
-    Int16			etype;
-    ALMicroTime 	time;
-    ALVoiceState 	*vs;
+    Int16           etype;
+    ALMicroTime     time;
+    ALVoiceState    *vs;
 
     etype = event->type;
 
@@ -488,8 +488,8 @@ void     alSeqpSwitchEvent(ALSeqPlayer *seqp, ALEvent * event)
     case AL_NOTE_END_EVT:
         //vs = event->msg.note.voice;
         //if(vs->flags != 0)
-        //{	seqp->stopOsc(vs->VibOscState);
-        //	vs->flags = 0;
+        //{ seqp->stopOsc(vs->VibOscState);
+        //  vs->flags = 0;
         //}
         //alEvtqFlushVoice(&seqp->evtq, vs);
         //alSeqpFreeVoice( seqp, vs );
@@ -500,8 +500,8 @@ void     alSeqpSwitchEvent(ALSeqPlayer *seqp, ALEvent * event)
         break;
 
         //case AL_VIB_OSC_EVT:
-        //	alSeqpVibOscEvent( seqp, event );
-        //	break;
+        //  alSeqpVibOscEvent( seqp, event );
+        //  break;
 
     case AL_SEQ_NOP_EVT:
         alEvtqPostEvent(&seqp->evtq, event, seqp->uspt * (seqp->target->division >> 5));
@@ -515,13 +515,13 @@ void     alSeqpSwitchEvent(ALSeqPlayer *seqp, ALEvent * event)
 
 /*****************************************************************************
  *
- *	ALMicroTime	alSeqpHandler( void * data )
+ *  ALMicroTime alSeqpHandler( void * data )
  *
- *	The event's player
+ *  The event's player
  *
  *****************************************************************************/
 
-ALMicroTime	alSeqpHandler(void * data)
+ALMicroTime alSeqpHandler(void * data)
 {
     ALSeqPlayer  * seqp = (ALSeqPlayer*)data;
 
@@ -551,7 +551,7 @@ ALMicroTime	alSeqpHandler(void * data)
     return seqp->nextDelta;
 }
 
-ALMicroTime	alSeqpFrameHandler(void * data)
+ALMicroTime alSeqpFrameHandler(void * data)
 {
     ALSeqPlayer  * seqp = (ALSeqPlayer*)data;
 
@@ -576,9 +576,9 @@ ALMicroTime	alSeqpFrameHandler(void * data)
 
 /*****************************************************************************
  *
- *	void alSeqpGetSomeEvents( ALSeqPlayer seqp )
+ *  void alSeqpGetSomeEvents( ALSeqPlayer seqp )
  *
- *	Get events from queue until meet (DELTATIME > 0).
+ *  Get events from queue until meet (DELTATIME > 0).
  *
  *****************************************************************************/
 
@@ -586,18 +586,18 @@ void alSeqpPlayer(ALSeqPlayer * seqp)
 {
     ALEvent     evt;
     ALSeq      *seq = seqp->target;
-    ALMicroTime	time;
+    ALMicroTime time;
 
-    evt.msg.midi.ticks = 0;						// initialized
+    evt.msg.midi.ticks = 0;                     // initialized
 
     while ((seqp->state == AL_PLAYING) && (evt.msg.midi.ticks == 0))
     {
-        alSeqNextEvent(seq, &evt);				// get event
-        if (evt.msg.midi.ticks == 0)			// execute event
+        alSeqNextEvent(seq, &evt);              // get event
+        if (evt.msg.midi.ticks == 0)            // execute event
         {
             alSeqpSwitchEvent(seqp, &evt);
         }
-        else									// found delayed event, put it to queue
+        else                                    // found delayed event, put it to queue
         {
             if (evt.type == AL_SEQ_MIDI_EVT) evt.type = AL_SEQP_MIDI_EVT;
             if (evt.type == AL_TEMPO_EVT) evt.type = AL_SEQP_TEMPO_EVT;
@@ -625,20 +625,20 @@ void alSeqpPlayer(ALSeqPlayer * seqp)
 
 /*****************************************************************************
  *
- *	ALVoiceState * alSeqpGetFreeVoice( ALSeqPlayer * seqp )
+ *  ALVoiceState * alSeqpGetFreeVoice( ALSeqPlayer * seqp )
  *
- *	Return status of free voice.
- *	Attention!!!
- *   	Does not terminate other voices just return null in worst case
+ *  Return status of free voice.
+ *  Attention!!!
+ *      Does not terminate other voices just return null in worst case
  *
- *	void alSeqpFreeVoice( ALSeqPlayer * seqp, ALVoiceState * voice )
+ *  void alSeqpFreeVoice( ALSeqPlayer * seqp, ALVoiceState * voice )
  *
- *		Release virtual voice
+ *      Release virtual voice
  *
- *	bool alSeqpCheckVoice( ALSeqPlayer * seqp, ALVoiceState * voice )
+ *  bool alSeqpCheckVoice( ALSeqPlayer * seqp, ALVoiceState * voice )
  *
- *		Check if voice linked with poly-voice. If it is not then
- *		release this voice.
+ *      Check if voice linked with poly-voice. If it is not then
+ *      release this voice.
  *
  *****************************************************************************/
 
@@ -646,7 +646,7 @@ ALVoiceState * alSeqpGetFreeVoice(ALSeqPlayer * seqp)
 {
     ALVoiceState * vs = seqp->vFreeList.next;
 
-    if (vs != NULL)										// has free voices ?
+    if (vs != NULL)                                     // has free voices ?
     {
         alUnlink(&vs->voice.node);
         alLink(&vs->voice.node, &seqp->vAllocList);
@@ -657,7 +657,7 @@ ALVoiceState * alSeqpGetFreeVoice(ALSeqPlayer * seqp)
 
 void alSeqpFreeVoice(ALSeqPlayer * seqp, ALVoiceState * voice)
 {
-    if (alSeqpCheckVoice(seqp, voice))					// voice is linked to poly-voice
+    if (alSeqpCheckVoice(seqp, voice))                  // voice is linked to poly-voice
     {
         alSynStopVoice(seqp->drvr, &voice->voice);
         alSynFreeVoice(seqp->drvr, &voice->voice);
@@ -684,38 +684,38 @@ void alSeqpFlushEventsOfVoice(ALSeqPlayer * seqp, ALVoiceState * vs)
 
 /*****************************************************************************
  *
- *	void	alSeqpKeyOn( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
+ *  void    alSeqpKeyOn( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
  *
- *	seqp		the sequence player
- *	chan		MIDI channel
- *	key		key
- *	velocity	force
+ *  seqp        the sequence player
+ *  chan        MIDI channel
+ *  key     key
+ *  velocity    force
  *
- *	Start synthesizer to play pressed key
+ *  Start synthesizer to play pressed key
  *
  *****************************************************************************/
 
-void	alSeqpKeyOn(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
+void    alSeqpKeyOn(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
 {
     ALChanState  * chanstate;
     ALInstrument * ins;
-    Int16	       priority;
+    Int16          priority;
     ALVoiceState * vs;
     ALVoiceState * vsold;
-    ALSound		 * snd;
-    Int16		   ok;
+    ALSound      * snd;
+    Int16          ok;
 
-    chanstate = &seqp->chanState[chan];					// channel state
-    if ((ins = chanstate->instrument) == NULL) return;		// channel's instrument
-    priority = ins->priority + chanstate->priority; 		// sound's priority
+    chanstate = &seqp->chanState[chan];                 // channel state
+    if ((ins = chanstate->instrument) == NULL) return;      // channel's instrument
+    priority = ins->priority + chanstate->priority;         // sound's priority
     /*
-     * 	check sound for this keys and test if this force is enough to play
+     *  check sound for this keys and test if this force is enough to play
      */
     if (chanstate->prog != 127) key += seqp->relTone;
     if ((snd = alSeqpGetSound(ins, key, velocity)) == NULL) return; // sound was not found
     /*
-     * 	Get virtual channel. But before lets check if there is already this tone
-     * 	In case if it is exist then start Release
+     *  Get virtual channel. But before lets check if there is already this tone
+     *  In case if it is exist then start Release
      */
     vs = seqp->vAllocList.next;
     while ((vs = alSeqpFindVoiceChlKey(vs, chan, key)) != NULL)
@@ -723,18 +723,18 @@ void	alSeqpKeyOn(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
         alSeqpVoiceOff(seqp, vs);
         vs = vs->voice.node.next;
     }
-    if ((vs = alSeqpGetFreeVoice(seqp)) == NULL)  return;	// free VoiceState was not found
-    ok = alSynAllocVoice(seqp->drvr, &vs->voice, priority);	// use polyphony
+    if ((vs = alSeqpGetFreeVoice(seqp)) == NULL)  return;   // free VoiceState was not found
+    ok = alSynAllocVoice(seqp->drvr, &vs->voice, priority); // use polyphony
     /*
-     *	voice has poly-voice
+     *  voice has poly-voice
      */
     if (ok == 1)
     {
-        vs->instrument = ins;						// set instrument
-        vs->sound = snd;							// set sound 
-        vs->channel = chan;							// set MIDI channel
-        vs->key = key;								// set key number
-        vs->velocity = velocity;					// set force
+        vs->instrument = ins;                       // set instrument
+        vs->sound = snd;                            // set sound
+        vs->channel = chan;                         // set MIDI channel
+        vs->key = key;                              // set key number
+        vs->velocity = velocity;                    // set force
         if (snd->wavetable->rate == MIXFREQ)
             vs->voice.unityPitch = 0x8000;
         else
@@ -744,29 +744,29 @@ void	alSeqpKeyOn(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
         alSeqpSetPitch(seqp, vs);
         alSynStartVoice(seqp->drvr, &vs->voice, snd->wavetable); // set waveform
     }
-    else alSeqpFreeVoice(seqp, vs);					// release virtual voice	
+    else alSeqpFreeVoice(seqp, vs);                 // release virtual voice
 }
 
 /*****************************************************************************
  *
- *	void	alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
+ *  void    alSeqpKeyOff( ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity )
  *
- *	seqp		the sequence player
- *	chan		MIDI channel
- *	key		key
- *	velocity	force of press/release
+ *  seqp        the sequence player
+ *  chan        MIDI channel
+ *  key     key
+ *  velocity    force of press/release
  *
- *	Stop key in channel
+ *  Stop key in channel
  *
  *****************************************************************************/
 
-void	alSeqpVoiceOff(ALSeqPlayer * seqp, ALVoiceState * vs)
+void    alSeqpVoiceOff(ALSeqPlayer * seqp, ALVoiceState * vs)
 {
     vs->envPhase = AL_PHASE_RELEASE;
     alSeqpVolMix(seqp, vs);
 }
 
-void	alSeqpKeyOff(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
+void    alSeqpKeyOff(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
 {
     ALVoiceState * vs;
     if (seqp->chanState[chan].prog != 127) key += seqp->relTone;
@@ -785,18 +785,18 @@ void	alSeqpKeyOff(ALSeqPlayer * seqp, UWord16 chan, u8 key, u8 velocity)
 
 /*****************************************************************************
  *
- *	ALSound * alSeqpGetSound( ALInstrument ins, u8 key )
+ *  ALSound * alSeqpGetSound( ALInstrument ins, u8 key )
  *
- *	seqp		the sequence player
- *	key		key
+ *  seqp        the sequence player
+ *  key     key
  *
- *	Return structure ALSound, by given key number
+ *  Return structure ALSound, by given key number
  *
  *****************************************************************************/
 
 ALSound * alSeqpGetSound(ALInstrument * ins, u8 key, u8 vel)
 {
-    int 	  n, max;
+    int       n, max;
     ALSound * snd;
     ALKeyMap* kmap;
 
@@ -813,15 +813,15 @@ ALSound * alSeqpGetSound(ALInstrument * ins, u8 key, u8 vel)
 
 /*****************************************************************************
  *
- *	void alSeqpEnvelope(  ALEnvState * state, ALEnvelopeTable * env, bool sustane )
+ *  void alSeqpEnvelope(  ALEnvState * state, ALEnvelopeTable * env, bool sustane )
  *
- *	vs			pointer to virtual voice
- *	state		state of envelope
- *	env			pointer to envelope's table
- *	sustane		state SUSTANE if TRUE
+ *  vs          pointer to virtual voice
+ *  state       state of envelope
+ *  env         pointer to envelope's table
+ *  sustane     state SUSTANE if TRUE
  *
- *	Switch to next envelope phase. Modify volume and pan.
- *	returns true state was switched, and false if was not switched
+ *  Switch to next envelope phase. Modify volume and pan.
+ *  returns true state was switched, and false if was not switched
  *
  *****************************************************************************/
 
@@ -832,7 +832,7 @@ ALMicroTime alSeqpEnvelope(ALVoiceState * vs, ALEnvState * state, ALEnvelopeTabl
 
     if (sustain && ((env->type & AL_ENV_SUSTANE) != 0))
     {
-        //	while hold key we SUSTANE
+        //  while hold key we SUSTANE
         if (state->Phase >= env->sustaneEnd)
         {
             if (env->sustaneStart == env->sustaneEnd) step = false;
@@ -841,7 +841,7 @@ ALMicroTime alSeqpEnvelope(ALVoiceState * vs, ALEnvState * state, ALEnvelopeTabl
     }
     else if ((env->type & AL_ENV_LOOP) != 0)
     {
-        // 	now in SUSTANE but there is LOOP
+        //  now in SUSTANE but there is LOOP
         if (state->Phase >= env->loopEnd)
         {
             if (env->loopStart == env->loopEnd)
@@ -854,7 +854,7 @@ ALMicroTime alSeqpEnvelope(ALVoiceState * vs, ALEnvState * state, ALEnvelopeTabl
     }
     else
     {
-        //	envelope without SUSTANE or LOOP
+        //  envelope without SUSTANE or LOOP
         if (state->Phase >= (env->pointCount - 1))
         {
             step = false;
@@ -875,15 +875,15 @@ ALMicroTime alSeqpEnvelope(ALVoiceState * vs, ALEnvState * state, ALEnvelopeTabl
 
 /*****************************************************************************
  *
- *	void 	alSeqpEnvTimers( ALSeqPlayer * seqp, ALMicroTime delta );
+ *  void    alSeqpEnvTimers( ALSeqPlayer * seqp, ALMicroTime delta );
  *
- *	seqp	the player
+ *  seqp    the player
  *
- *	Decrease counter of envelopes and fade-outs.
+ *  Decrease counter of envelopes and fade-outs.
  *
  *****************************************************************************/
 
-void 	alSeqpEnvTimers(ALSeqPlayer * seqp, ALMicroTime delta)
+void    alSeqpEnvTimers(ALSeqPlayer * seqp, ALMicroTime delta)
 {
     ALVoiceState * vs = seqp->vAllocList.next;
     ALVoiceState * vsnext;
@@ -915,21 +915,21 @@ void 	alSeqpEnvTimers(ALSeqPlayer * seqp, ALMicroTime delta)
 
 /*****************************************************************************
  *
- *	void alSeqpEnvPhase( ALSeqPlayer * seqp, ALVoiceState * vs )
+ *  void alSeqpEnvPhase( ALSeqPlayer * seqp, ALVoiceState * vs )
  *
- *	seqp		the player
- *	vs		pointer to voice state
+ *  seqp        the player
+ *  vs      pointer to voice state
  *
- *	Set envelope parameters of voice and switch to next phase.
- * 	Called by event, and send event for next envelope point
+ *  Set envelope parameters of voice and switch to next phase.
+ *  Called by event, and send event for next envelope point
  *
  *****************************************************************************/
 
 ALMicroTime alSeqpEnvVolEvent(ALSeqPlayer * seqp, ALEvent * event)
 {
-    bool 			sustain;
-    ALMicroTime		time;
-    ALVoiceState *	vs = event->msg.note.voice;
+    bool            sustain;
+    ALMicroTime     time;
+    ALVoiceState *  vs = event->msg.note.voice;
 
     sustain = ((seqp->chanState[vs->channel].sustain != 0) || (vs->envPhase != AL_PHASE_RELEASE));
     time = alSeqpEnvelope(vs, &vs->envVolState, vs->sound->envelope, sustain);
@@ -943,9 +943,9 @@ ALMicroTime alSeqpEnvVolEvent(ALSeqPlayer * seqp, ALEvent * event)
 
 ALMicroTime alSeqpEnvPanEvent(ALSeqPlayer * seqp, ALEvent * event)
 {
-    bool 			sustain;
-    ALMicroTime		time;
-    ALVoiceState *	vs = event->msg.note.voice;
+    bool            sustain;
+    ALMicroTime     time;
+    ALVoiceState *  vs = event->msg.note.voice;
 
     sustain = ((seqp->chanState[vs->channel].sustain != 0) || (vs->envPhase != AL_PHASE_RELEASE));
     time = alSeqpEnvelope(vs, &vs->envPanState, vs->sound->penvelope, sustain);
@@ -959,16 +959,16 @@ ALMicroTime alSeqpEnvPanEvent(ALSeqPlayer * seqp, ALEvent * event)
 
 /*****************************************************************************
  *
- *	void	alSeqpStartEnvelope( ALSeqPlayer * seqp, ALVoiceState * vs )
+ *  void    alSeqpStartEnvelope( ALSeqPlayer * seqp, ALVoiceState * vs )
  *
- *	seqp		the player
- *	vs		pointer to voice state
+ *  seqp        the player
+ *  vs      pointer to voice state
  *
- *	Start envelope
+ *  Start envelope
  *
  *****************************************************************************/
 
-void	alSeqpStartEnvelope(ALSeqPlayer * seqp, ALVoiceState * vs)
+void    alSeqpStartEnvelope(ALSeqPlayer * seqp, ALVoiceState * vs)
 {
     ALEvent event;
     ALMicroTime time;
@@ -1015,23 +1015,23 @@ void	alSeqpStartEnvelope(ALSeqPlayer * seqp, ALVoiceState * vs)
 
 /*****************************************************************************
  *
- *	void alSeqpVolMix( ALSeqPlayer * seqp, ALVoiceState *vs )
+ *  void alSeqpVolMix( ALSeqPlayer * seqp, ALVoiceState *vs )
  *
- *	seqp		the player
- *	vs		pointer to voice state
+ *  seqp        the player
+ *  vs      pointer to voice state
  *
- *	Set final, main volume
+ *  Set final, main volume
  *
- *	vs->velocity						press force
- *	libvol							sound and instrument volume
- *	seqp->vol							sequencer volume
- *	seqp->chanState[vs->channel].vol	MIDI channel volume
+ *  vs->velocity                        press force
+ *  libvol                          sound and instrument volume
+ *  seqp->vol                           sequencer volume
+ *  seqp->chanState[vs->channel].vol    MIDI channel volume
  *
  *****************************************************************************/
 
 void alSeqpVolMix(ALSeqPlayer * seqp, ALVoiceState *vs)
 {
-    UInt16  	cvol, lvol, evol;
+    UInt16      cvol, lvol, evol;
     ALMicroTime t;
 
     cvol = mult(INT2FRAC(vs->velocity), INT2FRAC(seqp->chanState[vs->channel].vol));
@@ -1039,7 +1039,7 @@ void alSeqpVolMix(ALSeqPlayer * seqp, ALVoiceState *vs)
     cvol = mult(cvol, lvol);
     cvol = mult(cvol, seqp->vol);
     t = vs->envVolState.EndTime;
-    if (vs->envPhase == AL_PHASE_RELEASE) 	//	"fadeout"  
+    if (vs->envPhase == AL_PHASE_RELEASE)   //  "fadeout"
     {
         if ((vs->fadeTime <= vs->envVolState.EndTime) || (vs->envVolState.EndTime == 0))
         {
@@ -1065,28 +1065,28 @@ void alSeqpPanMix(ALSeqPlayer * seqp, ALVoiceState *vs)
     lpan = MIXPAN(vs->sound->samplePan, vs->instrument->pan);
     cpan = MIXPAN(seqp->chanState[vs->channel].pan, lpan);
     epan = (vs->envPanState.Val - PAN_CENTER) + cpan;
-    if (epan > 0x7f) 	epan = 0x7f;
+    if (epan > 0x7f)    epan = 0x7f;
     else if (epan < 0) epan = 0;
     alSynSetPan(seqp->drvr, &vs->voice, epan, vs->envPanState.EndTime);
 }
 
 /*****************************************************************************
  *
- *	ALVoiceState * alSeqpFindVoiceChl( ALVoiceState * vs, UWord16 chan )
+ *  ALVoiceState * alSeqpFindVoiceChl( ALVoiceState * vs, UWord16 chan )
  *
- *	vs		pointer to voice state
- *	chan		MIDI channel
+ *  vs      pointer to voice state
+ *  chan        MIDI channel
  *
- *	Find voice by MIDI channel number
+ *  Find voice by MIDI channel number
  *
  *******************************************************************************
  *
- *	ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
+ *  ALVoiceState * alSeqpFindVoiceChlKey( ALVoiceState * vs, UWord16 chan, u8 key )
  *
- *	vs		pointer to voice state
- *	chan		MIDI channel
+ *  vs      pointer to voice state
+ *  chan        MIDI channel
  *
- *	Find voice by MIDI channel and tone (NOTE)
+ *  Find voice by MIDI channel and tone (NOTE)
  *
  *****************************************************************************/
 
@@ -1112,30 +1112,30 @@ ALVoiceState * alSeqpFindVoiceChlKey(ALVoiceState * vs, UWord16 chan, u8 key)
 
 /*****************************************************************************
  *
- *	void alSeqpSetPitch( ALSeqPlayer * seqp, ALVoiceState * vs)
+ *  void alSeqpSetPitch( ALSeqPlayer * seqp, ALVoiceState * vs)
  *
- *	seqp		the player
- *	vs		pointer to voice state
+ *  seqp        the player
+ *  vs      pointer to voice state
  *
- *	Set  channel's pitch.
+ *  Set  channel's pitch.
  *
  *******************************************************************************
  *
- *	void alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel)
+ *  void alSeqpChangePitch( ALSeqPlayer * seqp, UInt16 channel)
  *
- *	seqp		the player
- *	channel	MIDI channel
+ *  seqp        the player
+ *  channel MIDI channel
  *
- *	Find voices, by channel, and set it's Pitch.
+ *  Find voices, by channel, and set it's Pitch.
  *
  *****************************************************************************/
 
 void alSeqpSetPitch(ALSeqPlayer * seqp, ALVoiceState * vs)
 {
     ALKeyMap * kmap = vs->sound->keyMap;
-    Int16	   key = vs->key;
-    Int32	   pitch;
-    float	   f;
+    Int16      key = vs->key;
+    Int32      pitch;
+    float      f;
 
     pitch = kmap->detune + vs->vibrato + seqp->chanState[vs->channel].pitchBend;
 
@@ -1160,33 +1160,33 @@ void alSeqpChangePitch(ALSeqPlayer * seqp, UInt16 channel)
 
 /*****************************************************************************
  *
- *	void	alSeqpStartOsc( ALSeqPlayer * seqp, ALVoiceState * vs )
+ *  void    alSeqpStartOsc( ALSeqPlayer * seqp, ALVoiceState * vs )
  *
- *	seqp		the player
- *	vs		pointer to voice state
+ *  seqp        the player
+ *  vs      pointer to voice state
  *
- *	Start OSC and put to the events queue.
+ *  Start OSC and put to the events queue.
  *
  *******************************************************************************
  *
- *	void	alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  )
+ *  void    alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  )
  *
- *	seqp		the player
- *	event	event message
+ *  seqp        the player
+ *  event   event message
  *
- *	Event OSC for vibrato will update the variable vibrato and then change pitch
+ *  Event OSC for vibrato will update the variable vibrato and then change pitch
  *
  *****************************************************************************/
 
-void	alSeqpStartOsc(ALSeqPlayer * seqp, ALVoiceState * vs)
+void    alSeqpStartOsc(ALSeqPlayer * seqp, ALVoiceState * vs)
 {
-    ALMicroTime 	time;
-    ALEvent 		event;
-    ALInstrument *	ins = vs->instrument;
+    ALMicroTime     time;
+    ALEvent         event;
+    ALInstrument *  ins = vs->instrument;
 
     vs->flags = NO_OSC;
     vs->vibrato = 0;
-    if (ins->vibType == 0)	return;
+    if (ins->vibType == 0)  return;
     time = seqp->initOsc(&vs->VibOscState, &vs->vibrato, ins->vibType,
         ins->vibRate, ins->vibDepth, ins->vibDelay);
 
@@ -1213,7 +1213,7 @@ void	alSeqpStartOsc(ALSeqPlayer * seqp, ALVoiceState * vs)
     }
 }
 
-ALMicroTime	alSeqpVibOscEvent(ALSeqPlayer * seqp, ALEvent * event)
+ALMicroTime alSeqpVibOscEvent(ALSeqPlayer * seqp, ALEvent * event)
 {
     ALMicroTime time;
     ALVoiceState * vs = event->msg.osc.vs;

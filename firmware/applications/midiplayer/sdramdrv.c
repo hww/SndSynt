@@ -15,7 +15,7 @@
 #define DELAY } asm { nop }; asm { nop }; asm {
 #define FDELAY } asm { nop }; asm { nop }; asm {
 
-#define SMART_DMA		// DMA skip block if it is already in memory
+#define SMART_DMA       // DMA skip block if it is already in memory
 
 #ifdef SMART_DMA
 static UInt16 last_addressl;
@@ -45,7 +45,7 @@ Int16 sdram_init(void)
             DELAY
             CMD_SELF_RFSH
     }
-#ifdef SMART_DMA	
+#ifdef SMART_DMA
     sucess = 0;
 #endif
 }
@@ -103,8 +103,8 @@ void sdram_write16(UInt32 addr, Int16 data)
 void sdram_write32(UInt32 addr, Int32 data)
 {
     asm{
-            move	data,b0
-            move	data + 1,b1
+            move    data,b0
+            move    data + 1,b1
             CMD_PRECHARGE_ALL
             CMD_ACTIVE(a0)
             CMD_WRCOL(a1)
@@ -145,15 +145,15 @@ UInt32 sdram_save(UInt32 addr, UWord16 * dst, size_t size)
 
 /*****************************************************************************
  *
- *	Routines for sampler
+ *  Routines for sampler
  *
- *	void sdram_load_64( UInt32 addr, UWord16 * dst, size_t size )
+ *  void sdram_load_64( UInt32 addr, UWord16 * dst, size_t size )
  *
- * 	Read block to SDRAM
+ *  Read block to SDRAM
  *
- *		A		addr		source
- *		R2		dst		destination (cache) address
- *		Y0		size		size in 64 bits words
+ *      A       addr        source
+ *      R2      dst     destination (cache) address
+ *      Y0      size        size in 64 bits words
  *
  *****************************************************************************/
 
@@ -161,22 +161,22 @@ void sdram_load_64(UInt32 addr, UWord16 * dst, size_t size)
 {
     asm
     {
-        move	y0,x0
-        move	#4,y0
-        clr		y1
+        move    y0,x0
+        move    #4,y0
+        clr     y1
 #ifdef SMART_DMA
-        move	last_addressh,b
-        move	last_addressl,b0
-        cmp		a,b
-        bne		newest
-        cmp		last_size,x0
-        bne		newest
-        inc		sucess;
+        move    last_addressh,b
+        move    last_addressl,b0
+        cmp     a,b
+        bne     newest
+        cmp     last_size,x0
+        bne     newest
+        inc     sucess;
         rts
 newest :
-        move	a0,last_addressl
-        move	a1,last_addressh
-        move	x0,last_size
+        move    a0,last_addressl
+        move    a1,last_addressh
+        move    x0,last_size
 #endif
         CMD_PRECHARGE_ALL
 
@@ -189,19 +189,19 @@ newest :
         DELAY
         CMD_GET_DATA(x0)
         CMD_RDCOL(a1)
-        move	x0,X:(r2)+
+        move    x0,X:(r2)+
         FDELAY
         CMD_GET_DATA(x0)
         CMD_RDCOL(a1)
-        move	x0,X : (r2)+
+        move    x0,X : (r2)+
         FDELAY
         CMD_GET_DATA(x0)
         CMD_RDCOLAP(a1)
-        move	x0,X : (r2)+
+        move    x0,X : (r2)+
         FDELAY
         CMD_GET_DATA(x0)
-        move	x0,X : (r2)+
-        add		y,a
+        move    x0,X : (r2)+
+        add     y,a
 EndDo :
         CMD_SELF_RFSH
     };
@@ -211,11 +211,11 @@ EndDo :
  *
  * Load file to SDRAM
  *
- *	int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
+ *  int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
  *
- *	Fd		file descriptor
- *	addr	target address SDRAM
- *	nWords	words count
+ *  Fd      file descriptor
+ *  addr    target address SDRAM
+ *  nWords  words count
  *
  *****************************************************************************/
 

@@ -8,6 +8,6 @@
 #ifndef _ALMCONTROLS_H
 #define _ALMCONTROLS_H
 
-void	alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val );
+void    alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val );
 
 #endif

@@ -12,17 +12,17 @@
 
 /*****************************************************************************
  *
- *	void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
- *	s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
+ *  s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   midi channel
- *	 prog	   instrument number
+ *   chan      midi channel
+ *   prog      instrument number
  *
  * DESCRIPTION
  *     Return and set instrument in the channel
- *     
+ *
  *****************************************************************************/
 
 void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
@@ -30,11 +30,11 @@ void    alSeqpSetChlProgram(ALSeqPlayer *seqp, u8 chan, u8 prog)
 ALChanState * cs;
 
     if(prog<seqp->bank->instCount)
-    {	if(seqp->bank->instArray[prog] == NULL) prog = 0;
+    {   if(seqp->bank->instArray[prog] == NULL) prog = 0;
         cs = &seqp->chanState[chan];
-        cs->prog 		= prog;
-        cs->instrument 	= seqp->bank->instArray[prog];
-        cs->bendRange	= cs->instrument->bendRange;	
+        cs->prog        = prog;
+        cs->instrument  = seqp->bank->instArray[prog];
+        cs->bendRange   = cs->instrument->bendRange;
     }
 }
 
@@ -45,17 +45,17 @@ s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
 
 /*****************************************************************************
  *
- *	void    alSeqpSetChlFXMix(ALSeqPlayer *seqp, u8 chan, u8 fxmix)
- *	u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlFXMix(ALSeqPlayer *seqp, u8 chan, u8 fxmix)
+ *  u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   midi channel
- *	 fxmix	   level FX
+ *   chan      midi channel
+ *   fxmix     level FX
  *
  * DESCRIPTION
  *     Return and set FV level in the channel
- *     
+ *
  *****************************************************************************/
 
 void    alSeqpSetChlFXMix(ALSeqPlayer *seqp, u8 chan, u8 fxmix)
@@ -70,42 +70,42 @@ u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
 
 /*****************************************************************************
  *
- *	void	alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol)
- *	u8		alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol)
+ *  u8      alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   midi channel
- *	 vol	   volume
+ *   chan      midi channel
+ *   vol       volume
  *
  * DESCRIPTION
  *     Return and set channel volume
- *     
+ *
  *****************************************************************************/
 
-void	alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol)
+void    alSeqpSetChlVol(ALSeqPlayer *seqp, u8 chan, u8 vol)
 {
     seqp->chanState[chan].vol = vol;
 }
 
-u8		alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
+u8      alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
 {
     return seqp->chanState[chan].vol;
 }
 
 /*****************************************************************************
  *
- *	void    alSeqpSetChlPan(ALSeqPlayer *seqp, u8 chan, ALPan pan)
- *	ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlPan(ALSeqPlayer *seqp, u8 chan, ALPan pan)
+ *  ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   midi channel
- *	 pan	   panorama
+ *   chan      midi channel
+ *   pan       panorama
  *
  * DESCRIPTION
  *    Return and set the channel panorama
- *     
+ *
  *****************************************************************************/
 
 void    alSeqpSetChlPan(ALSeqPlayer *seqp, u8 chan, ALPan pan)
@@ -120,17 +120,17 @@ ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
 
 /*****************************************************************************
  *
- *	void    alSeqpSetChlPriority(ALSeqPlayer *seqp, u8 chan, u8 priority)
- *	u8      alSeqpGetChlPriority(ALSeqPlayer *seqp, u8 chan)
+ *  void    alSeqpSetChlPriority(ALSeqPlayer *seqp, u8 chan, u8 priority)
+ *  u8      alSeqpGetChlPriority(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
  *    seqp      pointer to the sequence player.
- *	 chan	   midi channel
- *	 priority  channel priority
+ *   chan      midi channel
+ *   priority  channel priority
  *
  * DESCRIPTION
  *    Return and set the channel priority
- *     
+ *
  *****************************************************************************/
 
 void    alSeqpSetChlPriority(ALSeqPlayer *seqp, u8 chan, u8 priority)
@@ -139,6 +139,6 @@ void    alSeqpSetChlPriority(ALSeqPlayer *seqp, u8 chan, u8 priority)
 }
 
 u8      alSeqpGetChlPriority(ALSeqPlayer *seqp, u8 chan)
-{ 
-    return seqp->chanState[chan].priority; 
+{
+    return seqp->chanState[chan].priority;
 }

@@ -10,8 +10,8 @@
 #include "sdram.h"
 #include "audiolib.h"
 #
-#define NBUFFERS       		32		// Buffers number	
-#define MAX_BUFFER_LENGTH 	512		// Buffer size
+#define NBUFFERS            32      // Buffers number
+#define MAX_BUFFER_LENGTH   512     // Buffer size
 
 #define START_DMA(addr,dst,size) sdram_load_64( (UInt32)addr, (UWord16*) dst, (size_t) size)
 
@@ -20,15 +20,15 @@ typedef ALDMAproc (*ALDMANew)(void *state);
 UInt32 dmaCallBack(UInt32 addr, UInt16 len, void *state);
 ALDMAproc dmaNew(DMAState **state);
 
-typedef struct 
+typedef struct
 {
     ALLink      node;
-    UInt32      startAddr;			// Read address
-    UInt16      lastFrame;			// When was last access
-    char        *ptr;				// In memory
+    UInt32      startAddr;          // Read address
+    UInt16      lastFrame;          // When was last access
+    char        *ptr;               // In memory
 } DMABuffer;
 
-typedef struct 
+typedef struct
 {
     u8          initialized;
     DMABuffer   *firstUsed;
@@ -46,69 +46,69 @@ void set_file(void);
  *
  * s32 dmaCallBack(s32 addr, s32 len, void *state)
  *
- *	addr	source address
- *	len		size
- *	state	state of DMAs
+ *  addr    source address
+ *  len     size
+ *  state   state of DMAs
  *
  *****************************************************************************/
 
 UInt32 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 {
-    void        *freeBuffer;			// target
-    UInt16       delta;					// index in buffer
-    DMABuffer   *dmaPtr,*lastDmaPtr;	// DMA's pointers
-    UInt32       addrEnd,buffEnd;		// block's ends
+    void        *freeBuffer;            // target
+    UInt16       delta;                 // index in buffer
+    DMABuffer   *dmaPtr,*lastDmaPtr;    // DMA's pointers
+    UInt32       addrEnd,buffEnd;       // block's ends
 
 
     lastDmaPtr = 0;
     dmaPtr = dmaState.firstUsed;
-    addrEnd = addr+len;										
- 
-    while(dmaPtr)  // Find ready buffer
-    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;	
-        if(dmaPtr->startAddr > addr) 						
-            break;                   						
+    addrEnd = addr+len;
 
-        else if(addrEnd <= buffEnd) 						
+    while(dmaPtr)  // Find ready buffer
+    {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;
+        if(dmaPtr->startAddr > addr)
+            break;
+
+        else if(addrEnd <= buffEnd)
         {
-            dmaPtr->lastFrame = gFrameCt; 					
+            dmaPtr->lastFrame = gFrameCt;
             freeBuffer = dmaPtr->ptr + addr - dmaPtr->startAddr;
-            return (int) freeBuffer;						
+            return (int) freeBuffer;
         }
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
     /*
-     * 	Buffer not found then get free one
+     *  Buffer not found then get free one
      */
-    dmaPtr 				= dmaState.firstFree;				
-    dmaState.firstFree 	= (DMABuffer*)dmaPtr->node.next;
+    dmaPtr              = dmaState.firstFree;
+    dmaState.firstFree  = (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
     /*
-     * 	Add to used list
+     *  Add to used list
      */
-    if(lastDmaPtr != NULL) 							
-    {	alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
+    if(lastDmaPtr != NULL)
+    {   alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
     }
-    else if(dmaState.firstUsed != NULL)				
+    else if(dmaState.firstUsed != NULL)
     {   lastDmaPtr = dmaState.firstUsed;
-        dmaState.firstUsed 		= dmaPtr;
-        dmaPtr->node.next 		= (ALLink*)lastDmaPtr;
-        dmaPtr->node.prev 		= 0;
-        lastDmaPtr->node.prev 	= (ALLink*)dmaPtr;
+        dmaState.firstUsed      = dmaPtr;
+        dmaPtr->node.next       = (ALLink*)lastDmaPtr;
+        dmaPtr->node.prev       = 0;
+        lastDmaPtr->node.prev   = (ALLink*)dmaPtr;
     }
-    else 											
-    {   dmaState.firstUsed 	= dmaPtr;
-        dmaPtr->node.next 	= 0;
-        dmaPtr->node.prev 	= 0;
+    else
+    {   dmaState.firstUsed  = dmaPtr;
+        dmaPtr->node.next   = 0;
+        dmaPtr->node.prev   = 0;
     }
-    
-    freeBuffer = dmaPtr->ptr;						
-    delta = addr & 0x1;								
-    addr -= delta;									
-    dmaPtr->startAddr = addr;						
-    dmaPtr->lastFrame = gFrameCt;  					
- 
+
+    freeBuffer = dmaPtr->ptr;
+    delta = addr & 0x1;
+    addr -= delta;
+    dmaPtr->startAddr = addr;
+    dmaPtr->lastFrame = gFrameCt;
+
     START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH);
 
     return (UInt16) freeBuffer + delta;
@@ -116,11 +116,11 @@ UInt32 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 
 /*****************************************************************************
  *
- *	ALDMAproc dmaNew(DMAState **state)
+ *  ALDMAproc dmaNew(DMAState **state)
  *
- *	state	states of DMAs
- *	return	DMA callback procedure
- *	
+ *  state   states of DMAs
+ *  return  DMA callback procedure
+ *
  *****************************************************************************/
 
 ALDMAproc dmaNew(DMAState **state)
@@ -146,9 +146,9 @@ ALDMAproc dmaNew(DMAState **state)
 
 /*****************************************************************************
  *
- * 	void CleanDMABuffs(void)
+ *  void CleanDMABuffs(void)
  *
- *	Clear all DMA channels
+ *  Clear all DMA channels
  *
  *****************************************************************************/
 
@@ -158,7 +158,7 @@ void CleanDMABuffs(void)
 
     dmaPtr = dmaState.firstUsed;
     while(dmaPtr)
-    {	nextPtr = (DMABuffer*)dmaPtr->node.next;
+    {   nextPtr = (DMABuffer*)dmaPtr->node.next;
 
         /* Can change this value.  Should be at least one.  */
         /* Larger values mean more buffers needed, but fewer DMA's */
