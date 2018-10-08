@@ -22,4 +22,4 @@ The SndSynt software started as part of a game for Nintendo N64. It was decided 
 - Easy to port to any other hardware design (a single file is responsible for the hardware)
 - Has LED display and a keyboard on GPIO connection for user interface
 - Uses sound bank compiled with additional utility sound bank compiler (SBC)
-- SBC uses text description format (include files) SBC.bin and SBC.cfg
+- SBC uses text description format. 
