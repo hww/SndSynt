@@ -22,4 +22,9 @@ The SndSynt software started as part of a game for Nintendo N64. It was decided 
 - Easy to port to any other hardware design (a single file is responsible for the hardware)
 - Has LED display and a keyboard on GPIO connection for user interface
 - Uses sound bank compiled with additional utility sound bank compiler (SBC)
-- SBC uses text description format. 
+- SBC uses text description format (include files) and produces SBC.bin and SBC.cfg
+	- Multiple source files can be combined with the ‘include’ feature, allowing independent development of different components in an instrument bank.
+	- SBC.bin contains the waveforms data collection.
+  - SBC.cfg contains serialized sound bank data definition structures, referring to data in SBC.bin.
+
+Although the original requirement was for a simple musical training game device, the resulting MIDI synthesizer was capable of producing quite respectable  sound for acoustic, amplified, and synthetic  tracks.
