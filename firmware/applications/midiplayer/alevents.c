@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "null.h"
 #include "audiolib.h"
@@ -5,13 +12,13 @@
 #include "mfr16.h"
 #include "assert.h"
 
-/******************************************************************************
-*
-*	void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
-*
-*	Create list of events in the queue
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
+ *
+ *	Create list of events in the queue
+ *
+ *****************************************************************************/
 
 void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
 {
@@ -29,13 +36,13 @@ void	alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
 	}
 }
 
-/******************************************************************************
-*
-*	ALMicroTime     alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt)
-*
-*   Return closest in time event. And copy this event to given pointer
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	ALMicroTime     alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt)
+ *
+ *   Return closest in time event. And copy this event to given pointer
+ *
+ *****************************************************************************/
 //	A								      R2             R3
 ALMicroTime alEvtqNextEvent(ALEventQueue *evtq, ALEvent *evt)
 {
@@ -60,13 +67,13 @@ ALEventListItem * idxi;
 	return 0;		
 }
 
-/******************************************************************************
-*
-*	void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
-*
-*	Add event to the queue
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
+ *
+ *	Add event to the queue
+ *
+ *****************************************************************************/
 
 void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
 {
@@ -108,14 +115,14 @@ void alSeqpPostEvent( ALSeqPlayer * seqp,  ALEvent *evt, ALMicroTime delta)
 {
 	alEvtqPostEvent( &seqp->evtq, evt, delta + seqp->curTime);
 }
-*/
-/******************************************************************************
-*
-*	void  	alEvtqFlush(ALEventQueue *evtq)
-*
-*	Clear events
-*
-*******************************************************************************/
+ */
+/*****************************************************************************
+ *
+ *	void  	alEvtqFlush(ALEventQueue *evtq)
+ *
+ *	Clear events
+ *
+ *****************************************************************************/
 
 void  	alEvtqFlush(ALEventQueue *evtq)
 {
@@ -133,13 +140,13 @@ ALEventListItem * evtitem;
 	evtq->eventCount = 0;
 }
 
-/******************************************************************************
-*
-*	alEvtqFlushType(ALEventQueue *evtq, s16 type)
-*
-*	Clear events of type
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	alEvtqFlushType(ALEventQueue *evtq, s16 type)
+ *
+ *	Clear events of type
+ *
+ *****************************************************************************/
 
 void	alEvtqFlushType(ALEventQueue *evtq, s16 type)
 {
@@ -158,13 +165,13 @@ ALEventListItem * next;
 	}
 }
 
-/******************************************************************************
-*
-*	alEvtqFlushVoice(ALEventQueue *evtq, ALVoiceState * vs)
-*
-*	Clear events for given channel
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	alEvtqFlushVoice(ALEventQueue *evtq, ALVoiceState * vs)
+ *
+ *	Clear events for given channel
+ *
+ *****************************************************************************/
 
 void	alEvtqFlushVoice(ALEventQueue *evtq, void * vs)
 {

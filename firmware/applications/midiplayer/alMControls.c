@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "null.h"
 #include "audiolib.h"
@@ -42,13 +49,13 @@ static void alDataEntry( UInt16 * ptr, UInt16 data, UInt16 mask );
 #define MIDI_HI(x,v)	x = (x & 0x7f) + ((v & 0x7f) << 7)
 #define MIDI_LO(x,v)	x = (x & (0x7f<<7)) + (v & 0x7f)
 
-/******************************************************************************
-*
-*	void alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val )
-*
-*	Event "ControlChange"
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val )
+ *
+ *	Event "ControlChange"
+ *
+ *****************************************************************************/
 
 void	alSeqpControlChange( ALSeqPlayer * seqp, UWord16 chan, u8 contr, u8 val )
 {

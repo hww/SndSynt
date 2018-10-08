@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "null.h"
 #include "sdram.h"
@@ -9,15 +16,15 @@ DMAState    dmaState;
 DMABuffer   dmaBuffs[NBUFFERS];
 UInt16      gFrameCt;
 
-/*******************************************************************************
-*
-*	UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
-*
-*	addr	source address
-*	len		size
-*	state	pointer to the state of all DMAs
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
+ *
+ *	addr	source address
+ *	len		size
+ *	state	pointer to the state of all DMAs
+ *
+ *****************************************************************************/
 
 UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 {
@@ -81,14 +88,14 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
     return (UInt16) freeBuffer + delta;
 }
 
-/*******************************************************************************
-*
-*	ALDMAproc dmaNew(DMAState **state)
-*
-*	state	state of all DMAs
-*	return	address of DMA callback
-*	
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	ALDMAproc dmaNew(DMAState **state)
+ *
+ *	state	state of all DMAs
+ *	return	address of DMA callback
+ *	
+ *****************************************************************************/
 
 ALDMAproc dmaNew(DMAState **state)
 {
@@ -113,13 +120,13 @@ ALDMAproc dmaNew(DMAState **state)
     return dmaCallBack;
 }
 
-/*******************************************************************************
-*
-* 	void CleanDMABuffs(void)
-*
-*	очищает все DMA каналы
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ * 	void CleanDMABuffs(void)
+ *
+ *	очищает все DMA каналы
+ *
+ *****************************************************************************/
 
 void CleanDMABuffs(void)
 {

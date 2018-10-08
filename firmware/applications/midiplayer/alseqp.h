@@ -1,3 +1,13 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
+#ifndef __ALSEQP_H
+#define __ALSEQP_H
+
 // Sequencer
 
 ALMicroTime	alSeqpHandler( void * data );
@@ -40,3 +50,5 @@ void     	alSeqpSwitchEvent( ALSeqPlayer * seqp, ALEvent * event);
 ALMicroTime alSeqpEnvVolEvent( ALSeqPlayer * seqp, ALEvent * event );
 ALMicroTime alSeqpEnvPanEvent( ALSeqPlayer * seqp, ALEvent * event );
 ALMicroTime	alSeqpVibOscEvent( ALSeqPlayer * seqp, ALEvent * event  );
+
+#endif /* __ALSEQP_H */

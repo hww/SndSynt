@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+
 #include "port.h"
 #include "audiolib.h"
 #include "stdio.h"
@@ -51,8 +58,6 @@ UInt16	get_cfg(void)
 #endif // PC_MODE
 	return 21;
 }
-
-
 
 void main(void)
 {

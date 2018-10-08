@@ -1,12 +1,19 @@
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+
 #include "controls.h"
 #include "terminal.h"
 #include "mfr16.h"
 
-/******************************************************************************
-*
-*	The sequence of narration for voice over
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	The sequence of narration for voice over
+ *
+ *****************************************************************************/
 
 const tHelpList HelpList[]=
 {
@@ -55,22 +62,20 @@ static ALVoice 	speaker;				// Voice channel
 static Int16 	wordIdx;				// Number of sounded words
 static UInt16	speakList[4];			// List of words to say
 	
-/******************************************************************************
-*
-*	Help on the key
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Help on the key
+ *
+ *****************************************************************************/
 
 void speakerUpdate( ALSeqPlayer * seqp)
 {
-ALSound *   snd;
-int			ok;
-
+	ALSound *   snd;
+	int			ok;
 	// Wait request
 	if(wordIdx == -1) return;
 	// Wait previous word
 	if((speaker.state & AL_SF_ACTIVE) != 0) return;
-
 	// In case if all 4 words finished
 	if((wordIdx == 4) || (speakList[wordIdx] == WORD_EOF))
 	{	wordIdx = -1;
@@ -96,7 +101,7 @@ int			ok;
 
 void speakWords(  const UInt16 * ptr )
 {
-int n;
+	int n;
 	if(wordIdx == -1)
 	{	for(n = 0; n<4 ;n++) speakList[n] =	*ptr++;
 		wordIdx = 0;	
@@ -107,7 +112,7 @@ int n;
 
 void speakDigit(  UInt16  val )
 {
-int n;
+	int n;
 	if(wordIdx == -1)
 	{	for(n = 0; n<4 ;n++) speakList[n] =	0;
 		speakList[0]= val + WORD_ZERO;

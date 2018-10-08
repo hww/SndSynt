@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "audiolib.h"
 #include "tfr16.h"
@@ -12,19 +19,19 @@
 oscData  *freeOscStateList;
 oscData  oscStates[OSC_STATE_COUNT];
 
-/******************************************************************************
-*
-*	ALMicroTime initOsc(void **oscState, f32 *initVal,  u8 oscType,
-*                         u8   oscRate,   u8  oscDepth, u8 oscDelay)
-*
-*	oscState	pointer to OSC
-*	initVal		start value
-*	oscType		vibrato type
-*	oscRate		vibrato frequency
-*	oscDepth	vibrato depth
-*	oscDelay	vibrato delay
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	ALMicroTime initOsc(void **oscState, f32 *initVal,  u8 oscType,
+ *                         u8   oscRate,   u8  oscDepth, u8 oscDelay)
+ *
+ *	oscState	pointer to OSC
+ *	initVal		start value
+ *	oscType		vibrato type
+ *	oscRate		vibrato frequency
+ *	oscDepth	vibrato depth
+ *	oscDelay	vibrato delay
+ *
+ *****************************************************************************/
 
 ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
                     UInt16 oscRate,UInt16 oscDepth,UInt16 oscDelay)
@@ -95,14 +102,14 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
                            oscState was available, return delay in usecs */
 }
 
-/******************************************************************************
-*
-*	ALMicroTime updateOsc(void *oscState, f32 *updateVal)
-*
-*	oscState	pointer to OSC
-*	updateVal	pointer to target value (modified by OSC)
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	ALMicroTime updateOsc(void *oscState, f32 *updateVal)
+ *
+ *	oscState	pointer to OSC
+ *	updateVal	pointer to target value (modified by OSC)
+ *
+ *****************************************************************************/
 
 ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
 {
@@ -168,13 +175,13 @@ ALMicroTime updateOsc(void *oscState, Int32 *updateVal)
     return(deltaTime);
 }
 
-/******************************************************************************
-*
-*	void stopOsc(void *oscState)
-*
-*	oscState	pointer to OSC structure
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void stopOsc(void *oscState)
+ *
+ *	oscState	pointer to OSC structure
+ *
+ *****************************************************************************/
 
 void stopOsc(void *oscState)
 {

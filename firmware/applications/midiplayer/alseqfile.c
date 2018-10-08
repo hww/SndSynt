@@ -7,18 +7,18 @@
 #include "sdram.h"
 
 /*****************************************************************************
-*
-* 	Read SDRAM
-*
-*	unsigned char alSeqGet8(  UWord32 * addr )
-*	      UWord16 alSeqGet16( UWord32 * addr )
-*	      UWord32 alSeqGet16( UWord32 * addr )
-*
-*	addr		address in DRAMM
-*
-*	pointer increments by size of data
-*
-*****************************************************************************/
+ *
+ * 	Read SDRAM
+ *
+ *	unsigned char alSeqGet8(  UWord32 * addr )
+ *	      UWord16 alSeqGet16( UWord32 * addr )
+ *	      UWord32 alSeqGet16( UWord32 * addr )
+ *
+ *	addr		address in DRAMM
+ *
+ *	pointer increments by size of data
+ *
+ *****************************************************************************/
 
 unsigned char alSeqGet8( UWord32 * addr )
 {
@@ -43,17 +43,17 @@ UWord32 dword;
 }
 
 /*****************************************************************************
-*
-* Load MIDI file to SDRAM
-*
-*	UWord32 alSeqFileLoad( char * name, UInt32 addr )
-*
-*	name		file name
-*	addr		address in SDRAM
-*
-*	return file size in words (16 bits)
-*
-*****************************************************************************/
+ *
+ * Load MIDI file to SDRAM
+ *
+ *	UWord32 alSeqFileLoad( char * name, UInt32 addr )
+ *
+ *	name		file name
+ *	addr		address in SDRAM
+ *
+ *	return file size in words (16 bits)
+ *
+ *****************************************************************************/
 
 void    alSeqFileNew(ALSeqFile *f, Ptr32 base, UInt16 fnum )
 {
@@ -76,17 +76,17 @@ UWord32 addr = base;
 }
 
 /*****************************************************************************
-*
-* Load MIDI file to SDRAM
-*
-*	UWord32 alSeqFileLoad( char * name, UInt32 addr )
-*
-*	name		file name
-*	addr		address in SDRAM
-*
-*	return file size in words (16 bits)
-*
-*****************************************************************************/
+ *
+ * Load MIDI file to SDRAM
+ *
+ *	UWord32 alSeqFileLoad( char * name, UInt32 addr )
+ *
+ *	name		file name
+ *	addr		address in SDRAM
+ *
+ *	return file size in words (16 bits)
+ *
+ *****************************************************************************/
 
 UWord32 alSeqFileLoad( char * name, UInt32 addr )
 {

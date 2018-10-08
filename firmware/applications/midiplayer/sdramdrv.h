@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+
 #ifndef __SDRAMDRV_H
 #define __SDRAMDRV_H
 

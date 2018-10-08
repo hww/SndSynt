@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP 
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+
 #include "port.h"
 #include "periph.h"
 #include "arch.h"
@@ -12,6 +19,7 @@ static UInt16 ledState;		//  LED states (1 enabled)
 static UInt16 kbdPhase;		//  current scan position
 static const UInt16 *ledAnimation;
 static UInt16 curFrame;
+
 UInt16 ledFlash;
 UInt16 ledStatic;
 UInt16 ledFlashing;
@@ -23,45 +31,50 @@ struct sigevent     termTimerEvent;
 timer_t				termTimer;
 
 const UInt16 stdAnimeR[]=
-{		5,
-		LED_V3,
-		LED_V4,
-		LED_V5,
-		LED_V6,
-		LED_TEACHER
+{		
+	5,
+	LED_V3,
+	LED_V4,
+	LED_V5,
+	LED_V6,
+	LED_TEACHER
 };
 
 const UInt16 stdAnimeL[]=
-{		5,
-		LED_TEACHER,
-		LED_V6,
-		LED_V5,
-		LED_V4,
-		LED_V3
+{		
+	5,
+	LED_TEACHER,
+	LED_V6,
+	LED_V5,
+	LED_V4,
+	LED_V3
 };
 
 const UInt16 stdAnimePP[]=
-{		8,
-		LED_V3,
-		LED_V4,
-		LED_V5,
-		LED_V6,
-		LED_TEACHER,
-		LED_V6,
-		LED_V5,
-		LED_V4,
+{		
+	8,
+	LED_V3,
+	LED_V4,
+	LED_V5,
+	LED_V6,
+	LED_TEACHER,
+	LED_V6,
+	LED_V5,
+	LED_V4,
 };
 
 const UInt16 stdAnimeM[]=
-{		4,
-		LED_V3 | LED_TEACHER,
-		LED_V4 | LED_V6,
-		LED_V5,
-		LED_V4 | LED_V6,
+{		
+	4,
+	LED_V3 | LED_TEACHER,
+	LED_V4 | LED_V6,
+	LED_V5,
+	LED_V4 | LED_V6,
 };
 	
 const UInt16 stdLevels[]=
-{	0,
+{	
+	0,
 	LED_V3,
 	LED_V3 | LED_V4,
 	LED_V3 | LED_V4 | LED_V5,
@@ -70,15 +83,18 @@ const UInt16 stdLevels[]=
 };	
 
 const UInt16 stdPos[]=
-{	0,
+{	
+	0,
 	LED_V3,
 	LED_V4,
 	LED_V5,
 	LED_V6,
 	LED_TEACHER  
 };	
+
 void terminalUpdate(void)
-{	UInt16 keys, trig, bit, mask, row;
+{	
+	UInt16 keys, trig, bit, mask, row;
 	row = (kbdPhase & 3)<<4; 
 	bit =  row >> 2;
 	mask = 0xf << bit;
@@ -97,8 +113,7 @@ void terminalUpdate(void)
 	
 void terminalOpen(void)	
 {
-struct itimerspec termTimerSettings; 
-
+	struct itimerspec termTimerSettings; 
 	periphMemWrite(0x00,&ArchIO.PortB.PeripheralReg);	// GPIO
 	periphMemWrite(0xc0,&ArchIO.PortB.DataReg);			// Set Bits
 	periphMemWrite(0xff,&ArchIO.PortB.DataDirectionReg);// All output
@@ -117,8 +132,7 @@ struct itimerspec termTimerSettings;
 
 Int16 terminalRead(void)
 {
-UInt16 i, mask;
-
+	UInt16 i, mask;
 	if(kbdTrig == 0) return KEY_NO;
 	mask = 1;
 	for( i=0; i<16; i++ )
@@ -137,7 +151,7 @@ UInt16 	terminalState(void)
 
 void  terminalAnimate(void)
 {
-UInt16 	 frame = 0;
+	UInt16 	 frame = 0;
 
 	if(ledAnimation != NULL)
 	{

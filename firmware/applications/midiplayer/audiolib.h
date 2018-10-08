@@ -1,9 +1,9 @@
-/*====================================================================
- * sound.h
- *
- * DPMS
- *
- *====================================================================*/
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
 
 #ifndef __SOUND_H
 #define __SOUND_H
@@ -21,8 +21,8 @@ extern "C" {
 #define EI	archEnableInt() 
 
 /*****************************************************************************
-* Data types
-******************************************************************************/
+ * Data types
+ *****************************************************************************/
 
 typedef char s8;
 typedef unsigned char u8;
@@ -34,8 +34,8 @@ typedef Int32  f32;
 typedef UInt32 Ptr32;
 
 /*****************************************************************************
-* Settings and definitions
-******************************************************************************/
+ * Settings and definitions
+ *****************************************************************************/
 
 #define PCHANELS 16							// Polyphony
 #define MAX_VOICES 32						// Virtual voices
@@ -73,9 +73,9 @@ typedef UInt32 Ptr32;
 typedef struct
 {
 	ALLink      node;
-	UInt32      startAddr;			// Адрес откуда нужно прочитать
-	UInt16      lastFrame;			// в каком каждре к нему обращались
-	UInt16      *ptr;				// где в памяти буфер
+	UInt32      startAddr;			// redubg pointer
+	UInt16      lastFrame;			// last access time
+	UInt16      *ptr;				// buffer pointer
 } DMABuffer;
 
 typedef struct
@@ -96,8 +96,8 @@ void 		CleanDMABuffs(void);
 
 
 /***********************************************************************
-* Sample's flags
-***********************************************************************/
+ * Sample's flags
+ ***********************************************************************/
 
 #define AL_SF_LOOP      0x0001	// Sample has loop
 #define AL_SF_FADEOUT   0x0002	// Sample has fadeout
@@ -107,14 +107,13 @@ void 		CleanDMABuffs(void);
 #define AL_SF_TARGET  	0x0080	// Sample has defined volume
 
 /***********************************************************************
-* Sound flags
-***********************************************************************/
+ * Sound flags
+ ***********************************************************************/
 
 #define AL_ENV_SUSTANE 	0x0100	// Envelope with sustain
 #define AL_ENV_LOOP    	0x0200	// Envelope with loop
 #define AL_ENV_VOL   	0x0400	// Has volume envelope
 #define AL_ENV_PAN   	0x0800	// Has pan envelope
-
 #define AL_INDEXED		0x8000	// Record is indexed
 
 /***********************************************************************
@@ -276,15 +275,13 @@ UWord32 snd_load_bank(char * name, ALBankFile** ctl, UInt32 addr);
 UWord32 snd_load_tbl(char * name, UInt32 addr);
 
 /*****************************************************************************
-*
-* Synthesizer
-*
-******************************************************************************/
-
-
+ *
+ * Synthesizer
+ *
+ *****************************************************************************/
 /*****************************************************************************
-* Single polyphony-channel
-******************************************************************************/
+ * Single polyphony-channel
+ *****************************************************************************/
 
 typedef struct PVoice_s
 {
@@ -319,8 +316,8 @@ typedef struct Voice_s
 } ALVoice;
 
 /*****************************************************************************
-* Synthesizer and it's configuration
-******************************************************************************/
+ * Synthesizer and it's configuration
+ *****************************************************************************/
 
 typedef ALMicroTime(*ALVoiceHandler)(void *);
 
@@ -374,10 +371,10 @@ void    alSynFreeVoice(ALSynth *s, ALVoice *voice);
 void   	alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol);
 
 /*****************************************************************************
-*
-* Globals
-*
-******************************************************************************/
+ *
+ * Globals
+ *
+ *****************************************************************************/
 
 typedef struct {
 	ALSynth     drvr;
@@ -389,10 +386,10 @@ void    alInit(ALGlobals *glob, ALSynConfig *c);
 void    alClose(ALGlobals *glob);
 
 /*****************************************************************************
-*
-* MIDI files bank
-*
-******************************************************************************/
+ *
+ * MIDI files bank
+ *
+ *****************************************************************************/
 
 #define AL_SEQBANK_VERSION    'S1'
 
@@ -420,15 +417,12 @@ UWord16 alSeqGet16(UWord32 * addr);
 UWord32 alSeqFileLoad(char * name, UInt32 addr);
 
 /*****************************************************************************
-*
-* Sequencer data
-*
-******************************************************************************/
+ *
+ * Sequencer data
+ *
+ *****************************************************************************/
 
-/*
- * Play states
- */
-
+// Player states
 #define AL_STOPPED      0
 #define AL_PLAYING      1
 #define AL_STOPPING     2
@@ -763,16 +757,16 @@ typedef struct {
 	ALEventListItem    *feventItems;
 	ALEventQueue        fevtq;
 	ALMicroTime         frameTime;
-	ALChanState        *chanState;     /* 16 channels for MIDI             */
+	ALChanState        *chanState;		/* 16 channels for MIDI             */
 	ALVoiceState       *vvoices;
-	ALLink        	    vAllocList;    /* list of allocated voice state structs */
-	ALLink        	    vFreeList;     /* list of free voice state structs */
+	ALLink        	    vAllocList;		/* list of allocated voice state structs */
+	ALLink        	    vFreeList;		/* list of free voice state structs */
 	ALOscInit           initOsc;
 	ALOscUpdate         updateOsc;
 	ALOscStop           stopOsc;
 	ALSeqMarker         *loopStart;
 	ALSeqMarker         *loopEnd;
-	s32                 loopCount;      /* -1 = loop forever, 0 = no loop   */
+	s32                 loopCount;			/* -1 = loop forever, 0 = no loop   */
 } ALSeqPlayer;
 
 /*

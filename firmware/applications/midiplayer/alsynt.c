@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "size_t.h"
 #include "sdram.h"
@@ -21,9 +28,9 @@ static Int32 panTable[VOL_BUF_SIZE + 1];	// Volume conversion table
 UInt16 *cash_1;							// Cache of first level
 UInt16 *cash_2;							// Cache of second level
 
-/******************************************************************************
-* Common macro definitions
-*******************************************************************************/
+/*****************************************************************************
+ * Common macro definitions
+ *****************************************************************************/
 
 #ifndef MIN
 #define MIN(a,b) (((a)<(b))?(a):(b))
@@ -42,8 +49,8 @@ UInt16 *cash_2;							// Cache of second level
 #endif
 
 /*****************************************************************************
-* API to machine code
-******************************************************************************/
+ * API to machine code
+ *****************************************************************************/
 
 #define v(x) X:(r3+PVoice.x)
 #define PITCHF v(pitch)
@@ -67,16 +74,16 @@ UInt16 *cash_2;							// Cache of second level
 #define CASH_1 cash_1
 #define CASH_2 cash_2
 
-/******************************************************************************
-* 	Mix rendered sample to right channel of MIX
-*
-* 	Count address difference
-*	r1 = target
-*	r2 = source
-*	x0 = size
-*	y0 = left volume
-*	y1 = right volume
-*******************************************************************************/
+/*****************************************************************************
+ * 	Mix rendered sample to right channel of MIX
+ *
+ * 	Count address difference
+ *	r1 = target
+ *	r2 = source
+ *	x0 = size
+ *	y0 = left volume
+ *	y1 = right volume
+ *****************************************************************************/
 void alSynMakeVolumes(PVoice * v);
 void alSynMakeVolumes(PVoice * v)
 {
@@ -134,20 +141,20 @@ panend :
 	}
 }
 
-/******************************************************************************
-*
-* void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo )
-*
-*	Mix single voice to the buffer
-*
-*	s		synthesizer
-*	v		poly-channel
-*	dst		target
-*	todo	size
-*
-* 	cash_2 	source of data
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ * void alSynMixVoice( PVoice* v, UInt32* dst, size_t todo )
+ *
+ *	Mix single voice to the buffer
+ *
+ *	s		synthesizer
+ *	v		poly-channel
+ *	dst		target
+ *	todo	size
+ *
+ * 	cash_2 	source of data
+ *
+ *****************************************************************************/
 //						R2		  R3			    Y0
 void alSynMixVoice(PVoice* v, UInt32* dst, size_t todo)
 {
@@ -211,20 +218,20 @@ bigphase :
 	}
 }
 
-/******************************************************************************
-*
-* void alSynRenderVoice( PVoice* v, size_t todo )
-*
-*	Render sample
-*
-*	v		poly channel
-*	dst		target
-*	todo	size
-*
-* 	cash_1 	load from SDRAM
-*	cash_2	for sample rendering
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ * void alSynRenderVoice( PVoice* v, size_t todo )
+ *
+ *	Render sample
+ *
+ *	v		poly channel
+ *	dst		target
+ *	todo	size
+ *
+ * 	cash_1 	load from SDRAM
+ *	cash_2	for sample rendering
+ *
+ *****************************************************************************/
 
 void alSynRenderVoice(PVoice* v, size_t todo)
 {
@@ -300,11 +307,11 @@ void alSynRenderVoice(PVoice* v, size_t todo)
 	}
 }
 
-/******************************************************************************
-*
-*	Convert 32 bits data to 16 bits
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Convert 32 bits data to 16 bits
+ *
+ *****************************************************************************/
 //                          R2            R3           Y0
 void alSynMix32To16(UInt16 *dste, UInt32 *srce, size_t todo)
 {
@@ -325,22 +332,22 @@ void alSynMix32To16(UInt16 *dste, UInt32 *srce, size_t todo)
 
 #include "mfr16.h"
 
-/******************************************************************************
-*
-*	void alSynAddChannel(ALSynth* s, PVoice* v, stereo32* dst, size_t todo)
-*
-*	Render single channel
-*
-*	s		synthesizer
-*	v		voice
-*	dst		input buffer
-*	todo	size in samples
-*
-*   Could require several attempts. For example in case if there are less samples
-*   to the end of sample than todo samples. It will process existing then jump
-*   to the loop point
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void alSynAddChannel(ALSynth* s, PVoice* v, stereo32* dst, size_t todo)
+ *
+ *	Render single channel
+ *
+ *	s		synthesizer
+ *	v		voice
+ *	dst		input buffer
+ *	todo	size in samples
+ *
+ *   Could require several attempts. For example in case if there are less samples
+ *   to the end of sample than todo samples. It will process existing then jump
+ *   to the loop point
+ *
+ *****************************************************************************/
 
 void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 {
@@ -396,23 +403,23 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 	return;
 }
 
-/******************************************************************************
-*
-*	void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
-*
-*	Generate buffer
-*
-*	s		synthesizer
-*	outBuf	output buffer
-*	samples sample's count
-*
-*	Variable todo is sample count for one channel. Build the buffer with todo 
-*	size. It split buffer to fragments correlated with sequencer tempo.
-*	For instance the sequencer requires N samples then this function generate
-*	ch1[1..N], ch2[1..N], ... , chN[N]. Then it build M samples, where is
-*	M = todo-N. After completion it produces FXs.
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
+ *
+ *	Generate buffer
+ *
+ *	s		synthesizer
+ *	outBuf	output buffer
+ *	samples sample's count
+ *
+ *	Variable todo is sample count for one channel. Build the buffer with todo 
+ *	size. It split buffer to fragments correlated with sequencer tempo.
+ *	For instance the sequencer requires N samples then this function generate
+ *	ch1[1..N], ch2[1..N], ... , chN[N]. Then it build M samples, where is
+ *	M = todo-N. After completion it produces FXs.
+ *
+ *****************************************************************************/
 
 void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 {
@@ -468,11 +475,11 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 	}
 }
 
-/******************************************************************************
-*
-*	Update synthesizer's driver
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Update synthesizer's driver
+ *
+ *****************************************************************************/
 
 void alSynUpdate(ALSynth* s)
 {
@@ -488,11 +495,11 @@ void alSynUpdate(ALSynth* s)
 		s->fcallTime = s->fhandler((ALSeqPlayer*)s->clientData);
 }
 
-/******************************************************************************
-*
-*	Create and initialize synthesizer
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Create and initialize synthesizer
+ *
+ *****************************************************************************/
 
 bool alSynNew(ALSynth *s, ALSynConfig *cfg)
 {
@@ -527,11 +534,11 @@ error:
 	return false;
 }
 
-/******************************************************************************
-*
-*	Destroy synthesizer
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Destroy synthesizer
+ *
+ *****************************************************************************/
 
 void alSynDelete(ALSynth * s)
 {
@@ -541,29 +548,29 @@ void alSynDelete(ALSynth * s)
 	if (s->mix_buf != NULL)free(s->mix_buf);
 }
 
-/******************************************************************************
-*
-*	Set client (sequencer) to synthesizer
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Set client (sequencer) to synthesizer
+ *
+ *****************************************************************************/
 
 void alSynAddPlayer(ALSynth *s, void *client)
 {
 	s->clientData = client;
 }
 
-/******************************************************************************
-*
-*	synt_env_set_delta( sVinfo* voice, ALMicroTime time, UInt16 vol )
-*
-*	Start volume envelope
-*
-*	sVinfo* voice		channel's structure
-*	ALMicroTime time	time to reach target volume
-*	UInt16 vol		target volume
-*					0 - 7FFF
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	synt_env_set_delta( sVinfo* voice, ALMicroTime time, UInt16 vol )
+ *
+ *	Start volume envelope
+ *
+ *	sVinfo* voice		channel's structure
+ *	ALMicroTime time	time to reach target volume
+ *	UInt16 vol		target volume
+ *					0 - 7FFF
+ *
+ *****************************************************************************/
 
 void   alSynSetVol(ALSynth * s, ALVoice *v, Int16 volume, ALMicroTime time)
 {
@@ -588,11 +595,11 @@ void   alSynSetVol(ALSynth * s, ALVoice *v, Int16 volume, ALMicroTime time)
 	}
 }
 
-/******************************************************************************
-*
-*	Slide of volume
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Slide of volume
+ *
+ *****************************************************************************/
 
 void alSynPanSlide(ALSynth * s)
 {
@@ -626,13 +633,13 @@ void alSynPanSlide(ALSynth * s)
 	}
 }
 
-/******************************************************************************
-*
-*	void    SynSetPan(ALSynth *s, ALVoice *voice, ALPan pan)
-*
-*	Set voice panning
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    SynSetPan(ALSynth *s, ALVoice *voice, ALPan pan)
+ *
+ *	Set voice panning
+ *
+ *****************************************************************************/
 
 void   alSynMixPanGain(PVoice *pv)
 {
@@ -670,19 +677,19 @@ void   alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol)
 	alSynMixPanGain(v->pvoice);
 }
 
-/******************************************************************************
-*
-*	SynSetPitch(ALSynth *s, ALVoice *voice, Int32 ratio)
-*
-*	Set voice pitch
-*
-*	Value  ratio = 0x10000 play tone as it is
-*		   ratio = 0x20000 play next octave
-*		   ratio = 0x08000 play lower octave
-*		   0 < ratio 0x2000
-*		   if rate>2 then rate is limited by 2
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	SynSetPitch(ALSynth *s, ALVoice *voice, Int32 ratio)
+ *
+ *	Set voice pitch
+ *
+ *	Value  ratio = 0x10000 play tone as it is
+ *		   ratio = 0x20000 play next octave
+ *		   ratio = 0x08000 play lower octave
+ *		   0 < ratio 0x2000
+ *		   if rate>2 then rate is limited by 2
+ *
+ *****************************************************************************/
 
 void    alSynSetPitch(ALSynth * s, ALVoice *v, Int32 ratio)
 {
@@ -692,56 +699,56 @@ void    alSynSetPitch(ALSynth * s, ALVoice *v, Int32 ratio)
 	else v->pvoice->pitch = ratio;
 }
 
-/******************************************************************************
-*
-*	void    SynSetFXMix(ALSynth *s, ALVoice *voice, Int16 fxmix)
-*
-*	Set FX volume for channel
-*	If value is equal to MIX_VOL_MAX then output only FX
-*	If value less than MIX_VOL_MIN then out only clean sound
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    SynSetFXMix(ALSynth *s, ALVoice *voice, Int16 fxmix)
+ *
+ *	Set FX volume for channel
+ *	If value is equal to MIX_VOL_MAX then output only FX
+ *	If value less than MIX_VOL_MIN then out only clean sound
+ *
+ *****************************************************************************/
 
 void    alSynSetFXMix(ALSynth * s, ALVoice *v, Int16 fxmix)
 {
 	//v->pvoice->fxmix=fxmix;
 }
 
-/******************************************************************************
-*
-*	void    SynSetPriority(ALSynth *s, ALVoice *voice, Int16 priority)
-*
-*	Set voice's priority
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    SynSetPriority(ALSynth *s, ALVoice *voice, Int16 priority)
+ *
+ *	Set voice's priority
+ *
+ *****************************************************************************/
 
 void    alSynSetPriority(ALSynth * s, ALVoice *v, Int16 priority)
 {
 	v->priority = priority;
 }
 
-/******************************************************************************
-*
-*	Int16     SynGetPriority(ALSynth *s, ALVoice *voice)
-*
-*	Return voice's priority
-*
-*	return Int16 		priority
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Int16     SynGetPriority(ALSynth *s, ALVoice *voice)
+ *
+ *	Return voice's priority
+ *
+ *	return Int16 		priority
+ *
+ *****************************************************************************/
 
 Int16     alSynGetPriority(ALSynth * s, ALVoice *v)
 {
 	return v->priority;
 }
 
-/******************************************************************************
-*
-*	void    SynStartVoice(ALSynth *s, ALVoice *voice, ALWaveTable *w)
-*
-*	Start waveform
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    SynStartVoice(ALSynth *s, ALVoice *voice, ALWaveTable *w)
+ *
+ *	Start waveform
+ *
+ *****************************************************************************/
 
 void    alSynStartVoice(ALSynth * s, ALVoice *voice, ALWaveTable *w)
 {
@@ -764,15 +771,15 @@ void    alSynStartVoice(ALSynth * s, ALVoice *voice, ALWaveTable *w)
 	}
 }
 
-/******************************************************************************
-*
-*	void    SynStartVoiceParams( ALVoice *v, ALWaveTable *w,
-*							Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix
-*							ALMicroTime t)
-*
-*	Start waveform
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    SynStartVoiceParams( ALVoice *v, ALWaveTable *w,
+ *							Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix
+ *							ALMicroTime t)
+ *
+ *	Start waveform
+ *
+ *****************************************************************************/
 
 void    alSynStartVoiceParams(ALSynth * s, ALVoice *v, ALWaveTable *w,
 	Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
@@ -792,18 +799,18 @@ void alSynStopVoice(ALSynth *drvr, ALVoice *voice)
 	alLink(&voice->pvoice->node, &drvr->pLameList);		// add to lame list
 }
 
-/******************************************************************************
-*
-*	Int16   SynAllocVoice( ALSynth *s, ALVoice *v, UInt16 priority )
-*
-*	Link poly-voice to the voice if possible. Return 0 in other case.
-*	Order of seeking:
-*	1. Check pFreeList
-*	2. Check pLameList. (Contains voices with volume 0)
-*   3. Find lowest priority in pAllocList and if it's priority is less
-*      than requested then use it.
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	Int16   SynAllocVoice( ALSynth *s, ALVoice *v, UInt16 priority )
+ *
+ *	Link poly-voice to the voice if possible. Return 0 in other case.
+ *	Order of seeking:
+ *	1. Check pFreeList
+ *	2. Check pLameList. (Contains voices with volume 0)
+ *   3. Find lowest priority in pAllocList and if it's priority is less
+ *      than requested then use it.
+ *
+ *****************************************************************************/
 
 Int16   alSynAllocVoice(ALSynth *s, ALVoice *v, UInt16 priority)
 {
@@ -855,13 +862,13 @@ good:
 	return 1;
 }
 
-/******************************************************************************
-*
-*	void    alSynFreeVoice(ALSynth *s, ALVoice *voice)
-*
-*	Release poly-voice but returns 0 if it did not happens
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void    alSynFreeVoice(ALSynth *s, ALVoice *voice)
+ *
+ *	Release poly-voice but returns 0 if it did not happens
+ *
+ *****************************************************************************/
 
 void    alSynFreeVoice(ALSynth *s, ALVoice *voice)
 {

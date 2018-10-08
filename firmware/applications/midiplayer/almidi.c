@@ -20,16 +20,16 @@ static Int16	susexCntr;
 
 int		midiGetBytes(UInt16 need);
 
-/******************************************************************************
-*
-*	void	midiOpen( void )
-*
-* PARAMETERS
-*
-* DESCRIPTION
-*     Initialize MIDI interface
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void	midiOpen( void )
+ *
+ * PARAMETERS
+ *
+ * DESCRIPTION
+ *     Initialize MIDI interface
+ *
+ *****************************************************************************/
 
 void	midiOpen(void)
 {
@@ -58,16 +58,16 @@ void	midiOpen(void)
 	susexCntr = 0;
 }
 
-/******************************************************************************
-*
-*	void 	midiClose( void )
-*
-* PARAMETERS
-*
-* DESCRIPTION
-*     Close MIDI interface
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	void 	midiClose( void )
+ *
+ * PARAMETERS
+ *
+ * DESCRIPTION
+ *     Close MIDI interface
+ *
+ *****************************************************************************/
 
 void 	midiClose(void)
 {
@@ -75,20 +75,20 @@ void 	midiClose(void)
 	close(midiUart);
 }
 
-/******************************************************************************
-*
-*	int		midiGetBytes( int numbytes )
-*
-* PARAMETERS
-*
-*	numbytes	number of bytes to read
-*	return		1  successful reading
-*		 		0  failed
-*
-* DESCRIPTION
-*     Read requested bytes from MIDI
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	int		midiGetBytes( int numbytes )
+ *
+ * PARAMETERS
+ *
+ *	numbytes	number of bytes to read
+ *	return		1  successful reading
+ *		 		0  failed
+ *
+ * DESCRIPTION
+ *     Read requested bytes from MIDI
+ *
+ *****************************************************************************/
 
 int		midiGetBytes(UInt16 need)
 {
@@ -101,20 +101,20 @@ int		midiGetBytes(UInt16 need)
 	return 1;
 }
 
-/******************************************************************************
-*
-*	int		midiGetMsg( ALEvent * evt )
-*
-* PARAMETERS
-*
-*	numbytes	number of bytes to read
-*	return		1  successful reading
-*		 		0  failed
-*
-* DESCRIPTION
-*     Read requested bytes from MIDI
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ *	int		midiGetMsg( ALEvent * evt )
+ *
+ * PARAMETERS
+ *
+ *	numbytes	number of bytes to read
+ *	return		1  successful reading
+ *		 		0  failed
+ *
+ * DESCRIPTION
+ *     Read requested bytes from MIDI
+ *
+ *****************************************************************************/
 
 int		midiGetMsg(ALEvent * evt)
 {

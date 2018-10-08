@@ -1,3 +1,10 @@
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+
 #include "port.h"
 #include "sdramdrv.h"
 #include "mem.h"
@@ -18,10 +25,10 @@ static UInt16 sucess;
 #endif
 
 /*****************************************************************************
-*
-* Initialize SDRAM
-*
-*****************************************************************************/
+ *
+ * Initialize SDRAM
+ *
+ *****************************************************************************/
 
 Int16 sdram_init(void)
 {
@@ -44,10 +51,10 @@ Int16 sdram_init(void)
 }
 
 /*****************************************************************************
-*
-* Memory read
-*
-*****************************************************************************/
+ *
+ * Memory read
+ *
+ *****************************************************************************/
 
 Int16 sdram_read16(UInt32 addr)
 {
@@ -77,10 +84,10 @@ Int32 sdram_read32(UInt32 addr)
 }
 
 /*****************************************************************************
-*
-* Memory write
-*
-*****************************************************************************/
+ *
+ * Memory write
+ *
+ *****************************************************************************/
 
 void sdram_write16(UInt32 addr, Int16 data)
 {
@@ -109,10 +116,10 @@ void sdram_write32(UInt32 addr, Int32 data)
 }
 
 /*****************************************************************************
-*
-* Copy blocks in memory
-*
-*****************************************************************************/
+ *
+ * Copy blocks in memory
+ *
+ *****************************************************************************/
 
 UInt32 sdram_load(UInt32 addr, UWord16 * src, size_t size)
 {
@@ -137,18 +144,18 @@ UInt32 sdram_save(UInt32 addr, UWord16 * dst, size_t size)
 }
 
 /*****************************************************************************
-*
-*	Routines for sampler
-*
-*	void sdram_load_64( UInt32 addr, UWord16 * dst, size_t size )
-*
-* 	Read block to SDRAM
-*
-*		A		addr	source
-*		R2		dst		destination (cache) address
-*		Y0		size	size in 64 bits words
-*
-*****************************************************************************/
+ *
+ *	Routines for sampler
+ *
+ *	void sdram_load_64( UInt32 addr, UWord16 * dst, size_t size )
+ *
+ * 	Read block to SDRAM
+ *
+ *		A		addr		source
+ *		R2		dst		destination (cache) address
+ *		Y0		size		size in 64 bits words
+ *
+ *****************************************************************************/
 
 void sdram_load_64(UInt32 addr, UWord16 * dst, size_t size)
 {
@@ -201,22 +208,21 @@ EndDo :
 }
 
 /*****************************************************************************
-*
-* Load file to SDRAM
-*
-*	int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
-*
-*	Fd		file descriptor
-*	addr	target address SDRAM
-*	nWords	words count
-*
-*****************************************************************************/
+ *
+ * Load file to SDRAM
+ *
+ *	int sdram_load_file( int Fd, UInt32 addr, UInt32 nWords )
+ *
+ *	Fd		file descriptor
+ *	addr	target address SDRAM
+ *	nWords	words count
+ *
+ *****************************************************************************/
 
 #define COPY_BUFFER_SIZE 0x7F
 
 int sdram_load_file(int Fd, UInt32 addr, UInt32 nWords)
 {
-
 	size_t   words;
 	UWord16 *copybuf;
 

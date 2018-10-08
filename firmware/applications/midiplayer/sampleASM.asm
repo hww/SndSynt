@@ -1,3 +1,9 @@
+; ****************************************************************************
+; @project SndSynt
+; @info Sound synthesizer library and MIDI file player.
+; @platform DSP 
+; @autor Valery P. (https://github.com/hww)
+; ****************************************************************************
 	SECTION rtlib
 	
 	include "portasm.h"

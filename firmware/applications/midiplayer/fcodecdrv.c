@@ -1,15 +1,17 @@
-//******************************************************************************
-// 			     CODEC PCM1717 (not supported by SDK)
-//				    (not optimized by performance)
-/*******************************************************************************
-********************************************************************************
-*
-* FILE NAME:   fcodecdrv.c
-*
-* DESCRIPTION: source file for the Crystal CS4218 16-bit Stereo Audio
-*              Codec device driver
-*
-*******************************************************************************/
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+/****************************************************************************
+ * FILE NAME:   fcodecdrv.c
+ *
+ * DESCRIPTION: source file for the Crystal CS4218 16-bit Stereo Audio
+ *              Codec device driver
+ *
+ * N.B. CODEC PCM1717 (not supported by SDK) (not optimized by performance)
+ ****************************************************************************/
 
 #include "bsp.h"
 #include "port.h"
@@ -23,15 +25,15 @@
 #include "periph.h"
 #include "portcdrv.h"
 
-//#define __SSIDRV_H //temporary close ssi
 #include "ssi.h"
 
 #include "fcodec.h"
 #include "iprdrv.h"
 #include "audiolib.h"
 
+// To temporary close SSI uncoment next line
+//#define __SSIDRV_H 
 #define TX_CONTROL_BITS        16
-
 #define CODECDRV_CCS   gpioPin(D,2)
 #define CODECDRV_CDIN  gpioPin(D,1)
 #define CODECDRV_CCLK  gpioPin(D,0)
@@ -47,18 +49,18 @@ UInt16   dma_buf_2;
 UInt16   dma_frame;
 
 /*****************************************************************************
-*
-* SSIINITIALIZE
-*
-* Semantics:
-*     The ssiInitialize() function initializes the SSI device.
-*
-* Return Value:
-*     Upon successful completion, the function will return a value of zero.
-*     Otherwise, a value of -1 will be returned and errno will be set to
-*     indicate the error.
-*
-*****************************************************************************/
+ *
+ * SSIINITIALIZE
+ *
+ * Semantics:
+ *     The ssiInitialize() function initializes the SSI device.
+ *
+ * Return Value:
+ *     Upon successful completion, the function will return a value of zero.
+ *     Otherwise, a value of -1 will be returned and errno will be set to
+ *     indicate the error.
+ *
+ *****************************************************************************/
 UWord16 fsimple_ssiInitialize(arch_sSSI * pSsiInitialState)
 {
 	periphBitSet(PORT_C_SSI_ENABLE, &ArchIO.PortC.PeripheralReg);
@@ -76,36 +78,37 @@ UWord16 fsimple_ssiInitialize(arch_sSSI * pSsiInitialState)
 
 	periphMemWrite(pSsiInitialState->OptionReg, &ArchIO.Ssi.OptionReg);
 }
-/*******************************************************************************
-*
-* NAME: codecOpen()
-*
-* PURPOSE: Open and initialize a codec device.
-*
-* DESCRIPTION: This function opens the desired codec device and initializes
-*              it based on the parameters passed in.  This function also sets
-*              up the GPIO to communicate with the Codec and configures the
-*              codec with the default configuration that was stored in the
-*              codecDevCreate() function.
-*
-********************************************************************************
-* PARAMETERS:	pName - Name of device
-*               OFlags - Information used for configuring the device
-*               pParams - Open parameters for the codec device (codec_sParams type)
-*
-* RETURN:		CODEC device descriptor if open is successful.
-*               -1 value if open failed.
-*
-* SIDE EFFECTS:   This function assumes the parameters passed in are
-*                 initialized.  Unexpected behavior will result if they
-*                 are not initialized.
-*
-* DESIGNER NOTES:   The codec must be configured twice after a reset.  The first
-*                   write is considered a dummy write.  The second write is
-*                   the one that will actually configure the codec.
-*
-* DEPENDENCIES: codecDevCreate() must be called first
-*******************************************************************************/
+
+/*****************************************************************************
+ *
+ * NAME: codecOpen()
+ *
+ * PURPOSE: Open and initialize a codec device.
+ *
+ * DESCRIPTION: This function opens the desired codec device and initializes
+ *              it based on the parameters passed in.  This function also sets
+ *              up the GPIO to communicate with the Codec and configures the
+ *              codec with the default configuration that was stored in the
+ *              codecDevCreate() function.
+ *
+ *****************************************************************************
+ * PARAMETERS:	pName - Name of device
+ *               OFlags - Information used for configuring the device
+ *               pParams - Open parameters for the codec device (codec_sParams type)
+ *
+ * RETURN:		CODEC device descriptor if open is successful.
+ *               -1 value if open failed.
+ *
+ * SIDE EFFECTS:   This function assumes the parameters passed in are
+ *                 initialized.  Unexpected behavior will result if they
+ *                 are not initialized.
+ *
+ * DESIGNER NOTES:   The codec must be configured twice after a reset.  The first
+ *                   write is considered a dummy write.  The second write is
+ *                   the one that will actually configure the codec.
+ *
+ * DEPENDENCIES: codecDevCreate() must be called first
+ *****************************************************************************/
 
 void fcodecOpen(void)
 {
@@ -150,25 +153,25 @@ void fcodecOpen(void)
 }
 
 
-/*******************************************************************************
-*
-* NAME: codecClose()
-*
-* PURPOSE: Close the codec device.
-*
-* DESCRIPTION: This function does nothing.
-*
-********************************************************************************
-* PARAMETERS:	FileDesc - Handle assigned to the codec device
-*
-* RETURN:		0
-*
-* SIDE EFFECTS:
-*
-* DESIGNER NOTES:
-*
-* DEPENDENCIES: codecOpen must be called first
-*******************************************************************************/
+/*****************************************************************************
+ *
+ * NAME: codecClose()
+ *
+ * PURPOSE: Close the codec device.
+ *
+ * DESCRIPTION: This function does nothing.
+ *
+ *****************************************************************************
+ * PARAMETERS:	FileDesc - Handle assigned to the codec device
+ *
+ * RETURN:		0
+ *
+ * SIDE EFFECTS:
+ *
+ * DESIGNER NOTES:
+ *
+ * DEPENDENCIES: codecOpen must be called first
+ *****************************************************************************/
 
 void fcodecClose(void)
 {
@@ -176,22 +179,22 @@ void fcodecClose(void)
 }
 
 /*****************************************************************************
-*
-* Module: void codec_send_cfg( UWord16 data)
-*
-* Description: Send control data to PCM1717E
-*
-* Returns:
-*
-* Global Data:
-*
-* Arguments:
-*
-* Range Issues:
-*
-* Special Issues:
-*
-*****************************************************************************/
+ *
+ * Module: void codec_send_cfg( UWord16 data)
+ *
+ * Description: Send control data to PCM1717E
+ *
+ * Returns:
+ *
+ * Global Data:
+ *
+ * Arguments:
+ *
+ * Range Issues:
+ *
+ * Special Issues:
+ *
+ *****************************************************************************/
 
 void fcodecSendCfg(UWord16 data)
 {
@@ -211,18 +214,18 @@ void fcodecSendCfg(UWord16 data)
 		ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);  			/* CLOCK LOW */
 
 		if (((data >> i) & 0x0001) != 0)
-			ioctl(GpioCodec, GPIO_SET, CODECDRV_CDIN);  	/* DATA = 1 */
+			ioctl(GpioCodec, GPIO_SET, CODECDRV_CDIN);  		/* DATA = 1 */
 		else
-			ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CDIN);  	/* DATA = 0 */
+			ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CDIN);  		/* DATA = 0 */
 
-		archDelay(10);						/* DELAY FOR TIMING REQUIREMENTS */
+		archDelay(10);											/* DELAY FOR TIMING REQUIREMENTS */
 		ioctl(GpioCodec, GPIO_SET, CODECDRV_CCLK);  			/* CLOCK HIGH */
-		archDelay(10);						/* DELAY FOR TIMING REQUIREMENTS */
+		archDelay(10);											/* DELAY FOR TIMING REQUIREMENTS */
 	}
 	ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCS);  				/* ML LOW */
-	archDelay(10);							/* DELAY FOR TIMING REQUIREMENTS */
+	archDelay(10);												/* DELAY FOR TIMING REQUIREMENTS */
 	ioctl(GpioCodec, GPIO_CLEAR, CODECDRV_CCLK);  				/* CLOCK LOW */
-	archDelay(10);							/* DELAY FOR TIMING REQUIREMENTS */
+	archDelay(10);												/* DELAY FOR TIMING REQUIREMENTS */
 	ioctl(GpioCodec, GPIO_SET, CODECDRV_CCS);    				/* ML HIG */
 }
 
@@ -258,14 +261,14 @@ Int16 *  fcodecWaitBuf(void)
 	}
 }
 
-/*******************************************************************************
-*
-* NAME: StereoISR()
-*
-* PURPOSE: Interrupt Service Routine that is called when configured for
-*          Stereo mode.
-*
-*******************************************************************************/
+/*****************************************************************************
+ *
+ * NAME: StereoISR()
+ *
+ * PURPOSE: Interrupt Service Routine that is called when configured for
+ *          Stereo mode.
+ *
+ *****************************************************************************/
 
 void fcodecStereoISR(void)
 {
@@ -296,7 +299,6 @@ void fcodecStereoISR(void)
 			rti
 	}
 }
-
 
 void	fcodecMute(bool mute)
 {

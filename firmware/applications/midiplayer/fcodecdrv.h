@@ -1,11 +1,17 @@
-/*******************************************************************************
-*
-* FILE NAME:   codecdrv.h
-*
-* DESCRIPTION: header file for the Crystal CS4218 16-bit Stereo Audio
-*              Codec device driver
-*
-*******************************************************************************/
+/*****************************************************************************
+ * @project SndSynt
+ * @info Sound synthesizer library and MIDI file player.
+ * @platform DSP
+ * @autor Valery P. (https://github.com/hww)
+ *****************************************************************************/
+/*****************************************************************************
+ *
+ * FILE NAME:   codecdrv.h
+ *
+ * DESCRIPTION: header file for the Crystal CS4218 16-bit Stereo Audio
+ *              Codec device driver
+ *
+ *****************************************************************************/
 
 #ifndef __FCODECDRV_H
 #define __FCODECDRV_H
