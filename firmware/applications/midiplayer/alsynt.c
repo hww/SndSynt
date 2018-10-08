@@ -101,14 +101,14 @@ void alSynMakeVolumes(PVoice * v)
         tstw    y1
         bgt     isplus                  // Y    positive
         blt     isminus
-iszero :    //********************************************************
+iszero :
         do      x0,zeroend              // Y    negative
         move    a,X : (r2 + 1)          // *dst++ = curVolume
         move    a0,X : (r2)+N
-zeroend :   //********************************************************
+zeroend :
         jmp     plsend
 
-isminus :   //********************************************************
+isminus :
         do      x0,minend               // Y    negative
         move    a,X : (r2 + 1)          // *dst++ = curVolume
         move    a0,X : (r2)+N
@@ -118,14 +118,14 @@ isminus :   //********************************************************
 minend :
         jmp     plsend
 
-isplus :    //********************************************************
+isplus :
         do      x0,plsend
         move    a,X : (r2 + 1)          // *dst++ = curVolume
         move    a0,X : (r2)+N
         add     y,a                     // curVolume+=deltaVolume
         cmp     a,b                     // if(a>b)
         tlt     b,a                     //      a=b
-plsend :    //********************************************************
+plsend :
         move    #volTable + 1,r2        // r2   = src
         move    #panTable,r1            // r1   = dst
         move    RVOL,y1                 // 7FFF = rightchannel
@@ -165,8 +165,8 @@ void alSynMixVoice(PVoice* v, UInt32* dst, size_t todo)
         move    v,r3                    // r3  = voice
         move    todo,y0                 // y0  = todo
         move    PHASE,y1                // y1  = phase
-        move    #panTable,r0            // r0  = pantable
-        move    #volTable,r1            // r1  = voltable
+        move    #panTable,r0            // r0  = pan-table
+        move    #volTable,r1            // r1  = vol-table
         move    CASH_2,r2               // r2  = src
         move    dst,r3                  // r3  = dest
         tstw    y1
@@ -711,6 +711,7 @@ void    alSynSetPitch(ALSynth * s, ALVoice *v, Int32 ratio)
 
 void    alSynSetFXMix(ALSynth * s, ALVoice *v, Int16 fxmix)
 {
+    // temporary disabled
     //v->pvoice->fxmix=fxmix;
 }
 
@@ -785,7 +786,7 @@ void    alSynStartVoiceParams(ALSynth * s, ALVoice *v, ALWaveTable *w,
     Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
     ALMicroTime t)
 {
-    alSynStartVoice(s, v, w);   // start stample
+    alSynStartVoice(s, v, w);   // start sample
     alSynSetFXMix(s, v, fxmix); // FX
     alSynSetPitch(s, v, pitch); // tone
     alSynSetPan(s, v, pan, t);  // pan

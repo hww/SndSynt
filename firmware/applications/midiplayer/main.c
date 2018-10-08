@@ -84,16 +84,16 @@ void main(void)
       78 ms,   0x100
     };
 
-    // **************** Terminal *******************
+    // -- Terminal --
     terminalOpen();
     terminalSetAnimate(&stdAnimePP);
 
-    // ************** Synthesizer ******************
+    // -- Synthesizer --
     syncfg.maxPVoices = get_cfg();
     syncfg.params = &params;
     alInit(&global, &syncfg);
 
-    // *************** Sequencer *******************
+    // -- Sequencer --
     createAllOsc();
 
     seqcnf.maxVoices = MAX_VOICES;
@@ -105,7 +105,7 @@ void main(void)
 
     alSeqpNew(&seqp, &seqcnf);
 
-    // *********** Load sound bank *****************
+    // -- Load sound bank --
 #ifdef PC_MODE
     size = snd_load_tbl("\\\\PC\\D\\sbk\\tone.tbl", drama);
     sdram_write32(DRAM_TBL_ADDR, drama);
@@ -124,10 +124,10 @@ void main(void)
 #endif // PC_MODE
     alBnkfNew(bankfile, 0);
 
-    // ************ Set player bank ****************
+    // -- Set player bank --
     alSeqpSetBank(&seqp, bankfile->bankArray[0]);
 
-    // ************ Load midi bank *****************
+    // -- Load midi bank --
 #ifdef PC_MODE
     size = alSeqFileLoad("\\\\PC\\D\\sbk\\midi.sbk", drama);
     sdram_write32(DRAM_MIDI_ADDR, drama);

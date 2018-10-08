@@ -16,7 +16,7 @@
  *  s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
- *    seqp      pointer to the sequence player.
+ *   seqp      pointer to the sequence player.
  *   chan      midi channel
  *   prog      instrument number
  *
@@ -49,7 +49,7 @@ s32     alSeqpGetChlProgram(ALSeqPlayer *seqp, u8 chan)
  *  u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
- *    seqp      pointer to the sequence player.
+ *   seqp      pointer to the sequence player.
  *   chan      midi channel
  *   fxmix     level FX
  *
@@ -74,7 +74,7 @@ u8      alSeqpGetChlFXMix(ALSeqPlayer *seqp, u8 chan)
  *  u8      alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
- *    seqp      pointer to the sequence player.
+ *   seqp      pointer to the sequence player.
  *   chan      midi channel
  *   vol       volume
  *
@@ -99,7 +99,7 @@ u8      alSeqpGetChlVol(ALSeqPlayer *seqp, u8 chan)
  *  ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
- *    seqp      pointer to the sequence player.
+ *   seqp      pointer to the sequence player.
  *   chan      midi channel
  *   pan       panorama
  *
@@ -124,7 +124,7 @@ ALPan   alSeqpGetChlPan(ALSeqPlayer *seqp, u8 chan)
  *  u8      alSeqpGetChlPriority(ALSeqPlayer *seqp, u8 chan)
  *
  * PARAMETERS
- *    seqp      pointer to the sequence player.
+ *   seqp      pointer to the sequence player.
  *   chan      midi channel
  *   priority  channel priority
  *

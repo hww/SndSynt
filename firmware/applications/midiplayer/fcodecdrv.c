@@ -146,12 +146,8 @@ void fcodecOpen(void)
 
     memset((void*)dma_buf_1, 0, FRAME_BUF_SIZE << 1);
 
-    //  archInstallFastISR(&(pArchInterrupts -> SSITransmitDataException), fcodecStereoISR);
-    //  archInstallFastISR(&(pArchInterrupts -> SSITransmitData), fcodecStereoISR);
-
     EnableFCodec();
 }
-
 
 /*****************************************************************************
  *
@@ -275,30 +271,30 @@ void fcodecStereoISR(void)
     // Called if fifo has 6 or more empty records
     {
         push    r0
-            push    x0
-            push    m01
-            move    dma_modulo, m01
-            move    dma_pos, r0
-            move    X : 0x1000 + arch_sIO.Ssi.ControlStatusReg, x0
-            move    X : (r0)+, x0
-            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move    X : (r0)+, x0
-            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move    X : (r0)+, x0
-            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
-            move    X : (r0)+, x0
-            move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+        push    x0
+        push    m01
+        move    dma_modulo, m01
+        move    dma_pos, r0
+        move    X : 0x1000 + arch_sIO.Ssi.ControlStatusReg, x0
+        move    X : (r0)+, x0
+        move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+        move    X : (r0)+, x0
+        move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+        move    X : (r0)+, x0
+        move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
+        move    X : (r0)+, x0
+        move    x0, X : 0x1000 + arch_sIO.Ssi.TransmitReg
 #ifdef SIX_TIMES_ISR
-            move    X:(r0)+,x0
-            move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
-            move    X:(r0)+,x0
-            move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
+        move    X:(r0)+,x0
+        move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
+        move    X:(r0)+,x0
+        move    x0,X:0x1000 + arch_sIO.Ssi.TransmitReg
 #endif
-            move    r0, dma_pos
-            pop     m01
-            pop     x0
-            pop     r0
-            rti
+        move    r0, dma_pos
+        pop     m01
+        pop     x0
+        pop     r0
+        rti
     }
 }
 

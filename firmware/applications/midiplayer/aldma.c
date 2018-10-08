@@ -38,7 +38,7 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
     dmaPtr = dmaState.firstUsed;
     addrEnd = addr+len;
 
-    while(dmaPtr)  // find prepaired buffer
+    while(dmaPtr)  // find prepared buffer
     {   buffEnd = dmaPtr->startAddr + MAX_BUFFER_LENGTH;
         if(dmaPtr->startAddr > addr)
             break;
@@ -52,15 +52,11 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
-    /*
-     *  Buffer is not found lets take free one
-     */
+    /* Buffer is not found lets take free one */
     dmaPtr              = dmaState.firstFree;
     dmaState.firstFree  = (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
-    /*
-     *  Add it to used list
-     */
+    /* Add it to used list */
     if(lastDmaPtr != NULL)
     {   alLink((ALLink*)dmaPtr,(ALLink*)lastDmaPtr);
     }

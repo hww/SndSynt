@@ -52,7 +52,7 @@ f32     alCents2Ratio(s32 cents)
  * PARAMETERS
  *
  *   Note       tone from 0  to 95 (0 = C-0, 95 = B-7)
- *   finetune    Подстройка от -1200 до +1200
+ *   finetune    from -1200 to +1200
  *              -100     -1 half tone,
  *              +100     +1 half tone,
  *              -1200    -1 octave
@@ -63,7 +63,7 @@ f32     alCents2Ratio(s32 cents)
  *****************************************************************************/
 
 #define OCT_OF_RATE_TABLE 9                 // Rate table for octave
-#define BASE_NOTE (5*12)                    // Note without re-samplig
+#define BASE_NOTE (5*12)                    // Note without re-sampling
 
 UWord32 ratestable[] =
 {
@@ -363,7 +363,7 @@ void    alSeqpLoop(ALSeqPlayer *seqp, ALSeqMarker *start, ALSeqMarker *end, s32 
  * DESCRIPTION
  *     alSeqpSendMidi sends a MIDI message to the sequence player. This can be
  *     used to trigger notes not in the sequence, add controller information in
- *     realtime, or otherwise change the performance of a sequence.
+ *     real-time, or otherwise change the performance of a sequence.
  *     alSeqpSendMidi can be used as an alternative for alSeqpSetChlProgram,
  *     alSeqpSetChlVol, alSeqpSetChlPan, and alSeqpSetChlFXMix.
  *
@@ -391,7 +391,8 @@ void    alSeqpSendMidi(ALSeqPlayer *seqp, s32 ticks, u8 status, u8 byte1, u8 byt
     if ((seqp->chanMask & (1 << chan)) == 0) return;
 
     if (ticks > 0)
-    {   // если сообщение откладывается на время тикс
+    {   
+        // delay event for given ticks
         event.type = AL_SEQ_MIDI_EVT;
         event.msg.midi.ticks = 0;
         event.msg.midi.status = status;

@@ -194,7 +194,7 @@ int     midiGetMsg(ALEvent * evt)
             msgidx = 0;
             break;
 
-        //case AL_MIDI_Start:                                   // Single byte messages
+        //case AL_MIDI_Start:                               // Single byte messages
         //case AL_MIDI_Continue:
         //case AL_MIDI_Stop:
         default:

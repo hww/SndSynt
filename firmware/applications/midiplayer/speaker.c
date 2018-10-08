@@ -109,7 +109,6 @@ void speakWords(  const UInt16 * ptr )
     }
 }
 
-
 void speakDigit(  UInt16  val )
 {
     int n;

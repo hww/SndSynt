@@ -113,7 +113,7 @@ void SetVoices(ALSeqPlayer * seqp)
 void selectFile(ALSeqPlayer * seqp, ALSeqDir * bank, UInt16 fnum)
 {
     alSeqFileNew(&bank->seqFile, bank->drama, fnum);
-    // *************** Setup midi file for sequencer ***********
+    // -- Setup midi file for sequencer --
     alSeqNew(&seq, bank->seqFile.seqArray[0].offset, bank->seqFile.seqArray[0].len);
     alSeqpSetSeq(seqp, &seq);
     alSeqGetLoc(&seq, &begMarker);      // Marker of file start

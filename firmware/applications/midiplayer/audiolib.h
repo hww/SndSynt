@@ -73,7 +73,7 @@ typedef UInt32 Ptr32;
 typedef struct
 {
     ALLink      node;
-    UInt32      startAddr;          // redubg pointer
+    UInt32      startAddr;          // reading pointer
     UInt16      lastFrame;          // last access time
     UInt16      *ptr;               // buffer pointer
 } DMABuffer;
@@ -362,10 +362,9 @@ void    alSynSetFXMix(ALSynth * synth, ALVoice *voice, Int16 fxmix);
 void    alSynSetPriority(ALSynth * synth, ALVoice *voice, Int16 priority);
 Int16   alSynGetPriority(ALSynth * synth, ALVoice *voice);
 void    alSynStartVoiceParams(ALSynth * synth, ALVoice *voice, ALWaveTable *w,
-    Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
-    ALMicroTime t);
+                              Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
+                              ALMicroTime t);
 void    alSynStopVoice(ALSynth *drvr, ALVoice *voice);
-
 Int16   alSynAllocVoice(ALSynth *s, ALVoice *v, UInt16 priority);
 void    alSynFreeVoice(ALSynth *s, ALVoice *voice);
 void    alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol);
