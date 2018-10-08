@@ -4,7 +4,6 @@
 #include "mem.h"
 #include "fcodec.h"
 #include "bsp.h"	
-//#include "time.h"
 #include "stdio.h"
 #include "assert.h"
 #include "audiolib.h"
@@ -99,10 +98,10 @@ iszero :	//********************************************************
 		do		x0,zeroend				// Y	negative
 		move	a,X : (r2 + 1)			// *dst++ = curVolume
 		move	a0,X : (r2)+N
-zeroend :
+zeroend :   //********************************************************
 		jmp		plsend
 
-isminus ://********************************************************
+isminus :   //********************************************************
 		do		x0,minend				// Y	negative
 		move	a,X : (r2 + 1)			// *dst++ = curVolume
 		move	a0,X : (r2)+N
@@ -119,7 +118,7 @@ isplus :	//********************************************************
 		add		y,a						// curVolume+=deltaVolume
 		cmp		a,b						// if(a>b)
 		tlt		b,a						// 		a=b
-plsend :
+plsend :    //********************************************************
 		move	#volTable + 1,r2		// r2	= src
 		move	#panTable,r1			// r1	= dst
 		move	RVOL,y1					// 7FFF = rightchannel
@@ -233,9 +232,7 @@ void alSynRenderVoice(PVoice* v, size_t todo)
 	UInt16 framepos;
 	asm
 	{
-		/*
-		 * 	Read to cache
-		 */
+		/* Read to cache */
 		move	v,r3    				// r3  = voice
 										// work + (U32)((U32)pith * (Int16)todo)
 		move	todo,x0					// 		x0  = todo
@@ -246,7 +243,7 @@ void alSynRenderVoice(PVoice* v, size_t todo)
 		impy	y1,x0,y1				// 		y1  = pitch.int * todo 
 		add		y1,b					// 		b   = (U32)pitch * (U16)todo
 										//**********************************
-										// На сколько сместится целая часть счётчика
+										// Integer part of the counter
 										// work+=pos & 0x3ffff
 		move	FPOS,y0					// 		y0  = pos.fr
 		move	POSL,y1					// 		y1  = pos.int
@@ -267,15 +264,16 @@ void alSynRenderVoice(PVoice* v, size_t todo)
 		move	b1,POSH
 		//*********************************
 		// Count size of cached words
+		//*********************************
 		move	#2,x0					// x2
 		asrr	y0,x0,y0				// integer shift / 4
 		inc		y0						// y0  = blocks count
 		inc		y0
 		move	CASH_1,r2				// r2  = cache start
 		jsr		sdram_load_64			// Load block
-		/*
-		*	Interpolate block in the cache
-		*/
+		//*********************************
+		// Interpolate block in the cache
+		//*********************************
 		move	CASH_1,y0				// y0  = sart of cache
 		add		framepos,y0				// y0  = pos.int + CASH_1
 		move	y0,r2					// r2  = level_1
@@ -352,23 +350,19 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 
 	while (todo > 0)
 	{
-		// обновить 'current' позицию учитывая зацикливание, или
-		// остановить воспроизведение если достигли конца семпла
-
+		// update 'current' position, or stop sound at the end
 		if (((pv->pos == pv->end) && (pv->fpos > 0)) || (pv->pos > pv->end))
-			//if(pv->pos >= pv->end)
-		{	// воспроизведение вперёд и текущая
-			// позиция достигла конца
+		{	
+			// forward play reached the end
 			if ((((ALVoice*)pv->vvoice)->state & AL_SF_LOOP) != 0)
-			{	// семпл зациклен
+			{	
+				// sample is looped
 				pv->pos -= pv->endsub;
 			}
 			else
 			{
-				// семпл не зациклен
-				// остановим воспроизведение
+				// There are no LOOP, just stop it
 				alSynStopVoice(s, (ALVoice*)pv->vvoice);
-				//((ALVoice*)pv->vvoice)->state &= (~AL_SF_ACTIVE & ~AL_SF_ALOCATED);
 				return;
 			}
 		}
@@ -386,8 +380,9 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 		alSynMakeVolumes(pv);
 		alSynMixVoice(pv, dst, done);
 
-		if (pv->addVolume != 0)						// Если стремимся к громкости
+		if (pv->addVolume != 0)						
 		{
+			// Sliding to volume
 			if (pv->tgtVolume == pv->curVolume)
 			{
 				pv->addVolume = 0;
@@ -396,8 +391,7 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 		}
 
 		todo -= done;
-		dst += done;		// Так как dst указатель на 4 слова
-							// +done выглядит реально как +done<<2
+		dst += done;		
 	}
 	return;
 }
@@ -412,11 +406,11 @@ void alSynAddChannel(ALSynth* s, PVoice* pv, stereo32* dst, size_t todo)
 *	outBuf	output buffer
 *	samples sample's count
 *
-*	Переменная todo в количествах семплов на один канал. Генерирует целый буфер
-*	размером todo. Нарезает его на фрагменты необходимые для секвенсора.
-*	Например если для секвенсора необходимо N семплов то программа генерирует
-*	ch1[1..N], ch2[1..N], ... , chN[N]. Затем генерирует M семплов, где
-*	M = todo-N. После генерации всего буфера программа генерирует спецэффекты.
+*	Variable todo is sample count for one channel. Build the buffer with todo 
+*	size. It split buffer to fragments correlated with sequencer tempo.
+*	For instance the sequencer requires N samples then this function generate
+*	ch1[1..N], ch2[1..N], ... , chN[N]. Then it build M samples, where is
+*	M = todo-N. After completion it produces FXs.
 *
 *******************************************************************************/
 
@@ -452,11 +446,7 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 		while (left > 0)
 		{
 			portion = MIN(left, MIX_BUF_SIZE);
-
-			/*
-			 *	Обнулили слов в количестве = семплов * 4
-			 * 	Из за стерео и 32 х битного разрмера
-			 */
+			// samples * 4 because stereo
 			memset(s->mix_buf, 0, portion << 2);
 
 			pv = (PVoice*)s->pAllocList.next;
@@ -469,7 +459,7 @@ void alAudioFrame(ALSynth* s, stereo16 *outBuf, size_t samples)
 				}
 				pv = nextpv;
 			}
-			// на выход идёт то что в буфере MIX
+			// send to output the content of MIX buffer
 			alSynMix32To16(dst, s->mix_buf, portion);
 
 			dst = (stereo16*)((UWord16)dst + SAMPLES2WORDS(portion));
@@ -489,7 +479,7 @@ void alSynUpdate(ALSynth* s)
 	Int16 * ptr;
 	long delta = 0;
 
-	ptr = fcodecWaitBuf();							// current buffer
+	ptr = fcodecWaitBuf();	// current buffer
 	alAudioFrame(s, (stereo16*)ptr, FRAME_SIZE);
 	alSynPanSlide(s);
 	if (s->fcallTime == 0)return;
@@ -570,8 +560,8 @@ void alSynAddPlayer(ALSynth *s, void *client)
 *
 *	sVinfo* voice		channel's structure
 *	ALMicroTime time	time to reach target volume
-*	UInt16 vol			target volume
-*						0 - 7FFF
+*	UInt16 vol		target volume
+*					0 - 7FFF
 *
 *******************************************************************************/
 
@@ -686,11 +676,11 @@ void   alSynSetGain(ALSynth * s, ALVoice *v, Int16 vol)
 *
 *	Set voice pitch
 *
-*	Значение ratio = 0x10000 play tone as it is
-*			 ratio = 0x20000 play next octave
-*			 ratio = 0x08000 play lower octave
-*			 0 < ratio 0x2000
-*			 if rate>2 then rate is limited by 2
+*	Value  ratio = 0x10000 play tone as it is
+*		   ratio = 0x20000 play next octave
+*		   ratio = 0x08000 play lower octave
+*		   0 < ratio 0x2000
+*		   if rate>2 then rate is limited by 2
 *
 *******************************************************************************/
 
@@ -758,19 +748,19 @@ void    alSynStartVoice(ALSynth * s, ALVoice *voice, ALWaveTable *w)
 	PVoice    * pv = voice->pvoice;
 
 	voice->wavetable = w;
-	voice->state |= (w->ltype & AL_SF_LOOP); // parameters
+	voice->state |= (w->ltype & AL_SF_LOOP); 
 	voice->state |= AL_SF_ACTIVE;
-	pv->pos = w->base;   				// sample start
+	pv->pos = w->base;   				
 
 	if ((voice->state & AL_SF_LOOP) != 0)
 	{
-		pv->end = w->end + w->base;     	// end of loop
-		pv->endsub = (w->end - w->start) + 1;		// subtract at end +1
+		pv->end = w->end + w->base;     	
+		pv->endsub = (w->end - w->start) + 1;
 		pv->count = w->count;
 	}
 	else
 	{
-		pv->end = w->base + w->len - 2;    		// sample's end
+		pv->end = w->base + w->len - 2;    	
 	}
 }
 
@@ -788,7 +778,7 @@ void    alSynStartVoiceParams(ALSynth * s, ALVoice *v, ALWaveTable *w,
 	Int32 pitch, Int16 vol, ALPan pan, Int16 fxmix,
 	ALMicroTime t)
 {
-	alSynStartVoice(s, v, w);		// start stample
+	alSynStartVoice(s, v, w);	// start stample
 	alSynSetFXMix(s, v, fxmix);	// FX
 	alSynSetPitch(s, v, pitch);	// tone
 	alSynSetPan(s, v, pan, t);	// pan
@@ -806,14 +796,12 @@ void alSynStopVoice(ALSynth *drvr, ALVoice *voice)
 *
 *	Int16   SynAllocVoice( ALSynth *s, ALVoice *v, UInt16 priority )
 *
-*	Привязывает к голосу один из полифонических голосов.
-*	НО! возвращает 0 если это не произошло
-*	Алгоритм поиска таков.
-*	1. Сперва смотрим свободный голос во pFreeList
-*	2. Потом  смотрим сомнительный голос в pLameList. В этот лист попадают
-*      голоса автомномно достигшие громкости 0.
-*   3. Ищем самый низкоприоритетный голос в pAllocList и если его приоритет
-*      ниже или равен запрашиваемому то он вполне подходит.
+*	Link poly-voice to the voice if possible. Return 0 in other case.
+*	Order of seeking:
+*	1. Check pFreeList
+*	2. Check pLameList. (Contains voices with volume 0)
+*   3. Find lowest priority in pAllocList and if it's priority is less
+*      than requested then use it.
 *
 *******************************************************************************/
 
@@ -825,22 +813,20 @@ Int16   alSynAllocVoice(ALSynth *s, ALVoice *v, UInt16 priority)
 
 	if (s->pFreeList.next != NULL)
 	{
-		newpv = s->pFreeList.next;						// привязали к голосу один полифонический голос
-		alUnlink(newpv);								// отвязали от списка свободных
-		alLink(&newpv->node, &s->pAllocList);			// привязали к списку размещённых
+		newpv = s->pFreeList.next;						
+		alUnlink(newpv);								
+		alLink(&newpv->node, &s->pAllocList);			
 		goto good;
 	}
 
 	if (s->pLameList.next != NULL)
 	{
-		newpv = s->pLameList.next;						// привязали к голосу один полифонический голос
-		alUnlink(newpv);								// отвязали от списка сомнительных
-		alLink(&newpv->node, &s->pAllocList);			// привязали к списку размещённых
+		newpv = s->pLameList.next;						
+		alUnlink(newpv);								
+		alLink(&newpv->node, &s->pAllocList);			
 		goto good;
 	}
-	/*
-	 *	find voice with lover priority and volume
-	 */
+	/* find voice with lover priority and volume */
 	pv = s->pAllocList.next;
 	while (pv != NULL)
 	{
