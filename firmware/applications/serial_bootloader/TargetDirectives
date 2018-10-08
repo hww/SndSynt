@@ -1,3 +1,0 @@
-/* Supported board type. */
-#define DSP56826EVM
-
