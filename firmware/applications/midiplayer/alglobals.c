@@ -15,12 +15,12 @@ ALGlobals * alGlobals;
  
 void    alInit(ALGlobals *glob, ALSynConfig *c)
 {
-	sdram_init();					// initializing SDRAM
-	alGlobals = glob;				// Synthesizer
-	alSynNew(&alGlobals->drvr, c);
+    sdram_init();					// initializing SDRAM
+    alGlobals = glob;				// Synthesizer
+    alSynNew(&alGlobals->drvr, c);
 }
 
 void    alClose(ALGlobals *glob)
 {
-	alSynDelete( &alGlobals->drvr );
+    alSynDelete( &alGlobals->drvr );
 }

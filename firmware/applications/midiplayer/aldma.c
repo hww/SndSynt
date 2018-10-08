@@ -52,13 +52,13 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
-	/*
+    /*
      * 	Buffer is not found lets take free one
      */
     dmaPtr 				= dmaState.firstFree;				
     dmaState.firstFree 	= (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
-	/*
+    /*
      * 	Add it to used list
      */
     if(lastDmaPtr != NULL) 							
@@ -83,7 +83,7 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
     dmaPtr->startAddr = addr;						
     dmaPtr->lastFrame = gFrameCt;  					
  
- 	START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH>>2);
+    START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH>>2);
 
     return (UInt16) freeBuffer + delta;
 }
@@ -100,9 +100,9 @@ UInt16 dmaCallBack(UInt32 addr, UInt16 len, void *state)
 ALDMAproc dmaNew(DMAState **state)
 {
     UInt16  i;
-	
-	gFrameCt = 0;
-	
+    
+    gFrameCt = 0;
+    
     if(!dmaState.initialized)  /* only do this once */
     {
         dmaState.firstFree = &dmaBuffs[0];
@@ -124,23 +124,20 @@ ALDMAproc dmaNew(DMAState **state)
  *
  * 	void CleanDMABuffs(void)
  *
- *	очищает все DMA каналы
+ *	Clear all DMA buffers
  *
  *****************************************************************************/
 
 void CleanDMABuffs(void)
 {
     DMABuffer  *dmaPtr,*nextPtr;
-
-	gFrameCt++;
-	
+    gFrameCt++;
     dmaPtr = dmaState.firstUsed;
     while(dmaPtr)
-    {	nextPtr = (DMABuffer*)dmaPtr->node.next;
-
+    {	
+		nextPtr = (DMABuffer*)dmaPtr->node.next;
         /* Can change this value.  Should be at least one.  */
         /* Larger values mean more buffers needed, but fewer DMA's */
-
         if(dmaPtr->lastFrame + 2  < gFrameCt) /* remove from used list */
         {   if(dmaState.firstUsed == dmaPtr)
                 dmaState.firstUsed = (DMABuffer*)dmaPtr->node.next;

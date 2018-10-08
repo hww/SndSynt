@@ -38,7 +38,7 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
 {
     oscData         *statePtr;
     ALMicroTime     deltaTime = 0;
-	Int16			frames = oscRate / (FRAME_TIME_US/1000);
+    Int16			frames = oscRate / (FRAME_TIME_US/1000);
 
     if(freeOscStateList)  /* yes there are oscStates available */
     {
@@ -62,7 +62,7 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
             case VIBRATO_SQR:
                 {
                     Int16     cents;
-                    statePtr->maxCount = frames+1;// values 1-256
+                    statePtr->maxCount = frames+1;  // values 1-256
                     statePtr->curCount = statePtr->maxCount;
                     statePtr->stateFlags = OSC_HIGH;
                     cents = oscDepth;
@@ -98,8 +98,9 @@ ALMicroTime initOsc(void **oscState, Int32 *initVal,UInt16 oscType,
 
         }
     }
-    return(deltaTime);  /* if there are no oscStates, return zero, but if
-                           oscState was available, return delay in usecs */
+	/* if there are no oscStates, return zero, but if
+	oscState was available, return delay in usecs */
+    return(deltaTime); 
 }
 
 /*****************************************************************************

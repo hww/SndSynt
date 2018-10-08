@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "audiolib.h"
 #include "mem.h"
@@ -22,24 +29,24 @@
 
 unsigned char alSeqGet8( UWord32 * addr )
 {
-	return sdram_read16( (*addr)++ ) & 0xFF; 
+    return sdram_read16( (*addr)++ ) & 0xFF; 
 }
 
 UWord16 alSeqGet16( UWord32 * addr )
 {
 UWord16 word;
 
-	word  = (sdram_read16( (*addr)++ )<<8); 
-	word +=	(sdram_read16( (*addr)++ ) & 0xFF);
-	return word;
+    word  = (sdram_read16( (*addr)++ )<<8); 
+    word +=	(sdram_read16( (*addr)++ ) & 0xFF);
+    return word;
 }
 
 UWord32 alSeqGet32( UWord32 * addr )
 {
 UWord32 dword;
-	dword  = ((UWord32)alSeqGet16( addr )<<16);
-	dword += alSeqGet16( addr );
-	return dword;
+    dword  = ((UWord32)alSeqGet16( addr )<<16);
+    dword += alSeqGet16( addr );
+    return dword;
 }
 
 /*****************************************************************************
@@ -63,16 +70,16 @@ UWord32 addr = base;
     f->revision = alSeqGet16( &addr );        /* format revision of this file         */
     f->seqCount = alSeqGet16( &addr );        /* number of sequences                  */
 
-	if((f->revision == 0x5331) && (f->seqCount>fnum))
-	{
-		addr+=(fnum<<3); 									 
+    if((f->revision == 0x5331) && (f->seqCount>fnum))
+    {
+        addr+=(fnum<<3); 									 
 
-	   	f->seqArray[0].offset = alSeqGet32( &addr ) + base;  
-	   	f->seqArray[0].len 	  = alSeqGet32( &addr );  		 
-	}
-	else
-	{	f->seqArray[0].offset = 0xFFFFFFFF;  	
-	}
+        f->seqArray[0].offset = alSeqGet32( &addr ) + base;  
+        f->seqArray[0].len 	  = alSeqGet32( &addr );  		 
+    }
+    else
+    {	f->seqArray[0].offset = 0xFFFFFFFF;  	
+    }
 }
 
 /*****************************************************************************
@@ -90,20 +97,20 @@ UWord32 addr = base;
 
 UWord32 alSeqFileLoad( char * name, UInt32 addr )
 {
-	int Fd;
-	UInt32 fsize;
+    int Fd;
+    UInt32 fsize;
 
-	Fd = open(name, O_RDONLY);
-	if(Fd == 0) return 0;
+    Fd = open(name, O_RDONLY);
+    if(Fd == 0) return 0;
 
-	ioctl(Fd, FILE_IO_GET_SIZE, fsize );
+    ioctl(Fd, FILE_IO_GET_SIZE, fsize );
 
-	if(fsize==0) return 0;
+    if(fsize==0) return 0;
 
-	ioctl(Fd, FILE_IO_DATAFORMAT_EIGHTBITCHARS,NULL); 
-	
-	sdram_load_file( Fd, addr, fsize );
+    ioctl(Fd, FILE_IO_DATAFORMAT_EIGHTBITCHARS,NULL); 
+    
+    sdram_load_file( Fd, addr, fsize );
 
-	close(Fd);
-	return fsize;
+    close(Fd);
+    return fsize;
 }

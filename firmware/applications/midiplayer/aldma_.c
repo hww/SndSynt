@@ -78,13 +78,13 @@ UInt32 dmaCallBack(UInt32 addr, UInt16 len, void *state)
         lastDmaPtr = dmaPtr;
         dmaPtr = (DMABuffer*)dmaPtr->node.next;
     }
-	/*
+    /*
      * 	Buffer not found then get free one
      */
     dmaPtr 				= dmaState.firstFree;				
     dmaState.firstFree 	= (DMABuffer*)dmaPtr->node.next;
     alUnlink((ALLink*)dmaPtr);
-	/*
+    /*
      * 	Add to used list
      */
     if(lastDmaPtr != NULL) 							
@@ -109,7 +109,7 @@ UInt32 dmaCallBack(UInt32 addr, UInt16 len, void *state)
     dmaPtr->startAddr = addr;						
     dmaPtr->lastFrame = gFrameCt;  					
  
- 	START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH);
+    START_DMA((u32)addr,freeBuffer,MAX_BUFFER_LENGTH);
 
     return (UInt16) freeBuffer + delta;
 }

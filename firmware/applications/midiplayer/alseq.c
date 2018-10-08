@@ -1,3 +1,10 @@
+/*****************************************************************************
+* @project SndSynt
+* @info Sound synthesizer library and MIDI file player.
+* @platform DSP
+* @autor Valery P. (https://github.com/hww)
+*****************************************************************************/
+
 #include "port.h"
 #include "null.h"
 #include "audiolib.h"
@@ -12,19 +19,19 @@
  *	Return DELTA TIME and shift pointer
  *
  *****************************************************************************/
-Word32  alSeqGetDeltaTime(UWord32 * addr);
+
 Word32  alSeqGetDeltaTime(UWord32 * addr)
 {
-UWord32	rv;
-UWord16	b;
-	
-	if(((rv=alSeqGet8( addr ))&0x80)!=0)
-	{
-       	rv&=0x7F;
-       	do
-       	{
-        	rv=(rv<<7)+((b=alSeqGet8( addr ))&0x7F);
-       	} while((b&0x80) != 0);
+    UWord32	rv;
+    UWord16	b;
+    
+    if(((rv=alSeqGet8( addr ))&0x80)!=0)
+    {
+        rv&=0x7F;
+        do
+        {
+            rv=(rv<<7)+((b=alSeqGet8( addr ))&0x7F);
+        } while((b&0x80) != 0);
     }
     return rv;
 }
@@ -58,23 +65,22 @@ UWord16	b;
      
 void    alSeqNew(ALSeq *seq, Ptr32 ptr, s32 len)
 {
-UWord32 chunksize;
-UWord32 addr = ptr;
-UWord16 temp;
+    UWord32 chunksize;
+    UWord32 addr = ptr;
+    UWord16 temp;
 
-	seq->base 			= ptr;
-	
-	addr+=4;									// 'MThd'
-	chunksize 			= alSeqGet32( &addr );	// size of chunk
-	addr+=4;									// MIDI type
-	seq->division		= alSeqGet16( &addr );	// Ticks in quoter
-	addr+=(chunksize - (6 - 4));				// 
-	seq->len			= alSeqGet32( &addr );	// Track size
-	seq->trackStart 	= addr;					// Firs message
-	seq->curPtr			= seq->trackStart;		// Current message
-	seq->lastTicks		= 0;					// MIDI ticks for last messahe
+    seq->base 			= ptr;
+    addr+=4;									// 'MThd'
+    chunksize 			= alSeqGet32( &addr );	// size of chunk
+    addr+=4;									// MIDI type
+    seq->division		= alSeqGet16( &addr );	// Ticks in quoter
+    addr+=(chunksize - (6 - 4));				// 
+    seq->len			= alSeqGet32( &addr );	// Track size
+    seq->trackStart 	= addr;					// Firs message
+    seq->curPtr			= seq->trackStart;		// Current message
+    seq->lastTicks		= 0;					// MIDI ticks for last messahe
 //	seq->qnpt			= 0;			// ???	// quoter notes / tick (1/division)
-	seq->lastStatus		= 0;					// Last STATUS
+    seq->lastStatus		= 0;					// Last STATUS
 }
 
 /*****************************************************************************
@@ -96,82 +102,82 @@ UWord16 temp;
 
 void    alSeqNextEvent(ALSeq *seq, ALEvent *event)
 {
-UInt16    msg;
-UInt16    tmp;
-UWord32 * addr  = &seq->curPtr;
-UWord32   delta = 0;
+    UInt16    msg;
+    UInt16    tmp;
+    UWord32 * addr  = &seq->curPtr;
+    UWord32   delta = 0;
 
-	event->msg.midi.ticks = 0;
-	
-	do
-	{
-		delta += alSeqGetDeltaTime(&seq->curPtr);
-		
-		tmp = alSeqGet8( addr );								
+    event->msg.midi.ticks = 0;
+    
+    do
+    {
+        delta += alSeqGetDeltaTime(&seq->curPtr);
+        
+        tmp = alSeqGet8( addr );								
 
-		if(tmp>0x7f)
-		{	// it is STATUS
-			event->msg.midi.status = tmp;						
-			seq->lastStatus 	   = tmp;						
-			event->msg.midi.byte1  = alSeqGet8( addr );			
-		}
-		else
-		{	// actual previous STATUS
-			event->msg.midi.status = seq->lastStatus;			
-			event->msg.midi.byte1  = tmp;						
-		}
-		
-		msg = event->msg.midi.status & AL_MIDI_StatusMask;		
+        if(tmp>0x7f)
+        {	// it is STATUS
+            event->msg.midi.status = tmp;						
+            seq->lastStatus 	   = tmp;						
+            event->msg.midi.byte1  = alSeqGet8( addr );			
+        }
+        else
+        {	// actual previous STATUS
+            event->msg.midi.status = seq->lastStatus;			
+            event->msg.midi.byte1  = tmp;						
+        }
+        
+        msg = event->msg.midi.status & AL_MIDI_StatusMask;		
 
-		switch(msg)
-		{
-	    	case AL_MIDI_ProgramChange:
-	    	case AL_MIDI_ChannelPressure:
-				event->type = AL_SEQ_MIDI_EVT;					
-				break;
-	    	case AL_MIDI_SysEx:
-	    		msg = event->msg.midi.status;					
-	    		switch(msg)										
-	    		{
-	    			case AL_MIDI_Meta:
-			   			tmp = event->msg.midi.byte1;				
-						event->msg.tempo.len  = alSeqGet8( addr );	
-						switch(tmp)
-						{
-						case AL_MIDI_META_TEMPO:
-	    					event->type = AL_TEMPO_EVT;
-	    					event->msg.tempo.byte1 = alSeqGet8( addr );
-	    					event->msg.tempo.byte2 = alSeqGet8( addr );
-	    					event->msg.tempo.byte3 = alSeqGet8( addr );
-	    					break;
-	    				case AL_MIDI_META_EOT:
-	    					event->type = AL_SEQ_END_EVT;
-	    					break;
-	    				default:
-							event->type = AL_SEQ_REF_EVT;		
-							(*addr)+=event->msg.tempo.len;
-	    				}
-						break;
-					default:
-						event->type = AL_SEQ_REF_EVT;			
-						(*addr)+=event->msg.midi.byte1;			
-						break;
-				}
-				break;
-			default:
-	    		//case AL_MIDI_NoteOff:
-	    		//case AL_MIDI_NoteOn:
-	    		//case AL_MIDI_PolyKeyPressure:
-	    		//case AL_MIDI_ControlChange:
-	    		//case AL_MIDI_PitchBendChange:
-				event->type = AL_SEQ_MIDI_EVT;					
-				event->msg.midi.byte2 = alSeqGet8( addr );
-				break;
-		}
-	}while(event->type == AL_SEQ_REF_EVT);						
-																
-		event->msg.midi.ticks  = delta;
-		seq->lastTicks		  += delta;
+        switch(msg)
+        {
+            case AL_MIDI_ProgramChange:
+            case AL_MIDI_ChannelPressure:
+                event->type = AL_SEQ_MIDI_EVT;					
+                break;
+            case AL_MIDI_SysEx:
+                msg = event->msg.midi.status;					
+                switch(msg)										
+                {
+                    case AL_MIDI_Meta:
+                        tmp = event->msg.midi.byte1;				
+                        event->msg.tempo.len  = alSeqGet8( addr );	
+                        switch(tmp)
+                        {
+                        case AL_MIDI_META_TEMPO:
+                            event->type = AL_TEMPO_EVT;
+                            event->msg.tempo.byte1 = alSeqGet8( addr );
+                            event->msg.tempo.byte2 = alSeqGet8( addr );
+                            event->msg.tempo.byte3 = alSeqGet8( addr );
+                            break;
+                        case AL_MIDI_META_EOT:
+                            event->type = AL_SEQ_END_EVT;
+                            break;
+                        default:
+                            event->type = AL_SEQ_REF_EVT;		
+                            (*addr)+=event->msg.tempo.len;
+                        }
+                        break;
+                    default:
+                        event->type = AL_SEQ_REF_EVT;			
+                        (*addr)+=event->msg.midi.byte1;			
+                        break;
+                }
+                break;
+            default:
+                //case AL_MIDI_NoteOff:
+                //case AL_MIDI_NoteOn:
+                //case AL_MIDI_PolyKeyPressure:
+                //case AL_MIDI_ControlChange:
+                //case AL_MIDI_PitchBendChange:
+                event->type = AL_SEQ_MIDI_EVT;					
+                event->msg.midi.byte2 = alSeqGet8( addr );
+                break;
+        }
+    }while(event->type == AL_SEQ_REF_EVT);						
+                                                                
+        event->msg.midi.ticks  = delta;
+        seq->lastTicks		  += delta;
 }
 
 /*****************************************************************************
@@ -187,7 +193,10 @@ UWord32   delta = 0;
  *
  *****************************************************************************/
      
-s32     alSeqGetTicks(ALSeq *seq) {	return seq->lastTicks; }
+s32     alSeqGetTicks(ALSeq *seq)
+{	
+    return seq->lastTicks;
+}
 
 /*****************************************************************************
  *
@@ -206,13 +215,11 @@ s32     alSeqGetTicks(ALSeq *seq) {	return seq->lastTicks; }
  *****************************************************************************/
 
 f32     alSeqTicksToSec(ALSeq *seq, s32 ticks, u32 tempo)
-{
-		
+{       
 }
 
 u32     alSeqSecToTicks(ALSeq *seq, f32 sec, u32 tempo)
 {
-
 }
 
 /*****************************************************************************
@@ -234,20 +241,20 @@ u32     alSeqSecToTicks(ALSeq *seq, f32 sec, u32 tempo)
      
 void    alSeqNewMarker(ALSeq *seq, ALSeqMarker *m, u32 ticks)
 {
-Ptr32   taddr = seq->trackStart;				
-UInt32  loc = 0;
-ALEvent event;
-ALSeq   tseq;
+    Ptr32   taddr = seq->trackStart;				
+    UInt32  loc = 0;
+    ALEvent event;
+    ALSeq   tseq;
 
-	tseq.lastTicks 		= 0;					
-	tseq.lastStatus 	= 0;					
-	tseq.curPtr   		= seq->curPtr;
-	
-	while(tseq.lastTicks<ticks)					
-	{
-		alSeqNextEvent(&tseq, &event);			
-	}
-	alSeqGetLoc( &seq, m );						
+    tseq.lastTicks 		= 0;					
+    tseq.lastStatus 	= 0;					
+    tseq.curPtr   		= seq->curPtr;
+    
+    while(tseq.lastTicks<ticks)					
+    {
+        alSeqNextEvent(&tseq, &event);			
+    }
+    alSeqGetLoc( &seq, m );						
 }
 
 /*****************************************************************************
@@ -275,9 +282,9 @@ ALSeq   tseq;
 
 void    alSeqSetLoc(ALSeq *seq, ALSeqMarker *marker)
 {
-	seq->curPtr 	= marker->curPtr;
-	seq->lastTicks 	= marker->lastTicks;
-	seq->lastStatus = marker->lastStatus;
+    seq->curPtr 	= marker->curPtr;
+    seq->lastTicks 	= marker->lastTicks;
+    seq->lastStatus = marker->lastStatus;
 }
 
 /*****************************************************************************
@@ -298,9 +305,8 @@ void    alSeqSetLoc(ALSeq *seq, ALSeqMarker *marker)
      
 void    alSeqGetLoc(ALSeq *seq, ALSeqMarker *marker)
 {
-Ptr32 taddr = seq->curPtr;
-
-	marker->curPtr	   = taddr;      								  
+    Ptr32 taddr        = seq->curPtr;
+    marker->curPtr	   = taddr;      								  
     marker->lastTicks  = seq->lastTicks;    						  
     marker->curTicks   = alSeqGetDeltaTime( &taddr ) + seq->lastTicks;
     marker->lastStatus = seq->lastStatus;    						  

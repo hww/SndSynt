@@ -4,21 +4,13 @@
 ; @platform DSP 
 ; @autor Valery P. (https://github.com/hww)
 ; ****************************************************************************
-	SECTION rtlib
-	
-	include "portasm.h"
-	
-	GLOBAL  FsampleASM
 
-; void sampleASM (void)
-; {
-; }
+    SECTION rtlib 
+    include "portasm.h"    
+    GLOBAL  FsampleASM
 
 FsampleASM:
-
-	move  #$1234,A	; dummy moves to illustrate ASM coding
-	move  #$4321,B
-		
-	rts
-	
-	ENDSEC
+    move  #$1234,A	; dummy moves to illustrate ASM coding
+    move  #$4321,B
+    rts  
+    ENDSEC
