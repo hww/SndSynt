@@ -23,7 +23,7 @@ The SndSynt software started as part of a game for Nintendo N64. It was decided 
 - Able to play Hardware MIDI stream 
 - Easy to port to any other hardware design (a single file is responsible for the hardware)
 - Has LED display and a keyboard on GPIO connection for user interface
-- Uses sound bank compiled with additional utility sound bank compiler ([SBC]https://github.com/hww/Sound-Bank-Compiler)
+- Uses sound bank compiled with additional utility sound bank compiler ([SBC](https://github.com/hww/Sound-Bank-Compiler))
 - SBC uses text description format (include files) and produces SBC.bin and SBC.cfg
   - Multiple source files can be combined with the ‘include’ feature, allowing independent development of different components in an instrument bank.
   - SBC.bin contains the waveforms data collection.
